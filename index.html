@@ -881,8 +881,8 @@ function render(R) {
   const rotFig = pierSVG(R, { W: 360, H: 420, sc: 7.2, ox: 130, oy: 390, th: th0, label: `θ₀ = ${f(deg(th0), 1)}° (vuelco)` });
   const lamFig = chart({ id: 'c3', x0: 0, x1: Math.ceil(p3.dC0 * 1.08), y0: 0, y1: Math.ceil(p3.lam0 * 9.81 * 1.15 * 10) / 10, xlabel: 'd_C: desplazamiento horizontal de la cabeza [m]', ylabel: 'λ·g [m/s²]',
     y2: { k: 1 / 9.81, label: 'λ [—]' },
-    series: [{ pts: p3.pts.map(p => [p.dC, p.lam * 9.81]), color: 'var(--accent)' }],
-    points: [{ x: 0, y: p3.lam0 * 9.81, color: 'var(--accent)', label: `λ₀·g = ${f(p3.lam0 * 9.81, 2)} m/s² (λ₀ = ${f(p3.lam0, 3)})`, dx: 10, dy: -8 }, { x: p3.dC0, y: 0, color: 'var(--accent)', label: `d_C0 = ${f(p3.dC0, 2)} m`, anchor: 'end', dx: -8, dy: -10 }] });
+    series: [{ pts: p3.pts.map(p => [p.dC, p.lam * 9.81]), color: 'var(--muted)' }],
+    points: [{ x: 0, y: p3.lam0 * 9.81, color: 'var(--muted)', label: `λ₀·g = ${f(p3.lam0 * 9.81, 2)} m/s² (λ₀ = ${f(p3.lam0, 3)})`, dx: 10, dy: -8 }, { x: p3.dC0, y: 0, color: 'var(--muted)', label: `d_C0 = ${f(p3.dC0, 2)} m`, anchor: 'end', dx: -8, dy: -10 }] });
   h += sec('3', '3', 'Curva de capacidad λ–d_C', 'Circolare 2019, C8.7.1.2.1.2 (análisis cinemático no lineal con giro finito)', `
   <p>La parte de la pila sobre la junta gira un ángulo θ alrededor del pivote. Con (x<sub>i</sub>, z<sub>i</sub>) la posición de cada masa respecto al pivote en la configuración girada, el equilibrio de momentos da:</p>
   <div class="eq">λ(θ) = Σ ${v('W', 'i')}·(−${v('x', 'i')}) / Σ ${v('W', 'h,i')}·${v('z', 'i')} · tan θ₀ = Σ ${v('W')}·brazo / Σ ${v('W')}·${v('z')} → θ₀ = <span class="res">${f(deg(th0), 2)}°</span>, ${v('d', 'C0')} = <span class="res">${f(p3.dC0, 2)} m</span></div>
