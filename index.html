@@ -29,7 +29,9 @@ header.top .brand{display:flex;align-items:center;gap:18px;min-width:0}
 header.top img{height:44px;width:auto;flex:none}
 header.top .sub{color:#b9cfe0}
 header.top .refs{color:#b9cfe0}
-header.top h1{color:#fff}
+header.top h1{color:#fff;font-size:1.75rem;line-height:1.2}
+header.top .elem{color:#e3eef7;font-size:1.15rem;font-weight:500;margin:4px 0 2px}
+header.top .sub{font-size:.8rem}
 h1{font-size:1.65rem;margin:0;font-weight:600;letter-spacing:-.01em;text-wrap:balance}
 .sub{color:var(--muted);font-size:.9rem;margin:2px 0 0}
 .refs{font-size:.78rem;color:var(--muted);text-align:right}
@@ -94,8 +96,11 @@ button:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
 #btnPrint{background:transparent;color:var(--accent)}
 @media print{aside,footer,nav.steps{display:none}.wrap{display:block}section{break-inside:auto;border:none}body{background:#fff}header.top{-webkit-print-color-adjust:exact;print-color-adjust:exact}.fig{break-inside:avoid}}
 
+tr.req td{color:var(--muted);font-size:.8rem;white-space:normal;padding-top:0;border-bottom:1px solid var(--line)}
+tr:has(+ tr.req) td{border-bottom:none}
+
 </style>
-<header class="top"><div class="brand"><img src="data:image/png;base64,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" alt="Ines"><div><h1>Cabeceo de pilas de fábrica</h1><p class="sub" id="idline"></p><p class="sub">Análisis cinemático no lineal de una pila exenta con despegue en una junta · prototipo de la app</p><p class="sub">Circolare 2019 n. 7, C8.7.1.2.1 · UNE-EN 1998-1:2018 + AN · punto decimal · unidades SI (MN, m, s)</p></div></div>
+<header class="top"><div class="brand"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAWgAAACMCAYAAABRRzP1AAAuEUlEQVR42u2deZxdRZn3v885t9eEEJaEVUAEgTT7JnsSlUEdHHS02xlmxhUGGFFZXnTU0U77ugyjKCDqiDqK6OjbLSCOCqKYBMMedpKwORCRyE4gSaeXe87z/lFV6cqlu9N9z7nd53bX7/M53NDd995zqp761a+eeup5YPwQewUEBAQETDo6O6P5nYtLdHfHm36mKkM/00DYAQEBARMKVWnv1nhsJK5RaLCAgICA/FAaTTUjkvZActC37tklKcd/C+nRmuiuiIoSbRTSh9OY61b1XHsDXVKmuzumoyMJzRoQEBCQHTIiOXd1pQd++Tczyo1zPxXFpTOixpbtADQp23dGSByj5QHSwfLylMFPrvroob8LJB0QEBBQK4K25Lz3Rbfs0ty0VY80zzw63biONCkniKgogoAqIKioRlFTa6SaaNrX97GV5x32dbo1pkMCSQcEBATkRtCqwiJkr20fndnEhsVx66xDyxteHhQoITLiRqCqJhJFEjW1Rknvy2euPPeIb9OpEV2ShiYOCAgIqA6bbey19/REdEnalK7/QmnGbEPOIg2jkTOAiMRoSjrQl0qp6dIDvr78ALokDRuHAQEBAXkoaKt49790+b5I4z2q2oAmEciYQ+hUtVxqnVVKetf1rDjnkA5UIySo6ICAgIBMCrq9zZB1mkQfiJpnNGtaZjzk7JR00rdBiaK37fO1e/ZAJKWzM6jogICAgCwE3dNOiqogcrwmgypUxatCmqZRU8uMkshRhvgXhUMsAQEBAVUTtCFmPeY/Hpop6I6aJGJiNcYPRRFEEd0X4NkVSwJBBwQEBGRR0AAbevviaol5SEOLIiKKtITmDQgICMiJoPtaNySQcVNP1UZJpxtC8wYEBARkJWgRpbMzevgTx64HfUrikqJodQIa0TSVVOUBgLltCzQ0c0BAQEAGBW0280RFuVHikqhWI6RVRWJJ+3pf0f70drCbjwEBAQEB1RN0zwqjmAcGB36YbNzQK6UGUB2X+lUliVpmimra8/AnDltDd3eMSFDQAQEBAVkImi5Jae+OH7ngqMc1LX+t1DorViiPg52TqNQQpxvXryvFg19AVVjRHsg5ICAgoEpsnut5RTesbIu33n23ZTLwyhENM7d5fTLQNygyahUVVdUkiuOSlBpFB/vf9+A5Ry6jrS3m7P2DeyMgICCgSsgwdCuI6LzLHpwpafqjuHXmKWlfL1oeSNRls8PEOyOiAqW4eSZpMrghGdx41qqPHXZle3t33NMTUo4GBAQE5EvQHkkD7H/pvR9FovOlsXk3iSI0sbwrERJFpH0bUk31uiQZ/OxD5x1+N+3dMYGcAwICAmpE0BUkvVfnbbMat286CY2PgeR1pNqEyIuo3hc3tvz2gX/Z7y6AkKw/ICAgYAIJfEw1CVUlpBYNCAgImCgFXUHA8xctiee2LVATjrcIWMR8lkRLWZCGxPwBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAfWDV1f17umJWNGuLEJDHo2Jgaq6k5oybL+M8LbKVwn9Vev+oco+cv9WgNBPmfuCivEy1v4oMpLh7GL0h+rsjFzJqp4VKF2iFUYXUJ2BbQpJFJEkx8+OvD5VCQV7M/cPkOZNqKqbha6Gfhq7cMl1vNSRglYB0XkXL98tbpy1czr4ynP9lJ977GNHvfKqd3R3x+20mzSiQQmMx9BiO9jTYX6/A7A9sJO95gIzgRZgWzspCtALvAQMAM8CLwBPAc8Bz4pI7yhkkAblNiohy0gqRlW3Braz147AHNtfrUDJ9pfDBttHCjxv++gv9t8visgzWyDtad1PVmREduJKRvib7YFtbB/Mta/bAjPse+dWTLL1gK+KyEOqGvkcUQJo7ybq6SBB45OkqfFyHYh7G4memXfx3WtEohWqcouK3t/aXH7wro7DB3vsm9u7Ne7p6aFoR7srlqSViLwlZ00Hg1O01tDK9mdbAQcBhwDHAXsCrwF2yPBV64G/qOqTwAPAncDdIrLKN3JVLY00SUxXIhCRMuC30XbA/l4f7WMnzR2B5oxf+4yqrgFWA3cD9wMPisgfK/ppWpG1N0k620y9dtjb9scBwIHAbnaszAUaplAzXA08VMlbpc3+JGZQB/tTEW2RUtNrJS69VqLoWJB/Lm9cl/T1xY/vf9mDS0TTG5KB6MaeDnnRKfH2bo16OiQtggvEGvVI95EOo1xyHQjeZ6bejP8We80Hdh3l3ip9y6O5pdxENNMa8t7AG+3v+lT1EeB39lrqFHbFxDHt1LKIJI4IVLUROAx4s227/UaZLNW7xtNHThjsYK9DgHe4yVVVHwOW2GupiKytsKUp6QapsMPE/mxX2w/zgWOB3UeZGNOKfqi3yUw9G1k/oiG1d2vc0yHJvIvv+UDc3Ppf6UBvGSVC0aGsdVKSUgNRQxOaJqQDG59W9JeapFeuOvewm/BVdcfkDHxVjUUkUdV/BN5jVWtc0SAvAk8CtwC3isjL/ntzMDg8Yj4W+CDwdrss9u8jqRi8krGjK4mjVPE3jwHXAD8SkfunE1H7xOz97Cjgb4G3AW3DtKffP6/yhebUT1CZ8hfW2An1GuC3IrJhqhF15bOo6k52jLzLkvKMirckw0x4efRHEQhagH5gbxF5UlXFF4ulEd5mlhyCV+Q7VS0PaLk8kIpqJKWGHePGltPSgb7T2i69bxmpfqN5Zfmqng4ZpLPTuBG6uibamNzNHgycPIa/f0JVf2r9P89VS9KVBKCqJwHnAX81jJG55Vwp5+eWEcggtSSwF3ABcI6q/hq4SET+4BH1lIsCqeiXxLov3gO8Dziy4s/LXt9Izv0z1n6KgJ2B99rrEVX9MXCliDxeqxXfBCtmvHFyOHAa8E429+Mntk1cX8RMTTiCfthOzK/COBzpYowdSohEWh7U8sZ1ZS0PaNTYdFzUMuMn/Qc2LWu75N6309WV0tWVMpZES7VBr+3kfvvqX2V7pcAewL8Ct6nqW636jsdrdCKi9r1HquqvgOstOatnbLG9Jmrzwp8IxD5v2frtTgFuUtVrVfVoEUlFRMf77EVXaV6/7Kyq/xe4F/iGJWf17MCJlXgSVJnfT1HFfb0e6ALuVdXLVXU/656pu76y/ZGKSKqq81X158BtwBmWnJOKsVLKYWVZdDjbW2LttFQ58VZPFiJiyVrSvt402bgukbjhyKip+Rdtlz1w9b5fuf31dEiCasRQ7OJEIfIIsfIqeZ3vSGtP4H9U9dTxkLQzOlVtVtXPA8vsktlfIscFMTJftbuB8DfAMlW9WFW3qWaCKqJKs5NmoqqzVPVTwF3Av2F8/4ntd/HsoEiQYexzFnA6cIeqXqiq29nni5wqLXh/iL3fveyKYIkVCfEwAmYqE3IlYvvsP6kg7BwIenOyjkQkTvt707SvN40bmt8ZN7fe0fb1+05DxITjFTMdqSMtt7y8UlXfMhai8vzdBwE3AZ+26jSpg2WZGwjuXj8G3Kmqb/MGft0NFKtAnEr7B0ykxBcwERg+EdRLCJazT6eqZwIfB+5T1Q94zxoXtD9ib3V2LnAHcOowK8vpRMq+G0eA3wC3V4bX5UvQHlEjEpU3rktEdeuoqfU7bV+///vzLls8ky5JKe5sH3k+r+/bqIt0OHWiqmKJIFHVU4E/AEfYAaR15i9zg6MMvA74lap2eoOqLojM9kksImVV3VNVrwV+ZJ9pKhCBVBD1LsB/WRfVHkVc+XgCZmdV/QXwVUzsctFWlpPSPPa1DHSOtp9QkwEoIrEmZU161yVx88z3i273u/2+fPPuiKTt3YVdQke2wXYEPmkbTSqJABs7q6ofB34MbGWNrlTHBudWESmwSFV/pKrNVp0Vfgltbc5NmDdb1417nqlEBOL1VWKf8xZVfUeRVj6egDnCCpi316mAqRVcdNkXROQOt9KYMIJ2LC0icXnDy4NxY8sb4patf3vAV+/Ys6dDkvbu7iKTtALvVdVtrZH5Bu98m18CLqwggXpH5KnpfwCuU9VZRSZpz7BjVb3ETpjOnRFRf6fJxtNXse2rnYBrKlY+Mol9UrIC5q2YcME97X3Ws4DJUzkPYlyhPUCXi8qZUAW9OU/TUO59JZFSw97a0PKb13/5ttf2dHQkBfZJK+bo6Bs9N4CvCj6DifxwS7WpRAJOoZWBBcAv7DHnwrk7vCX0XOA64KMMbQBOF5Xmq+lFqvp9VW2cLPeU52Z6C3AVZnPTrS6nO5yrzZHzP9ifpxPu4njVqI+iONm4PpGGxr0amlpu2OfCu3amS9JN8dLFgjvNd8yQ3W1SBWcDn7MENpVDgEp2pp+P2WEWQIqyceiR897AYswpQLdsnG61Md1KoQy8H/iZJekJXfl4kTOHWAJqmWaT5XBq2UXhuHZQ4HMi0iEig9bRoFvq3ImRZlEUJ30bylFz616l5uinu3//8Wba2sQkaiqcihRgF7v8cOT8ZuASOxPWwq+po1yTgQZL0m8FLrOHCyZ9sHnkvBcm3nyet4SeyIHnlOtoV8rmx/cnYuXzduAqVW224kImoE8i+11zgG5MtElSY37RYfqgXJDLX127kMmbgTeJSKfd1JaxHDaaULUhIqWkd/1gPGPr42e8/OJX6ehI2rsLq3jm2kMB/ar6WuBK8jnyq54x+cH5MsrFMIN/Ioi7wd7nWar6ITtRTRpJe+S8JyY8ac8JWEKnFYQrnmqNt3BF3kprIvrOrXxOnuCVjyObb2NOrJZrMJlrRRvKMH1QKsjl4rv/DPwQOAk4XkSWuvEz1pOgmxt2FKkO7bbWZAkvQkOy4ZVy3LzVWfMuWr64p0N66NaYjsLkg3B+6ENV9RRMmsjvYjaf0iontdR7bzSC8fbz6oQpikkUM3OE9yi13xBzmxiXqurNNiViPNH5O7wl9O7Abz1yjmtEyukILpP1mPSua4GngXWYlKLutOYMTOrLrTDpSbextlMa5TvyHGduUn0H8A0ROUtVS6qa1OJ4eEX+m3fWYDXj2qlU0dcJJtXus8CfbJ88Z8fROuCVSXJruMRHjwEP+ymAnQ2Pd8YdIk9NSqXWWaUkTUgH+1AlESGyx7zzbPNIkwGVhoZLDvzmvUvvX7HoeTo7o0nI3THSchHMBsfPKwxlvCSYVCgugJeB+4BHgJX29VlrVOuG6fAWey/bYo6mHwDsi0m9uJPXh24pHdegPVJM7uNvq+rCiXa7WAWoqjoDk0Rozxq5NYbrrycwJxFvA5ZjEm097ZIYjeHet7X9tBvmiPkbMNnz/JzFeW84O3fHmaq6SkQutcotqUG/pKq6DfDvnrDLi5j9g0VlzMGjmzEHwx4DnnTJzoqKitSxaTUdaZLvAxHx9YNrn/+0SHqKRA1Hxk0tcdK3Hk3TRERyHPgSpQP9SWnm7J2SDWs/T1fXP1O80LvKckXROAd67JHl49Zfej1wh4g8nUPHb4tJCnWS9Tvu591rngPFqegycALwARH53kSpaD/hkar+AJOqsxYqzT/9+Ufgl8C1wF0i8soI9zVS+StX2ioVkRcxGRRXYKJNXPrZo6zi/GuG0pvmSdSOkL+iqstF5JaRTqtlWW3afjkXc3gmrxWN/zkPYw4dXQU8VLkK8DZCx1OKbCKQMkrRgfGqxVeh7dIHjiXS01Ha48aW1qRvXerINUd/R0pUSkX7j37wI4ct71SNujIYkBdt8XnM0euJ3DxyneK7Sa6zfrkbRKSvYnDHw0wCY+krqZyNVbUBOBH4CCbnNJ7rQ3ImsTWYZPYvjseXlsMS+l+BL+Xcp362P4Abgf8EfiUiG4dRQZsmwLE+d0XZpuH6bnugHTjTrorIkejcqu9RzGnXdeSUtdBtcln1vNJOMlmFgS8uHgP+A/hvf7Vii07oePuhXhFVtLrM71xcAljx0QNuXnH2ge+Pk/QN6cDGq6PG1kjixkhV86uhl6YaNTSV0oRFAPa/9QrfF3wdcIKI/LWI/EJE+lQ1tpfYLGtluwnprnQLl/u7sg2hEvt5JREZFJFfi8hbLUHf7vk20xxtJbVK6Uw7MOIJIudjgc+Tr8/ZP3J8E3CSiLxZRH4mIhut39b1V2U/jZkUbF+nI/RdLCLPi8i3LIGeAfyvN3lrDn2WYAo5/IedGPISWK4f2sm2P1Ppv42Ai4HDReQ7IrLB9oVLulSuph/qFSOrq/bumPZ23ObdvIvvPjVqaPyKxA07pX0bEvJxeSiCipSkjB770EcOvLW9XeOenuqWBZOooB1xPA5cICJXecsvp5pqWVrLGbZ6yXPOAb4INOasyAR4BlOGqGYq2lOeW2GS7Lw+BxKo7K+nMFnurvBO4EVMYL7lYXKJbwN0YhJYkRPxuVXCQhFZklNxCqegl1jXV5aYZz83xYdE5EpPLSfTuUbjyB3f05HQIQmdGnV2arTynEP/e6B3/bHpYP+yuHVWjJoae1knCE1Vo6YWiZPkIwA98+qqbI16g/0q4BgRucpLeemUU02fyeU99sg5FZGLMAc4nvD8kXmp6B2Bf6qxinb+0s9acs4jrtap0hhTA+4oEfmBp9Z1IvpruL7zknC9JCLnYKq9PO+p4DxE2CW2xFem+GiXA90eFDqKbH5zf6VwqohcaRWzU8vTutDxlhu1S9KuLknpXFx65IKjHl///AsnJv0bfhW3znI7xRkNlCjp24AKf7PfZXftXuAThqMN9kUi8m4RedpPeTkpS6IhJVayFVMWYgrJxjm5O8Q+9+nW953kHWfrhdQdivGr56GcnfoX4NMi8i4R+bNLkj7ZZb+c28sj6mswx+1X5jDBuvcfiNnkzdqe7r3zgSY2Lw9WzTiKMAnKfqaqDYGYx0PQm4h6YZnu7nh118K+9c+/+O6kb/31cfPMUnaftIhqWi61zppBIu2m1xcUnaD9zYwzRKTL+hRdlWgKMthLIvIE5jTgHz0FnIfNzAOOswMp9/6y7qGLMHG9SrbNTkdIfcDfi8gXi9Rfo/TdCuBNwD05kLSbWC+w4YpphonVkedxFf9fjaspAm4RkQutS6NMQBUEDWCTHK3uWtjXrxvfk/RtWBE3tcSgmQa9oJGWBxH4u/b27nhp18IiFzH168d9WEQut4aVFq2gpzv5JyJPYUK6Xs44oPyBpZgin3kTs8tQd7JVkFn95045rwdOFpGfusRXRS7A6vXd094Em2UV5Cbn1wHvzTixOnI/qCoeebX7ZZE/QQVarpagrcuDdo0f+9hRr4hGp6ZJeSNRCdAsDSvpwEaVqHTQqmP3bQOKWoHFDfgY+JKIfNMt84tqWF6tsweAs3JU0QK8TVVbhknLWi05u4MPjZiNsqzK2a10EuAfReRGt5FcD4PT67tnMD7p9RknWKeiz1XVlmpUtJdDYnvMARyq7CMnch4Eltj7mNLV5SeGoAF6JJnfubj04DkH3s9guTNuaonQLINeRFXTuKm1lMbpfID2tkJminPkfJ2IfMpuyBXeX+YtmX8C/CyH5bIj+T2AwzOqqM0+17blycChZPM9+9ELZ4nItc6/WU8D1Ou7+3OYYF18/t7A26vc5HXjci7mdGuWyRPMGYFBr+8DMhM0sLRrQdLZqdH2Bx/8tfLG9fdHTa1RVlcHqpCmfwUwr71w0Rzu2Z4DznDHj+vIqJxaugCTRyLK6OpwroM3ZlBRI93jeeTjd46B/xSR79a5f9Mp6R/lMME6Oz7dc1dVQ9DbYPYH0oz9tDzQcA0IGkRXtiFLF0pZ06Qz6wAVEUnL/aBy8F6XPDKrSySleIVLI+ATIvIkQ2Fg9aLEUnvPTwDfYijDWtUfaV9PqBj41bo3YjvZHYfJxZ3JR2pJ7F7gPJeHol4Vmr1vf/J6yXNXjBfuEMwJqjovQ3L/hpzcLY8HGq4JQUNPR5TQ2RnNXbvul0n/hvuksSXS6gd9pOUBjUqlXZt0/T45qrJcFIxtq2XAFVsqU1NguPjXyzDHfksZBxjAPqo6252Qy+EeP0C2E5DueQYwETYbPZKrW7jSXlYcfCODq8NNzI3AuzPwwHYZ3RtuBdeXkegDQY/WzvNZEC3tWlgW5PIobkCy7BWqpFJqBJuTYP6iJUXZKHTE0+lUcz0OeE9Fr8EcrKlmievbjmI2ivbMYk9e3PMOmGgTp/SyTKbftQU5S5Md45yzq8NNsM9TvZvK9dMpVj1X0z4NgT4LT9CwlCUpQGOsP0/61r8kcSlGq2NpFVTiBpCozfxkQZHU82JgcTU5XQsoowWT0D2rDbhNvP1yssO3A7Op/uCD2/R6FlOQc0pFBrjQOBvVcWWGlYZzL7QB+1bp5ngmo+BxtrNVwVbLU4ug6epK6dTono8ctoY0uUkaW9Asy/+0jKJ7G/JfVKT80JfZAVLvhuTyTNwCrCZbVICbiPfNOMjc97+HfDYuvykizzJFIwPsxPMDTPWUqEqbTjGnAN9cJRdknfg22Y4Wb69pChE0MB/jikiJrxeJoMpBIRClSRlR3X1+p5ZMAv9J7Tw3yz8G/NrF6da7CrMbcuvtqgCy+/9em4FsIuu/3g2TzL7avA5OPT8PfNNF2Uy1AetWbzbsbjnZN3sXjNMG3N+t89pcq+wvgPkhvK7GBL2UBcYvq3pb0reuLEipqoMrqkKaAOz09GseasmFOrITNEC3zeccTzFjWprT6mLHDKpKNs3zZrlbrXvDffdPROQ56izKZpxw/vlrM0ywro0PU9UZVRw2eolXVwCq5hlOUtXtzFyt060i+8QQNF2GtF5JNz6safqMlEpVm4yaUOqtmtetNbvEixbJJA+EFPj5FFNk7jnuzbBM9gf5HJd0KMNy9cSMzxPbZ/nBNFgyu/5bQvVlzlyf78bQJq+M47vXYGoxZpkgEsyJxPNdlEqg5FoQNCiq8ufzj9mIyEqJG6r3Q6cKkTSk0QwbxrNoMtWzYEru3ONiUafYAH8Uc/Amq+tmNqa47XjdG2KVWzMmYf1YSWKkvlqOSSzEFIrcGG1ldz+mcnS1/efaaMynQd2Gooj0Y4oLZFnnuv2P81X1jSIyaFMnBORM0MxftMSUE0/1YSk1gERVGIwIKCJxRKwzAGjrkUkeBMu8xDVTQkE7pWtLCT2Vg4tjNmbDqdr374U5flytTbp+uWYiKr0UpP8iG+N9X4W9VtNubVXyxp0ZCdqlf20ErlLVEyxJRxVlxgJBZ8X6nbcSAI15AlXQtEpiVSWKkaTcOtnjwL7elEHZFXqc29esKgirnhsy2N8RZDu+7N772xyepV7gCOyBHGxg3wpFPVbcmgOPOPU/G7MRf7ordOGIejpHeeRG0Htuc5ibwddoeRCR6pPcSByTKLMB5q+YMxmd41RYmaFcAVNtw8m1659zILWs9fMOyXAPzr3xKCYz2lTsq9FWeA9lEBDuPa/zSliN5XMckf8BU/Ysa14X9/4ZwOWq+jtVPd6vSOTX9AwEnWXUl+UFTcum2mA2ipxMFeS++wngT1NUlbm+f2ESn88N9AMykIwjqlummitqjHgiB4LegXEc3fZcLC8B11epvoe7F7fP8ybgJlW9TlXbVXVrr2ivWmXtivpO6ciP3Aqq9qywAzzSlzRJQKSeZ7pNBC0ivS5Wd4rawCuT4cLxFFsrpuZgVsFwrx2ssapOBwXtDqw8TfaiBjOBnTEx5GONVnL2cgVwKvn4/Z1P2j3PW+y1RlWvB34N/MEeQkor2iL27l2pr0yTtSfoKYqHJ4O8JngSWjtJz+gG066Y3MLVwhHDrXYSHZgmtulqT7p45NmMP0Wr64MGTLjbmO3Ai5v+PXA3xk2VV9X12HtGsZPHB+31kqreidmgXAY8JCJPDBe1YyfsqJ5JOxD06OT12DR4Vpnk790jgx06QtoADKjqzmT3h9ZTv6XA1vb5Z1f5OS7+eJsq7CGybqUvYvJU571yib1+djlxtgH+yl4Ar6jqHzH7D8utqFoJPGUn7LSeSTsQ9OhYPYUVdFEmhl3ta7kKe3Sf0YzZsJquR4ZnZrBTrfiMsTe+jbQQkatU9UaM7ziru2Wkfi5595t6P59l1fshwD850rZukQcwUS4r7OvTIrJuBNIWb0WRFoW0A0GPPnNP5gbadMHOObRxbAdqQPWYk/H9/2JdHS1kr4azJbKOKyYY/4qsLczChA+2e+6SJ1V1FbAKuAsTAbNaRF4Yxj3ivmdSlXYg6JGXzQOYfAOBoGvXzjCUx0Ny+rzpvBqZcC6wia5iEXlEVc8BvmNXQ/EErTxlmO8ZjrRjjDttD0yVdIenVHW1Vdh3WtJeISJrqSiRZsumTajCDgQ9MvoZqqIcUDuCnpMTyQQ31CRNcNbVEdvaj23AOZi8KJN1bHtLpO0QAbvY6xjgDPvzZ1V1hSXsO4A7ReRPfsFh76RjTck6EPTI2MhQCFpQ0LXDNqEJpgRSS1rnYbISfmiClXQ1pA3GH63eOC9hoormAgvtz3tVdTnm5ORvgLtF5OUKstZahOIGgh4Zbrc3oLaKLfiOp4CbxMa0u3Jwp6nqIHAmQ5t6UYHH+XB2mXrukVZMceQTgE8Aq1V1MXANsNhuPDq/dZSnqg4ENDJxDFgVHVBbzA4uikLg2cwMb0nJRnacBXySoQIM5TqaqNwGYYmhkLzEXimwO/B+TD7ular6DVU9WkTUP5oeCLrGLg5bdYRQ8aG2S+PQBJMKl3Pmzjz6w44VV7Xn3zEnAR/1Vuv1mAbWEXbMUIpUR9a7YiJYblHVpar6HlVtcgd5shJ1IOgaLfkCAuoAjizvBh60x+8zT5hOSdoiDr8BjgQuZcgnrdR3Md/II2v1VgcnAD8FblfVv/faoeokT4GgAwKmL1xI6YWuYniuCmcoedVaEfkYcDzwKzaPZU6o7014qVgdJMBBwH+r6mJVPc5P8hQIOiAgYCwYsMTSIyJXW79x7qrWX+qLyG0icjKmkvi1bB7lkU4BsnZuEHfEfAGwRFUvVNVWFzMeCDogIGA0t0YZU8XkVuB0q+xqRozeUj+yE8GNIvIOz/XxpOc2EDbfkKtXF0jE0LH3j1ui3t+5fsb6QSHMLqAIS8SsqIxlDRi+jWPPtfBj4MMi8rIlzZq3m/Nve3HD9wD3qOpngZOAd2Fij+cMM6k4F4xQP/tDvr/9CGCpqv6jiFxn/fNbjGwJBB0w2cgj/CqsBMcGxSSVukRErrZkOeG5zp0rxSUpsoc+uoFuVd0e46t+C3Aspl5iPMyEnHpkXWTSdj7qBNgW+B9VfZ+I/Ni6fZJA0AFFNVzFJImvVvm6AxDLgCXWnkPY3uaEHAF9wOPAvSLygEeOOpmFKDxF7WKlVUSexxwAucZW+N4PONqS9kGY4g6Nw0zKPmnjqe0iqWlnr1eq6kbr+x+VpANBB0w2suQ7cQa/REQ+E5pyDIxtybAWG4IZiHpT2J1H1ojIIHC/vb6tqo2YvBmHAPtbwm6zP5s5Amm7/Bvi/X6yiDvyJpErVfVJEblztFVMIOiAycYLOXzGbnbjpUT9nFibDDXtFHNhY5CHIetN7gsRGbArgceBq72/eS2wlyXtQzFpRvdg5DqLiUfaE+0icZuHrcCPVfVwYL0rARcIOqBILg4yujjcZ2xnY27TKVw7cvoZiD2VWKH+/cv19//a6wbvb3fBHMk+0CrtfazansPwBQXKE0jY7vTm3sCXROTDI0XSBIIOmGyCfioHgt7R+fJGUiIBU4+wPTKu9DenIvKUta1bvL+bDewGHGxV9uH2dedhuNCp7Fpl44vtd5ypqj8WkVuG80cHgg6YbKzxln7VEvQumBSXa0NzTkviTrdA2gIkNgn/WoxP2/1dM2Yjcn9M1MhhwAFAk0/4bB7ml6dAiYBFmBqLQUEHFAZaoaBdzGg1A2AHTGWWtQxFhwQE0q4kbee6cGIgEZE+4B57XWn/bm9MAv+3YU4Dzq1Q1nnVXHSRHSfaI+HLKlV0iB8NmCy4AbQaEwZWrQpxu+IHVyiTgIBXuUhEJBWRsr3UHkOPVLXkjmGLyKMicoWIvMeq61MxOUTKHjmnOY+D04f7ZSDogMnG02TzQzsDPzAQdEBG0t50gMZmoItF5EUR+YnNIXIk8D2rol00Rh4qGuCtqrqd20cJBB0w6QPDbugNYvIFV6tKnDEf7S1BAwIyuUdsBjqX6KlkY5XvEZHTgDdhqoLHOdibyz0yB+MD34yXA0EHTCacenggw2c4Gz5EVedWm9YxIGAUhV22megiq6qXAscBP8yJpB1ODC6OgCLBuTTuzmCPzg+9NXC0fxItIKAWytqSdJ+IvM+6PPIi6UMqV5LBkAOKQND3AIMZ7NEZ9CkjxcoGBORI1JtSpwIfBu7NSNLOTbeHqm7r3H+BoAOKQtCPM+SHrsbInavkJFWdVbnREhBQCzVtXqQfOI/qQ0R9Ht6RoVSrgaADJt3IXXHRAeD2LB9liX1n4OQK0g4IqKmSxmRSvI1skR2ptdm5gaADiogbcvqc06x6Djk5AiYCrtjBtRWrwmqx3XDSOiBgsuCI9GZgHUMnCscL976FwJHV1H8LCKgCeWx0+5+zbSDogCItE9XGmD6JqfahGdSve98nQ8sGTDBBP485aZi1vqMGgg4o3DLRuiWuJttJQJcQ/RRVfaMLiQrNGzAB6MVEImXWLIGgA4qG1Prxfgm8TPVuDj9R0pdtBQ5CREfABKCBfDamBwNBBxQK7pSWiDxjSRqq3w138aiHAhfY/ApBRQfUzHzt60xL0lk/59lA0AFFNvTvekRbLVy4U6eqHmurrQSSDqiJ3doV2h4MhXtKBvt3JeA0EHRAkVS0O1xyEyamNIuKdnl/G4ArVHV7L2Y1ICBPqHXPHecT63g/w9prL/BcUNABRYWrbnwJ2dOGOhX9OqBbVZudKyU0c0AuzGzj7VV1Bia5f7Wc6kh9jUfQQUEHFA6pNfqfA6vInnPX+aMXAj9U1VIg6YAcEVv1/FZMZfE0I0E/LiK9dj8mEHRAsWCNMrJliD5LPsn3XQXlduAaVZ1hSTqUewvIqp5VVZusreaRoMsddgkJ+wMKS9LOV3wNsIx8UjmWLEmfDFyvqru7jcMQghdQJTmXbITQ5zFFZqtVzz4hL678Re4ErZEEgw/IgaclAT5uiTUPlCzRHwfcoqrvsFUz1FbMCHYbMFZyjkVkUFU/CPwfshWSddXCnwPusD+rXT7oUiq9aKp2Ugh5eeuADAuqomMRuRX4tuemyMPd4bLeXaOq31LVOV4B0aCoA0YkZruHoXb1dTZweUbljLVHBW4QkZd8/3POBL3IDK4mfUmVNJTurBsMFvS+3GbevwGPWQWcR4Y6d0oxBc4E7lLVs61vOvGIOpB1gCsg6xPztqp6OfB1y59C9vQEgimf9SrBlB9BL1qk5oFkEHQDIkFAF9z27OszHnEVSUWrdXWsBf7ZEmpe1VJcWawEeI0dbMtV9RxV3cEVDK0g60DY00cpu/6OXMVvVW1Q1fcCdwKne2Ihi024Qy33Ar8fLk1ufjvZ9jbL25fWyl8G/hTFDfunaaIQtHTBCfoJq6IbyFYVolaujpKILFbVzwBf8O41D8Qe8e8LfA34lKr+EugBbhORl4ZTVeNUTkGpFBPi9Y8ydOgk8fp6N+AdwAeBgzxijXO8h4vcprXde6kBQSPa3t0d93TsPzDvkrsfllJDmw72pxIiRYpO0GssSe9dNIJ2g8GS9BdV9WBMuFw5R9t19umIeg7wAXs9qaq3Yk433gU8ISJP28M0AVNTQW8L7AccA7wJs6k8w7ORvFabroLKvZiDVMMWmcg1FvTZFXPEUDW/V+VdqAohqKOY0mGo3FS/qi4D9iL7hket7tOF3n3QuiSOypmkfaJ2Ciqy3/UaoMP+7jlVfRZTQ3E1JgewywM8EtYCfdNkJZna9ij6ikGBbSzxbo/ZNH6dHQO7AjuN4IqIcvx+10bni8jAcOo5d4JeypIUoKzy61J/b28UxS2qiRJYuui4xirGQq52XJVjEVmvqn+LKY+1fw1I2i05SxWq2hH4HHu1BZOZ8qvL1Ov3vPdnEmtj/ykivx+JnMl9QHZ1pXRq9PC5hzyhaforaZ4hqqE2XJEVj11a/Q5TVbuwtfy8lKR/Ad4CPMDQAZRawQ3OmKFc06kdYGXvGhzlSux7pstVTyTs96PfT1LR77Ug5weBC+zKULe0rMsN7W09ApAmyVd1sC8VCS7oIrs5MEerNzKUoCgt8P2mVm08hUlO40h6okIFxSPtknc1jHLF9j3T5dI6uaSiH/1+qhXc5uILwLtFZL2z6wkj6J6OjqSzU6OHzj/8tnSw/0dx61axpmkS6LDQKjrC5GG+n6ETd0UlaXeI5c+YTZwbLREmhGiJQnRRnVwTDUfOvUC7iDxs7Tjd0hIud3SxCDo7I0rlTyQbN6yJG5tjVIOro7gqWkSkH/iwR85a4HtOrLvjOeCvGTptKEWeXAKmLRw5bwTeacNGSyP5nWtO0HR1pbCIlWe/4ek0HXyvImXiGAgkXXBVugz4BPkkKJoId0ckIv0iciZwBkP1DMtBTQcUAGptMQaeBN4kIjfYsTamvZPa+Vu6JKW7O151zmE3Jn0bzoxKTRESR6gGhVNskr4IuNBzdRTdJy32vi/HxKzeaO9dgtsjYJJVs4sIWgocLyK3jhaxMbEEDdDRkbR3a7zq/CO+l/T3vl/ihoGosTlW1TJoGDjFg9uE+1fgiwxtnJSLesM2R4I7zPIgcCLwUeBpz+0RFHXAhI0hz6XRj0lHeqKIrB4vOdeeoIGeDkno1njlOYdekSS9b9YkebQ0Y3YJiUSNmg5ujwKRnUfSn8YcDHnJqgAtsiK1R2Uj+++vA4cDl9lB4ivqYG8BtVLM7oBTDCwB5ovIZ2xq0mi85DwhBG2UtCHpVR89/A/pwLqjyv3rL5Yo3liasXUscUOEyU9aHiJsTSXKpLBdvOp0iemshSKNReT7mCOvPfbXTpGmvDp2tBAuD++E5FMi8hHgSOC/gHXeiiANqjogJ7Vc9sZGjEkJ8HcislBEbndJtqpNDzBxQcodktDdHa88/5gXV5594Lk6OHBYMtD7NVVdHTW2RKXWWaVS61Zx1NBUklJTlGqmE2IN9tkaGX8cZ8m+tkxzNe1I+iER6cD4d6/AxHC6dvLbqmhJlpxv+n4R+RBwKPA5TOrSyFPVbpClgbADxij83OTu7AhMNZRTgaNF5P9Z+4tcVsRqv3Bi67J1dCSoCj090YqOw1YB5x30tXs+V444kvV9C4mjfVTTXSPYPiJaCzC37TkdZwOCSaH5OCYHwnifMbXvWR1cHpvKTyEit2AqkexkVfXxmARLr7HKYbBg966YREuR+V95DOhU1a9g4qffhfFX71AhVPxl6GTGzQZMPhlXprd1K0hnLw8DvwS6ReSOTW8c8jVnnvAnz/A6NWpvQ3o6KvwynZ3R7ixoXM2CAbqqWxaoasxQ+sxq2yUVkYFgp5u1KZV+NFt8NbZx1EW+f0fUfirJbYAFlrAXYJLlNG1hsNajyg4TzJZFXeWEPFybrQUesmr5BuBWZ/c2ZUJkeUOnTsdZRT1/xRxZyoK0WlIOmDCic4YoQJKnMU7w/Q832czDFAA9CpOMaTdg9xFIO2BqYy3wJ7sSvxeTqP8BEfnTMAIlrVUK2gLOrK5qRbaBn0f1i3ojn0kkvLpsq9HI2v6+1bpAdgL2wKSl3AnY2l71UJAiBWZjUmsG8eOtkDGpUQcw+yovYUIzn8LkR38OeFZEBoexmU1l02pt92HpExBQ4QbZpBRCYv5gE9a1N1k2EQg6IGB0he37I6VCmdaNWgyrwVEnZL9f/X0Gnex2CwQdEDB9JpsAn/zqYNL6/+DIClV/IPvqAAAAAElFTkSuQmCC" alt="Ines"><div><h1 id="projTitle"></h1><p class="elem" id="elemLine"></p><p class="sub">Cabeceo de pilas de fábrica · análisis cinemático no lineal de una pila exenta con despegue en una junta · Circolare 2019 n. 7, C8.7.1.2.1 · UNE-EN 1998-1:2018 + AN · unidades SI: MN, m, s</p></div></div>
 </header>
 <div class="wrap"><aside id="form" aria-label="Datos"></aside><main id="main"></main></div>
 <footer>Ines · Prototipo de cálculo. Todos los resultados, textos e interpretaciones se generan con reglas programadas, sin intervención de IA. Los resultados dependen de las hipótesis indicadas en cada paso; revísalas antes de usarlos.</footer>
@@ -126,23 +131,40 @@ function bisect(f, a, b, tol = 1e-10, it = 200) {
 
 function compute(inp, grid) {
   const R = { inp };
-  const H = inp.H, m = inp.talud, gam = inp.gamma;
+  const H = inp.H, gam = inp.gamma;
+  const mT = inp.taludT, mL = inp.taludL;            // taludes por cara: transversal y longitudinal
+  const mB = inp.dir === 'T' ? mT : mL, mP = inp.dir === 'T' ? mL : mT;   // talud que hace variar B (giro) y L (perpendicular)
   const b0 = inp.dir === 'T' ? inp.cabT : inp.cabL;   // canto en la dirección del giro (cabeza)
   const l0 = inp.dir === 'T' ? inp.cabL : inp.cabT;   // longitud de junta perpendicular (cabeza)
-  const B = z => b0 + 2 * m * (H - z);
-  const L = z => l0 + 2 * m * (H - z);
+  const B = z => b0 + 2 * mB * (H - z);
+  const L = z => l0 + 2 * mP * (H - z);
   const w = z => gam * B(z) * L(z) / 1000;            // MN/m
   const P = inp.qDeck * inp.lDeck / 1000;             // MN
   const Ph = inp.deckFixed ? P : 0;                   // parte del tablero que empuja en horizontal
-  R.geo = { b0, l0, B, L, w, P, Ph, Bbase: B(0), Lbase: L(0) };
+  const hd = inp.deckFixed ? (inp.hDeck || 0) : 0;    // c.d.g. del tablero sobre la cabeza (solo si está fijo y gira con la pila)
+  // Peligrosidad (AN.5) y factor de la componente vertical (criterio propio, con la a_g del SLV)
+  let agR = inp.agR, K = inp.K, near = [];
+  if (inp.siteMode === 'coords' && grid) {
+    const lat = inp.lat, lon = inp.lon, cl = Math.cos(lat * Math.PI / 180);
+    const dist = p => Math.hypot((p[0] - lon) * 111.32 * cl, (p[1] - lat) * 110.57);
+    near = grid.map(p => ({ p, d: dist(p) })).sort((a, b) => a.d - b.d).slice(0, 4);
+    if (near[0].d < 1e-6) { agR = near[0].p[3]; K = near[0].p[2]; }
+    else { const ws = near.map(q => 1 / q.d), sw = ws.reduce((a, b) => a + b, 0);
+      agR = near.reduce((a, q, i) => a + ws[i] * q.p[3], 0) / sw; K = near.reduce((a, q, i) => a + ws[i] * q.p[2], 0) / sw; }
+  }
+  const gI = { I: 0.8, II: 1.0, III: 1.3, IV: 1.4 }[inp.impClass];
+  const agSLV = gI * agR;
+  const avR = inp.avRatio == null ? 0 : inp.avRatio, cV = inp.cV == null ? 0 : inp.cV;
+  const fv = Math.max(0.05, 1 - cV * avR * agSLV);     // fracción del peso que estabiliza
+  R.vert = { avR, cV, agSLV, fv };
+  R.geo = { b0, l0, B, L, w, P, Ph, hd, hDeck: inp.hDeck || 0, Bbase: B(0), Lbase: L(0), mB, mP, mT, mL, TbaseT: inp.cabT + 2 * mT * H, TbaseL: inp.cabL + 2 * mL * H };
 
   // ---- Paso 1: pesos y c.d.g.
-  const a0 = b0, bb = l0;
-  const V = H * (a0 * bb + m * H * (a0 + bb) + (4 / 3) * m * m * H * H);
+  const V = H * (b0 * l0 + H * (b0 * mP + l0 * mB) + (4 / 3) * mB * mP * H * H);
   const Wp = simpson(w, 0, H, 400);
   const zG = simpson(z => w(z) * z, 0, H, 400) / Wp;
   const Wt = Wp + P;
-  const zGt = (Wp * zG + P * H) / Wt;
+  const zGt = (Wp * zG + P * (H + (inp.hDeck || 0))) / Wt;
   R.p1 = { V, Wp, zG, P, Wt, zGt, M: Wt / G * 1000 };
 
   // ---- Paso 2: λ0(z) con rótula retrasada
@@ -159,12 +181,13 @@ function compute(inp, grid) {
     const Wsup = simpson(w, z, H, 200);
     const Sh = simpson(y => w(y) * (y - z), z, H, 200);
     const hG = Wsup > 0 ? Sh / Wsup : 0;
-    const N = Wsup + P;
+    const N = (Wsup + P) * fv;                       // axil estabilizante (peso reducido por la vertical)
     const sb = setback(N, L(z));
     const arm = B(z) / 2 - sb.u;
-    const lam0 = N * arm / (Sh + Ph * (H - z));
-    const lam0inf = N * (B(z) / 2) / (Sh + Ph * (H - z));
-    return { z, Wsup, hG, N, c: sb.c, u: sb.u, inShell: sb.inShell, arm, lam0, lam0inf };
+    const lam0 = N * arm / (Sh + Ph * (H - z + hd));
+    const lam0inf = N * (B(z) / 2) / (Sh + Ph * (H - z + hd));
+    const slide = lam0 * (Wsup + Ph) / N;              // F_H/F_V en la activación
+    return { z, Wsup, hG, N, c: sb.c, u: sb.u, inShell: sb.inShell, arm, lam0, lam0inf, slide };
   }
   const zs = []; for (let z = 0; z <= H * 0.975 + 1e-9; z += H / 80) zs.push(z);
   const curve = zs.map(joint);
@@ -172,6 +195,9 @@ function compute(inp, grid) {
   const eq = curve.filter(c => c.lam0 <= 1.05 * curve[imin].lam0);
   const zc = inp.zJoint === '' || inp.zJoint == null || isNaN(+inp.zJoint) ? curve[imin].z : +inp.zJoint;
   const J = joint(zc);
+  const mu = inp.mu > 0 ? inp.mu : Infinity;
+  const slid = curve.filter(c => c.slide > mu);
+  R.slide = { mu, ratio: J.slide, ok: J.slide <= mu, zFrom: slid.length ? Math.min(...slid.map(c => c.z)) : null };
   R.p2 = { curve, min: curve[imin], zEqMax: Math.max(...eq.map(c => c.z)), zEqMin: Math.min(...eq.map(c => c.z)), zc, J,
     table: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9].map(f => joint(f * H)) };
 
@@ -179,24 +205,24 @@ function compute(inp, grid) {
   const Hs = H - zc;                    // altura del cuerpo que gira
   const xp = J.arm;                     // distancia horizontal eje–pivote
   const Wsup = J.Wsup, hG = J.hG;
-  const bodies = [ { W: Wsup, Wh: Wsup, x0: -xp, y0: hG, name: 'pila' }, { W: P, Wh: Ph, x0: -xp, y0: Hs, name: 'tablero' } ];
+  const bodies = [ { W: Wsup, Wh: Wsup, x0: -xp, y0: hG, name: 'pila' }, { W: P, Wh: Ph, x0: -xp, y0: Hs + hd, name: 'tablero' } ];
   function state(th) {
     let num = 0, den = 0;
     for (const b of bodies) {
       const x = b.x0 * Math.cos(th) + b.y0 * Math.sin(th);
       const y = -b.x0 * Math.sin(th) + b.y0 * Math.cos(th);
-      num += b.W * (-x); den += b.Wh * y;
+      num += b.W * fv * (-x); den += b.Wh * y;
     }
     const xc = -xp * Math.cos(th) + Hs * Math.sin(th);
     return { lam: num / den, dC: xc + xp };
   }
-  const th0 = Math.atan((Wsup + P) * xp / (Wsup * hG + P * Hs));
+  const th0 = Math.atan((Wsup + P) * xp / (Wsup * hG + P * (Hs + hd)));
   const dC0 = state(th0).dC;
   const lam0 = state(0).lam;
   const pts3 = []; for (let i = 0; i <= 60; i++) { const th = th0 * i / 60; const s = state(th); pts3.push({ th, lam: s.lam, dC: s.dC }); }
-  const zGt3 = (Wsup * hG + P * Hs) / (Wsup + P);
+  const zGt3 = (Wsup * hG + P * (Hs + hd)) / (Wsup + P);
   R.p3 = { Hs, xp, th0, dC0, lam0, pts: pts3, state, bodies, zGt3,
-    ownAngles: [ { name: 'pila', z: hG, ang: Math.atan(xp / hG) }, { name: 'tablero', z: Hs, ang: Math.atan(xp / Hs) }, { name: 'conjunto', z: zGt3, ang: Math.atan(xp / zGt3) } ] };
+    ownAngles: [ { name: 'pila', z: hG, ang: Math.atan(xp / hG) }, { name: 'tablero', z: Hs + hd, ang: Math.atan(xp / (Hs + hd)) }, { name: 'conjunto', z: zGt3, ang: Math.atan(xp / zGt3) } ] };
 
   // ---- Paso 4: oscilador equivalente (tabla de rebanadas)
   const n = inp.nSlices, dz = Hs / n, rows = [];
@@ -205,11 +231,12 @@ function compute(inp, grid) {
     const Wi = w(zm) * dz, Phi = (zm - zc) / Hs;
     rows.push({ i: i + 1, za, zb, zm, B: B(zm), L: L(zm), W: Wi, Phi, WPhi: Wi * Phi, WPhi2: Wi * Phi * Phi });
   }
-  if (Ph > 0) rows.push({ i: 'tablero', za: H, zb: H, zm: H, B: null, L: null, W: Ph, Phi: 1, WPhi: Ph, WPhi2: Ph });
+  const PhiD = (Hs + hd) / Hs;
+  if (Ph > 0) rows.push({ i: 'tablero', za: H, zb: H, zm: H + hd, B: null, L: null, W: Ph, Phi: PhiD, WPhi: Ph * PhiD, WPhi2: Ph * PhiD * PhiD });
   const sW = rows.reduce((a, r) => a + r.W, 0), s1 = rows.reduce((a, r) => a + r.WPhi, 0), s2 = rows.reduce((a, r) => a + r.WPhi2, 0);
   const mstar = s1 / G * 1000, Gam = s1 / s2, Mt = sW / G * 1000, estar = Gam * mstar / Mt;
   // integral exacta
-  const e1 = simpson(y => w(y) * (y - zc) / Hs, zc, H, 400) + Ph, e2 = simpson(y => w(y) * ((y - zc) / Hs) ** 2, zc, H, 400) + Ph, eW = Wsup + Ph;
+  const e1 = simpson(y => w(y) * (y - zc) / Hs, zc, H, 400) + Ph * PhiD, e2 = simpson(y => w(y) * ((y - zc) / Hs) ** 2, zc, H, 400) + Ph * PhiD * PhiD, eW = Wsup + Ph;
   const ex = { mstar: e1 / G * 1000, Gam: e1 / e2, estar: e1 * e1 / (eW * e2) };
   const FC = inp.FC;
   const aOf = lam => lam * G / (estar * FC);
@@ -219,36 +246,44 @@ function compute(inp, grid) {
   const capAt = th => { const s = state(th); return { a: aOf(s.lam), d: s.dC / Gam, dC: s.dC, lam: s.lam, th }; };
   const thAtD = d => bisect(t => state(t).dC / Gam - d, 0, th0);
 
-  // ---- Paso 4b: rama elástica (voladizo completo desde la base)
+  // ---- Paso 4b: rama elástica. Voladizo de sección variable empotrado en z0 (Rayleigh, flexión + cortante)
   const E = inp.E, Gs = inp.Gratio * E, kap = 5 / 6, np_ = 800;
-  const zz = [], Vv = [], Mm = [];
-  for (let i = 0; i <= np_; i++) zz.push(H * i / np_);
-  const hz = H / np_;
-  // cortante y momento acumulados desde la cabeza
-  const Vc = new Array(np_ + 1).fill(0), Mc = new Array(np_ + 1).fill(0);
-  Vc[np_] = Ph; Mc[np_] = 0;
-  for (let i = np_ - 1; i >= 0; i--) { Vc[i] = Vc[i + 1] + 0.5 * (w(zz[i]) + w(zz[i + 1])) * hz; Mc[i] = Mc[i + 1] + 0.5 * (Vc[i] + Vc[i + 1]) * hz; }
-  const Ib = z => L(z) * B(z) ** 3 / 12, Ab = z => L(z) * B(z);
-  const th_ = new Array(np_ + 1).fill(0), ub = new Array(np_ + 1).fill(0), us = new Array(np_ + 1).fill(0);
-  for (let i = 1; i <= np_; i++) {
-    const k1 = Mc[i - 1] / (E * Ib(zz[i - 1])), k2 = Mc[i] / (E * Ib(zz[i]));
-    th_[i] = th_[i - 1] + 0.5 * (k1 + k2) * hz;
-    ub[i] = ub[i - 1] + 0.5 * (th_[i - 1] + th_[i]) * hz;
-    us[i] = us[i - 1] + 0.5 * (Vc[i - 1] / (kap * Gs * Ab(zz[i - 1])) + Vc[i] / (kap * Gs * Ab(zz[i]))) * hz;
+  function cantilever(z0) {
+    const Hc = H - z0, hz = Hc / np_, zz = [];
+    for (let i = 0; i <= np_; i++) zz.push(z0 + Hc * i / np_);
+    const Vc = new Array(np_ + 1).fill(0), Mc = new Array(np_ + 1).fill(0);
+    Vc[np_] = Ph; Mc[np_] = Ph * hd;
+    for (let i = np_ - 1; i >= 0; i--) { Vc[i] = Vc[i + 1] + 0.5 * (w(zz[i]) + w(zz[i + 1])) * hz; Mc[i] = Mc[i + 1] + 0.5 * (Vc[i] + Vc[i + 1]) * hz; }
+    const Ib = z => L(z) * B(z) ** 3 / 12, Ab = z => L(z) * B(z);
+    const th_ = new Array(np_ + 1).fill(0), ub = new Array(np_ + 1).fill(0), us = new Array(np_ + 1).fill(0);
+    for (let i = 1; i <= np_; i++) {
+      const k1 = Mc[i - 1] / (E * Ib(zz[i - 1])), k2 = Mc[i] / (E * Ib(zz[i]));
+      th_[i] = th_[i - 1] + 0.5 * (k1 + k2) * hz;
+      ub[i] = ub[i - 1] + 0.5 * (th_[i - 1] + th_[i]) * hz;
+      us[i] = us[i - 1] + 0.5 * (Vc[i - 1] / (kap * Gs * Ab(zz[i - 1])) + Vc[i] / (kap * Gs * Ab(zz[i]))) * hz;
+    }
+    const ut = ub.map((v, i) => v + us[i]);
+    const uD = u => u[np_] + th_[np_] * hd;            // desplazamiento del c.d.g. del tablero (sólido rígido sobre la cabeza)
+    const ray = u => { let num = 0, den = 0;
+      for (let i = 0; i < np_; i++) { const wm = 0.5 * (w(zz[i]) + w(zz[i + 1])) * hz, um = 0.5 * (u[i] + u[i + 1]); num += wm * um * um; den += wm * um; }
+      num += Ph * uD(u) ** 2; den += Ph * uD(u);
+      return 2 * Math.PI * Math.sqrt(num / (G * den)); };
+    // factor de participación del primer modo con la forma normalizada a 1 en cabeza: γ = ΣWψ / ΣWψ²
+    let s1 = 0, s2 = 0;
+    for (let i = 0; i < np_; i++) { const wm = 0.5 * (w(zz[i]) + w(zz[i + 1])) * hz, ps = 0.5 * (ut[i] + ut[i + 1]) / ut[np_]; s1 += wm * ps; s2 += wm * ps * ps; }
+    const psD = uD(ut) / ut[np_]; s1 += Ph * psD; s2 += Ph * psD * psD;
+    return { T: ray(ut), Tb: ray(ub), uTop: ut[np_], uTopB: ub[np_], gam1: s1 / s2, shape: zz.map((z, i) => ({ z, u: ut[i] / ut[np_] })) };
   }
-  const ut = ub.map((v, i) => v + us[i]);
-  function rayleigh(u) {
-    let num = 0, den = 0;
-    for (let i = 0; i < np_; i++) { const wm = 0.5 * (w(zz[i]) + w(zz[i + 1])) * hz, um = 0.5 * (u[i] + u[i + 1]); num += wm * um * um; den += wm * um; }
-    num += Ph * u[np_] ** 2; den += Ph * u[np_];
-    return 2 * Math.PI * Math.sqrt(num / (G * den));
-  }
-  const T0 = rayleigh(ut), T0b = rayleigh(ub);
-  const T0circ = 6.2 * (H / B(0)) * H * Math.sqrt(gam / 1000 / (E * G));
+  const CM = cantilever(zc);                 // bloque sobre la junta: T0 del mecanismo
+  const CP = zc > 1e-6 ? cantilever(0) : CM; // pila completa: estructura principal (T1)
+  const T0 = CM.T, T0b = CM.Tb;
+  const T0circ = 6.2 * (Hs / B(zc)) * Hs * Math.sqrt(gam / 1000 / (E * G));
   const k0 = 4 * Math.PI ** 2 / T0 ** 2;
   const thy = bisect(t => k0 * capAt(t).d - capAt(t).a, 0, th0);
   const Y = capAt(thy);
-  R.p4b = { T0, T0b, T0circ, k0, dy: Y.d, ay: Y.a, dCy: Y.d * Gam, uTopW: ut[np_], uTopB: ub[np_], shape: zz.map((z, i) => ({ z, u: ut[i] / ut[np_] })), lam0 };
+  const psiAt = z => { const sh = CP.shape; if (z <= sh[0].z) return 0; for (let i = 1; i < sh.length; i++) if (sh[i].z >= z) { const r = (z - sh[i - 1].z) / (sh[i].z - sh[i - 1].z); return sh[i - 1].u + r * (sh[i].u - sh[i - 1].u); } return 1; };
+  R.p4b = { T0, T0b, T0circ, k0, dy: Y.d, ay: Y.a, dCy: Y.d * Gam, uTopW: CM.uTop, uTopB: CM.uTopB, shape: CM.shape, lam0,
+    T1: CP.T, gam1: CP.gam1, shape1: CP.shape, psi: psiAt(zc), elevated: zc > 1e-6 };
 
   // ---- Paso 5: capacidad de desplazamiento
   const lim = inp.dClim > 0 ? inp.dClim / Gam : Infinity;
@@ -264,15 +299,6 @@ function compute(inp, grid) {
   R.p6 = { SLV: per(SLV, 1.68), SLC: per(SLC, 1.56), cSLV: per(cSLV, 1.68), cSLC: per(cSLC, 1.56), T0 };
 
   // ---- Paso 7: acción sísmica
-  let agR = inp.agR, K = inp.K, near = [];
-  if (inp.siteMode === 'coords' && grid) {
-    const lat = inp.lat, lon = inp.lon, cl = Math.cos(lat * Math.PI / 180);
-    const dist = p => Math.hypot((p[0] - lon) * 111.32 * cl, (p[1] - lat) * 110.57);
-    near = grid.map(p => ({ p, d: dist(p) })).sort((a, b) => a.d - b.d).slice(0, 4);
-    if (near[0].d < 1e-6) { agR = near[0].p[3]; K = near[0].p[2]; }
-    else { const ws = near.map(q => 1 / q.d), sw = ws.reduce((a, b) => a + b, 0);
-      agR = near.reduce((a, q, i) => a + ws[i] * q.p[3], 0) / sw; K = near.reduce((a, q, i) => a + ws[i] * q.p[2], 0) / sw; }
-  }
   const vs = inp.vs30, C = Math.pow(800 / vs, 0.465);
   const soil = vs > 800 ? 'A' : vs >= 360 ? 'B' : vs >= 180 ? 'C' : 'D';
   const TC = soil === 'A' ? K / 4 : soil === 'D' ? K / 2 : K * C / 4, TB = TC / 5, TD = 2.0;
@@ -295,7 +321,6 @@ function compute(inp, grid) {
     return dg;
   }
   function Se(T, ag, xi) { if (T <= 1e-9) return ag * G * Sof(ag); return SDe(T, ag, xi) * (2 * Math.PI / T) ** 2; }
-  const gI = { I: 0.8, II: 1.0, III: 1.3, IV: 1.4 }[inp.impClass];
   const nu = (inp.impClass === 'I' || inp.impClass === 'II') ? 0.5 : 0.4;
   const lev = {
     SLD: { ag: nu * gI * agR, xi: 5, why: `ν·γI·agR = ${nu}·${gI}·${agR.toFixed(3)}`, ref: 'UNE-EN 1998-1, 4.4.3.2(2)' },
@@ -303,18 +328,39 @@ function compute(inp, grid) {
     SLC: { ag: gI * agR * Math.pow(inp.pSLC / 0.10, -1 / 3), xi: inp.xiSLC, why: `γI·agR·(${inp.pSLC}/0.10)^(−1/3)`, ref: 'UNE-EN 1998-1, 2.1(4) nota (k = 3)' }
   };
   for (const k in lev) { lev[k].S = Sof(lev[k].ag); lev[k].eta = eta(lev[k].xi); }
-  R.p7 = { agR, K, near, C, soil, TB, TC, TD, TE, TF, gI, nu, lev, Sof, eta, SDe, Se };
+  // Mecanismo en altura: espectro en la cota de la junta (Circolare C7.2.3, [C7.2.5]–[C7.2.9]; C8.7.1.2.1.4 y .8)
+  let elev = null, SeD = Se, SDeD = SDe;
+  if (R.p4b.elevated) {
+    const xi1 = inp.xi1, T1e = R.p4b.T1 * inp.T1fac, g1 = R.p4b.gam1, psi = R.p4b.psi, aC = 0.8, bC = 1.1;
+    const kz = Math.abs(g1 * psi) * Math.sqrt(1 + 0.0004 * xi1 * xi1);
+    const aZ = ag => Se(T1e, ag, xi1) * kz;                                    // [C7.2.7]-[C7.2.8], un modo
+    const amp = xi => 1.1 * Math.pow(xi1 / 100, -0.5) * eta(xi);              // pico [C7.2.9] / aZ
+    function SeZraw(T, ag, xi) { const a = aZ(ag), A = amp(xi);
+      if (T < aC * T1e) return a * A / (1 + (A - 1) * Math.pow(1 - T / (aC * T1e), 1.6));
+      if (T < bC * T1e) return a * A;
+      return a * A / (1 + (A - 1) * Math.pow(T / (bC * T1e) - 1, 1.2)); }     // [C7.2.6]
+    const SeZ = (T, ag, xi) => Math.max(SeZraw(T, ag, xi), Se(T, ag, xi));   // envolvente con el espectro del suelo
+    const SDeZ = (T, ag, xi) => SeZ(T, ag, xi) * (T / (2 * Math.PI)) ** 2;
+    elev = { z: zc, xi1, T1: R.p4b.T1, T1e, g1, psi, kz, aC, bC, aZ, amp, SeZraw, SeZ, SDeZ };
+    SeD = SeZ; SDeD = SDeZ;
+  }
+  R.p7 = { agR, K, near, C, soil, TB, TC, TD, TE, TF, gI, nu, lev, Sof, eta, SDe, Se, elev, SeD, SDeD };
 
   // ---- Paso 8: verificación
   const D = lev.SLD;
-  const demD = Se(T0, D.ag, 5);
-  const agD = bisect(a => Se(T0, a, 5) - Y.a, 1e-5, 5);
-  const maxSDe = (Ta, Tb, ag, xi) => { let mx = 0; for (let i = 0; i <= 200; i++) { const T = Ta + (Tb - Ta) * i / 200; mx = Math.max(mx, SDe(T, ag, xi)); } return mx; };
+  const demD = SeD(T0, D.ag, 5);
+  const agD = bisect(a => SeD(T0, a, 5) - Y.a, 1e-5, 5);
+  const maxSDe = (Ta, Tb, ag, xi) => { let mx = 0; for (let i = 0; i <= 200; i++) { const T = Ta + (Tb - Ta) * i / 200; mx = Math.max(mx, SDeD(T, ag, xi)); }
+    if (elev && Tb > elev.bC * elev.T1e) mx = Math.max(mx, SDeD(elev.bC * elev.T1e, ag, xi));   // [C8.7.1.12]: ≥ S_eZ(T1)·b²T1²/4π²
+    return mx; };
   function lsCheck(key, p, Tk) {
     const L = lev[key]; const Dd = maxSDe(T0, Tk, L.ag, L.xi);
+    let Tm = null, Tm2 = null; for (let i = 0; i <= 400; i++) { const T = T0 + (Tk - T0) * i / 400; if (SDeD(T, L.ag, L.xi) >= Dd * (1 - 1e-6)) { if (Tm == null) Tm = T; Tm2 = T; } }
+    if (Tm == null) { Tm = T0; Tm2 = T0; }
+    if (elev && Tk > elev.bC * elev.T1e && SDeD(elev.bC * elev.T1e, L.ag, L.xi) >= Dd * (1 - 1e-9)) { Tm = elev.bC * elev.T1e; Tm2 = Tm; }
     let agc = bisect(a => maxSDe(T0, Tk, a, L.xi) - p.d, 1e-5, 20);
     if (key === 'SLV' && agc < agD) agc = agD;
-    return { Dd, d: p.d, ratio: p.d / Dd, agc, idx: agc / L.ag, ok: Dd <= p.d, extrap: agc > 0.6 };
+    return { Dd, Tm, Tm2, d: p.d, ratio: p.d / Dd, agc, idx: agc / L.ag, ok: Dd <= p.d, extrap: agc > 0.6 };
   }
   R.p8 = { SLD: { dem: demD, cap: Y.a, ok: demD <= Y.a, agc: agD, idx: agD / D.ag },
     SLV: lsCheck('SLV', SLV, R.p6.SLV.T), SLC: lsCheck('SLC', SLC, R.p6.SLC.T) };
@@ -346,7 +392,7 @@ function niceTicks(a, b, n = 5) {
   return t;
 }
 function chart(o) {
-  const W = o.W || 640, Hh = o.H || 360, ml = 58, mr = 18, mt = 16, mb = 46;
+  const W = o.W || 640, Hh = o.H || 360, ml = 58, mr = o.y2 ? 58 : 18, mt = 16, mb = 46;
   const pw = W - ml - mr, ph = Hh - mt - mb;
   const X = x => ml + (x - o.x0) / (o.x1 - o.x0) * pw, Y = y => mt + ph - (y - o.y0) / (o.y1 - o.y0) * ph;
   let s = `<svg viewBox="0 0 ${W} ${Hh}" role="img" aria-label="${o.title || ''}">`;
@@ -355,6 +401,12 @@ function chart(o) {
   for (const t of xt) s += `<line x1="${X(t)}" x2="${X(t)}" y1="${mt}" y2="${mt + ph}" style="stroke:var(--line);stroke-width:.6"/><text x="${X(t)}" y="${mt + ph + 16}" text-anchor="middle" font-size="11" style="fill:var(--muted)">${o.xfmt ? o.xfmt(t) : t}</text>`;
   for (const t of yt) s += `<line x1="${ml}" x2="${ml + pw}" y1="${Y(t)}" y2="${Y(t)}" style="stroke:var(--line);stroke-width:.6"/><text x="${ml - 6}" y="${Y(t) + 4}" text-anchor="end" font-size="11" style="fill:var(--muted)">${t}</text>`;
   s += `<line x1="${ml}" x2="${ml + pw}" y1="${mt + ph}" y2="${mt + ph}" style="stroke:var(--ink);stroke-width:1"/><line x1="${ml}" x2="${ml}" y1="${mt}" y2="${mt + ph}" style="stroke:var(--ink);stroke-width:1"/>`;
+  if (o.y2) {   // eje derecho: misma curva en otra escala, v2 = k·v
+    const k = o.y2.k, t2 = niceTicks(o.y0 * k, o.y1 * k, 5);
+    s += `<line x1="${ml + pw}" x2="${ml + pw}" y1="${mt}" y2="${mt + ph}" style="stroke:var(--ink);stroke-width:1"/>`;
+    for (const t of t2) s += `<line x1="${ml + pw}" x2="${ml + pw + 4}" y1="${Y(t / k)}" y2="${Y(t / k)}" style="stroke:var(--ink)"/><text x="${ml + pw + 7}" y="${Y(t / k) + 4}" font-size="11" style="fill:var(--muted)">${t}</text>`;
+    s += `<text x="${W - 12}" y="${mt + ph / 2}" text-anchor="middle" font-size="12" transform="rotate(90 ${W - 12} ${mt + ph / 2})" style="fill:var(--ink)">${svgT(o.y2.label)}</text>`;
+  }
   s += `<text x="${ml + pw / 2}" y="${Hh - 8}" text-anchor="middle" font-size="12" style="fill:var(--ink)">${svgT(o.xlabel)}</text>`;
   s += `<text x="14" y="${mt + ph / 2}" text-anchor="middle" font-size="12" transform="rotate(-90 14 ${mt + ph / 2})" style="fill:var(--ink)">${svgT(o.ylabel)}</text>`;
   s += `<g clip-path="url(#${o.id}c)">`;
@@ -373,12 +425,16 @@ function chart(o) {
       p.label.split('\n').forEach((t, i) => s += `<text x="${lx}" y="${ly + i * 14}" font-size="11.5" text-anchor="${p.anchor || 'start'}" style="fill:${p.tcolor || p.color}">${svgT(t)}</text>`);
     }
   }
+  for (const a of (o.arrows || [])) { const x1 = X(a.x0), y1 = Y(a.y0), x2 = X(a.x1), y2 = Y(a.y1), an = Math.atan2(y2 - y1, x2 - x1), h = 7;
+    const head = (x, y, ang) => `M${x} ${y} L${x - h * Math.cos(ang - .4)} ${y - h * Math.sin(ang - .4)} L${x - h * Math.cos(ang + .4)} ${y - h * Math.sin(ang + .4)} Z`;
+    s += `<line x1="${x1}" x2="${x2}" y1="${y1}" y2="${y2}" style="stroke:${a.color || 'var(--ink)'};stroke-width:${a.w || 1.2}"/><path d="${head(x2, y2, an)}${a.both ? ' ' + head(x1, y1, an + Math.PI) : ''}" style="fill:${a.color || 'var(--ink)'}"/>`; }
   for (const t of (o.texts || [])) s += `<text x="${X(t.x)}" y="${Y(t.y)}" font-size="${t.size || 11.5}" text-anchor="${t.anchor || 'start'}" style="fill:${t.color || 'var(--muted)'}">${svgT(t.t)}</text>`;
   if (o.legend) {
     let ly = mt + 10; const lx = o.legendLeft ? ml + 12 : ml + pw - 12;
     for (const e of o.legend) {
       const x1 = o.legendLeft ? lx : lx - 200;
-      s += `<line x1="${x1}" x2="${x1 + 22}" y1="${ly}" y2="${ly}" style="stroke:${e.color};stroke-width:2.2;stroke-dasharray:${e.dash || 'none'}"/><text x="${x1 + 28}" y="${ly + 4}" font-size="11.5" style="fill:var(--ink)">${svgT(e.t)}</text>`;
+      const mark = e.box ? `<rect x="${x1}" y="${ly - 5}" width="22" height="10" style="fill:${e.color};opacity:${e.op || .2}"/>` : e.color ? `<line x1="${x1}" x2="${x1 + 22}" y1="${ly}" y2="${ly}" style="stroke:${e.color};stroke-width:2.2;stroke-dasharray:${e.dash || 'none'}"/>` : '';
+      s += `${mark}<text x="${x1 + 28}" y="${ly + 4}" font-size="11.5" style="fill:${e.muted ? 'var(--muted)' : 'var(--ink)'}">${svgT(e.t)}</text>`;
       ly += 17;
     }
   }
@@ -413,28 +469,31 @@ function pierSVG(R, o) {
     if (zc > 0) s += `<polygon points="${low.map(P).join(' ')}" style="fill:var(--pier);stroke:var(--pier-line);stroke-width:1"/>`;
     s += `<polygon points="${up.map(P).join(' ')}" style="fill:none;stroke:var(--muted);stroke-width:.8;stroke-dasharray:4 3"/>`;
     s += `<polygon points="${up.map(p => P(tr(p, piv, o.th))).join(' ')}" style="fill:var(--pier);stroke:var(--pier-line);stroke-width:1.2"/>`;
-    const deck = [[-g.b0 / 2 - .3, H], [g.b0 / 2 + .3, H], [g.b0 / 2 + .3, H + 1.2], [-g.b0 / 2 - .3, H + 1.2]];
+    const dh = g.hd > 0 ? 2 * g.hd : 1.2;
+    const deck = [[-g.b0 / 2 - .3, H], [g.b0 / 2 + .3, H], [g.b0 / 2 + .3, H + dh], [-g.b0 / 2 - .3, H + dh]];
     s += `<polygon points="${deck.map(p => P(tr(p, piv, o.th))).join(' ')}" style="fill:var(--violet);opacity:.35;stroke:var(--violet)"/>`;
     const [px, py] = P(piv).split(',').map(Number);
     s += `<line x1="${px}" x2="${px}" y1="${py}" y2="${oy - (H + 3) * sc}" style="stroke:var(--coral);stroke-width:.9;stroke-dasharray:2 3"/>`;
     s += `<circle cx="${px}" cy="${py}" r="4.5" style="fill:var(--coral)"/>`;
     const Gp = P(tr([0, zc + R.p3.bodies[0].y0], piv, o.th)).split(',').map(Number);
-    const Gd = P(tr([0, H], piv, o.th)).split(',').map(Number);
+    const Gd = P(tr([0, H + g.hd], piv, o.th)).split(',').map(Number);
     const Gt = P(tr([0, zc + R.p3.zGt3], piv, o.th)).split(',').map(Number);
     s += `<circle cx="${Gp[0]}" cy="${Gp[1]}" r="3.5" style="fill:var(--ink)"/><text x="${Gp[0] - 6}" y="${Gp[1] + 4}" font-size="11" text-anchor="end" style="fill:var(--ink)">c.d.g. pila</text>`;
     s += `<rect x="${Gd[0] - 3.5}" y="${Gd[1] - 3.5}" width="7" height="7" style="fill:var(--violet)"/><text x="${Gd[0] + 8}" y="${Gd[1] - 6}" font-size="11" style="fill:var(--violet)">tablero</text>`;
     s += `<path d="M${Gt[0]} ${Gt[1] - 6} l1.8 4 4.2 .4 -3.2 2.8 1 4.2 -3.8 -2.2 -3.8 2.2 1 -4.2 -3.2 -2.8 4.2 -.4z" style="fill:var(--accent)"/><text x="${Gt[0] + 9}" y="${Gt[1] + 12}" font-size="11" style="fill:var(--accent)">c.d.g. conjunto</text>`;
     s += `<text x="${px + 6}" y="${oy + 14}" font-size="11" style="fill:var(--coral)">pivote</text>`;
-    if (o.label) s += `<text x="${ox - g.B(0) / 2 * sc - 26}" y="${oy - (H + 2) * sc}" font-size="12" style="fill:var(--ink)">${o.label}</text>`;
+    if (o.label) s += `<text x="${ox - g.B(0) / 2 * sc - 26}" y="${oy - (H + 2 * g.hd + 4) * sc}" font-size="12" style="fill:var(--ink)">${o.label}</text>`;
   }
   if (o.dims) {
     const xr = ox + g.B(0) / 2 * sc + 16;
     s += `<line x1="${xr}" x2="${xr}" y1="${oy}" y2="${oy - H * sc}" style="stroke:var(--muted);stroke-width:.8"/><text x="${xr + 4}" y="${oy - H * sc / 2}" font-size="11" style="fill:var(--muted)">H = ${f(H, 2)} m</text>`;
     s += `<text x="${ox}" y="${oy + 16}" text-anchor="middle" font-size="11" style="fill:var(--muted)">B base = ${f(g.B(0), 2)} m</text>`;
-    s += `<text x="${ox}" y="${oy - H * sc - 8}" text-anchor="middle" font-size="11" style="fill:var(--muted)">B cabeza = ${f(g.b0, 2)} m</text>`;
+    const ht = g.hDeck, dh = ht > 0 ? 2 * ht : 1.2;
+    s += `<text x="${ox}" y="${oy - (H + dh) * sc - 8}" text-anchor="middle" font-size="11" style="fill:var(--muted)">B cabeza = ${f(g.b0, 2)} m</text>`;
     const yG = oy - R.p1.zG * sc;
     s += `<circle cx="${ox}" cy="${yG}" r="3.5" style="fill:var(--ink)"/><text x="${ox - g.B(R.p1.zG) / 2 * sc - 6}" y="${yG + 4}" text-anchor="end" font-size="11" style="fill:var(--ink)">z_G = ${f(R.p1.zG, 2)} m</text>`;
-    s += `<rect x="${ox - g.b0 / 2 * sc - 3}" y="${oy - H * sc - 6}" width="${g.b0 * sc + 6}" height="6" style="fill:var(--violet);opacity:.4"/>`;
+    s += `<rect x="${ox - g.b0 / 2 * sc - 3}" y="${oy - (H + dh) * sc}" width="${g.b0 * sc + 6}" height="${dh * sc}" style="fill:var(--violet);opacity:.35;stroke:var(--violet)"/>`;
+    s += `<rect x="${ox - 3}" y="${oy - (H + ht) * sc - 3}" width="6" height="6" style="fill:var(--violet)"/><text x="${ox - g.b0 / 2 * sc - 8}" y="${oy - (H + ht) * sc + 4}" text-anchor="end" font-size="11" style="fill:var(--violet)">tablero, h_t = ${f(ht, 2)} m</text>`;
   }
   if (o.extra) s += o.extra({ P, sc, ox, oy });
   return s + '</svg>';
@@ -464,7 +523,7 @@ function drawMap(canvas, grid, R) {
   for (const q of R.p7.near) { const x = ZX(q.p[0]), y = ZY(q.p[1]); ctx.strokeStyle = '#111'; ctx.lineWidth = 1.5; ctx.strokeRect(x - 8, y - 8, 16, 16); ctx.fillStyle = css('--ink'); ctx.fillText(q.p[3].toFixed(3), x + 10, y - 9); }
   if (R.inp.siteMode === 'coords') star(ZX(lon), ZY(lat), 10, '#1f5f8b');
   ctx.fillStyle = css('--ink'); ctx.font = '12px IBM Plex Sans, sans-serif';
-  ctx.fillText('Malla AN.5: agR (g)', 12, Hh - 10); ctx.fillText('Detalle ±0.5° y 4 puntos usados', zx0, zy0 + zh + 16);
+  ctx.fillText('Malla AN.5: agR [g]', 12, Hh - 10); ctx.fillText('Detalle ±0.5° y 4 puntos usados', zx0, zy0 + zh + 16);
   // leyenda
   const lx = zx0, ly = zy0 + zh + 30;
   cols.forEach((c, i) => { ctx.fillStyle = c; ctx.fillRect(lx + i * (zw / cols.length), ly, zw / cols.length, 10); });
@@ -551,9 +610,9 @@ async function exportDocx(btn) {
           else if (cl.contains('tw')) {
             const t = n.querySelector('table'); if (!t) continue;
             const trs = [...t.querySelectorAll('tr')], ncol = Math.max(...trs.map(r => r.children.length));
-            const W = 9638, lens = Array(ncol).fill(8); trs.forEach(r => [...r.children].forEach((c, j) => { lens[j] = Math.max(lens[j], Math.min(40, c.textContent.trim().length)); }));
+            const W = 9638, lens = Array(ncol).fill(8); trs.forEach(r => [...r.children].forEach((c, j) => { if (c.colSpan === 1) lens[j] = Math.max(lens[j], Math.min(40, c.textContent.trim().length)); }));
             const sum = lens.reduce((a, b) => a + b, 0), cols = lens.map(l => Math.floor(W * l / sum));
-            const rows = trs.map(r => new TableRow({ tableHeader: !!r.querySelector('th'), children: [...r.children].map((c, j) => new TableCell({ width: { size: cols[j] || 1000, type: WidthType.DXA }, borders: { top: bd, bottom: bd, left: bd, right: bd },
+            const rows = trs.map(r => new TableRow({ tableHeader: !!r.querySelector('th'), children: [...r.children].map((c, j) => new TableCell({ columnSpan: c.colSpan > 1 ? c.colSpan : undefined, width: { size: c.colSpan > 1 ? cols.slice(j, j + c.colSpan).reduce((a, b) => a + b, 0) : (cols[j] || 1000), type: WidthType.DXA }, borders: { top: bd, bottom: bd, left: bd, right: bd },
               shading: c.tagName === 'TH' ? { type: ShadingType.CLEAR, fill: 'EEEDE7', color: 'auto' } : (r.classList.contains('hl') ? { type: ShadingType.CLEAR, fill: 'E4F0F9', color: 'auto' } : undefined),
               margins: { top: 40, bottom: 40, left: 80, right: 80 }, children: [new Paragraph({ alignment: (c.cellIndex === 0 || c.classList.contains('l')) ? AlignmentType.LEFT : AlignmentType.RIGHT, children: runsOf(c, { size: 18, b: c.tagName === 'TH' }) })] })) }));
             children.push(new Table({ width: { size: W, type: WidthType.DXA }, columnWidths: cols, rows }));
@@ -592,25 +651,28 @@ const FIELDS = [
   ['Identificación', [
     ['proj', 'Proyecto', 'txt', 'Evaluación sísmica de pilas de fábrica en viaductos ferroviarios', 'Nombre del proyecto'], ['elem', 'Elemento calculado', 'txt', 'Viaducto de Anchurón. Pila de 40 m de altura', 'p. ej. Pila 3']]],
   ['Preguntas iniciales', [
-    ['dir', 'Dirección del cálculo', 'select', 'T', [['T', 'Transversal'], ['L', 'Longitudinal']]],
+    ['dir', 'Dirección del cálculo', 'select', 'L', [['T', 'Transversal'], ['L', 'Longitudinal']]],
     ['deckFixed', 'Tablero en esa dirección', 'select', '1', [['1', 'Fijo a la pila (empuja)'], ['0', 'Deslizante (no empuja)']]],
     ['dClim', 'Límite voluntario d<sub>C,lím</sub> en cabeza', 'num', 1.00, 'm']]],
   ['Geometría de la pila', [
-    ['H', 'Altura H', 'num', 40, 'm'], ['cabT', 'Cabeza, dimensión transversal', 'num', 4.5, 'm'], ['cabL', 'Cabeza, dimensión longitudinal', 'num', 2.5, 'm'],
-    ['talud', 'Talud por cara (H/V)', 'num', 0.1, '—'], ['zJoint', 'Junta de cálculo z (vacío = crítica)', 'text', '', 'm']]],
+    ['H', 'Altura H', 'num', 40, 'm'], ['cabT', 'Cabeza, dimensión transversal', 'num', 6.2, 'm'], ['cabL', 'Cabeza, dimensión longitudinal', 'num', 2.65, 'm'],
+    ['taludT', 'Talud transversal por cara [H/V]', 'num', 0.06, '—'], ['taludL', 'Talud longitudinal por cara [H/V]', 'num', 0.025, '—'], ['zJoint', 'Junta de cálculo z (vacío = crítica)', 'text', '', 'm']]],
   ['Fábrica', [
-    ['gamma', 'Peso específico medio γ', 'num', 22, 'kN/m³'], ['fShell', 'Resistencia cáscara f<sub>1</sub>', 'num', 10, 'MPa'], ['tShell', 'Espesor cáscara t', 'num', 0.5, 'm'],
-    ['fCore', 'Resistencia núcleo f<sub>2</sub>', 'num', 2.5, 'MPa'], ['E', 'Módulo de deformación promedio de la sección completa E', 'num', 7500, 'MPa'], ['Gratio', 'G/E', 'num', 0.4, '—'],
+    ['gamma', 'Peso específico medio γ', 'num', 22, 'kN/m³'], ['mu', 'Coeficiente de rozamiento admisible en la junta μ', 'num', 0.5, '—'], ['fShell', 'Resistencia fábrica exterior f<sub>c,ext</sub>', 'num', 10, 'MPa'], ['tShell', 'Espesor fábrica exterior t<sub>ext</sub>', 'num', 0.5, 'm'],
+    ['fCore', 'Resistencia núcleo f<sub>c,núc</sub>', 'num', 2.5, 'MPa'], ['E', 'Módulo de deformación promedio de la sección completa E', 'num', 7500, 'MPa'], ['Gratio', 'G/E', 'num', 0.4, '—'],
     ['FC', 'Factor de confianza FC (s/ Circolare 2019, C8.5.4)', 'select', '1.35', [['1.35', 'LC1 · 1.35'], ['1.2', 'LC2 · 1.20'], ['1', 'LC3 · 1.00']]]]],
-  ['Tablero', [['qDeck', 'Carga permanente del tablero', 'num', 55, 'kN/m'], ['lDeck', 'Longitud tributaria', 'num', 55, 'm']]],
+  ['Tablero', [['qDeck', 'Carga permanente del tablero', 'num', 55, 'kN/m'], ['lDeck', 'Longitud tributaria', 'num', 55, 'm'], ['hDeck', 'Altura del c.d.g. del tablero sobre la cabeza h<sub>t</sub>', 'num', 1.5, 'm']]],
   ['Emplazamiento y acción', [
     ['siteMode', 'Peligrosidad', 'select', 'coords', [['coords', 'Por coordenadas (AN.5)'], ['manual', 'a_gR y K a mano']]],
     ['lat', 'Latitud (+N)', 'num', 37.389608, '°'], ['lon', 'Longitud (+E, −O)', 'num', -3.195314, '°'],
     ['agR', 'a<sub>gR</sub> (modo manual)', 'num', 0.141, 'g'], ['K', 'K (modo manual)', 'num', 1.0, '—'],
     ['vs30', 'v<sub>s,30</sub> del terreno', 'num', 270, 'm/s'],
     ['impClass', 'Clase de importancia', 'select', 'II', [['I', 'I · moderada'], ['II', 'II · normal'], ['III', 'III · mayor'], ['IV', 'IV · especial']]],
+    ['avRatio', 'Componente vertical: a<sub>vg</sub>/a<sub>g</sub>', 'num', 0.7, '—'], ['cV', 'Fracción de la vertical simultánea al pico horizontal', 'num', 0.3, '—'],
     ['xiSLV', 'Amortiguamiento SLV', 'num', 8, '%'], ['xiSLC', 'Amortiguamiento SLC', 'num', 10, '%'], ['pSLC', 'Probabilidad SLC en 50 años', 'num', 0.02, '—'],
-    ['nSlices', 'Nº de secciones para discretizar la pila', 'num', 10, '—']]]
+    ['nSlices', 'Nº de secciones para discretizar la pila', 'num', 10, '—']]],
+  ['Mecanismo en altura (solo si z > 0)', [
+    ['xi1', 'Amortiguamiento de la pila como estructura principal ξ<sub>1</sub>', 'num', 5, '%'], ['T1fac', 'Factor de alargamiento de T<sub>1</sub> por fisuración de la pila bajo la junta (1 = elástica)', 'num', 1.0, '—']]]
 ];
 function buildForm() {
   let h = '';
@@ -621,13 +683,13 @@ function buildForm() {
       if (type === 'select') ctl = `<select id="${id}">${extra.map(([vv, t]) => `<option value="${vv}"${vv === def ? ' selected' : ''}>${t}</option>`).join('')}</select>`;
       else if (type === 'txt') ctl = `<input id="${id}" type="text" value="${def}" placeholder="${extra}" style="font-family:var(--f-ui)">`;
       else ctl = `<input id="${id}" type="${type === 'num' ? 'number' : 'text'}" step="any" value="${def}">`;
-      const unit = type === 'num' || type === 'text' ? ` <span class="u">(${extra})</span>` : '';
+      const unit = type === 'num' || type === 'text' ? ` <span class="u">[${extra}]</span>` : '';
       h += type === 'txt' ? `<div class="fld" style="grid-template-columns:1fr"><label for="${id}">${lab}</label>${ctl}</div>` : `<div class="fld"><label for="${id}">${lab}${unit}</label>${ctl}</div>`;
     }
-    if (gi === 1) h += '</div><p class="hint">El límite d<sub>C,lím</sub> es el desplazamiento de cabeza que el usuario no admite (p. ej. pérdida de apoyo del tablero). Pesa mucho en el resultado: se compara con el umbral de la Circolare.</p>';
+    if (gi === 1) h += '</div><p class="hint">El límite d<sub>C,lím</sub> es el desplazamiento de cabeza que el usuario no admite (p. ej. pérdida de apoyo del tablero).</p>';
   });
   h += `<h2>Informe</h2><div style="display:flex;gap:6px;flex-wrap:wrap"><button id="btnDocx" type="button">Descargar informe Word</button><button id="btnPrint" type="button">Imprimir / PDF</button></div><p class="hint" id="repStatus">El informe recoge todos los pasos, tablas y figuras con los datos actuales.</p>`;
-  h += `<nav class="steps">${['0', '1', '2', '3', '4', '4b', '5', '6', '7a', '7', '8', 'C', 'A'].map(k => `<a href="#p${k}">${k === 'C' ? 'Conclusiones' : k === 'A' ? 'Anejo' : 'Paso ' + k}</a>`).join('')}</nav>`;
+  h += `<nav class="steps">${['0', '1', '2', '3', '4', '4b', '5', '6', '7a', '7', '7b', '8', 'C', 'A'].map(k => `<a href="#p${k}">${k === 'C' ? 'Conclusiones' : k === 'A' ? 'Anejo' : 'Paso ' + k}</a>`).join('')}</nav>`;
   document.getElementById('form').innerHTML = h;
   document.querySelectorAll('#form input,#form select').forEach(el => el.addEventListener('input', run));
   document.getElementById('btnDocx').addEventListener('click', e => exportDocx(e.currentTarget));
@@ -636,29 +698,103 @@ function buildForm() {
 function readInputs() {
   const g = id => document.getElementById(id).value;
   const n = id => parseFloat(g(id));
-  return { proj: g('proj').trim(), elem: g('elem').trim(), dir: g('dir'), deckFixed: g('deckFixed') === '1', dClim: n('dClim'), H: n('H'), cabT: n('cabT'), cabL: n('cabL'), talud: n('talud'), zJoint: g('zJoint').trim(),
+  return { proj: g('proj').trim(), elem: g('elem').trim(), dir: g('dir'), deckFixed: g('deckFixed') === '1', dClim: n('dClim'), H: n('H'), cabT: n('cabT'), cabL: n('cabL'), taludT: n('taludT'), taludL: n('taludL'), zJoint: g('zJoint').trim(),
     gamma: n('gamma'), fShell: n('fShell'), tShell: n('tShell'), fCore: n('fCore'), E: n('E'), Gratio: n('Gratio'), FC: n('FC'),
-    qDeck: n('qDeck'), lDeck: n('lDeck'), siteMode: g('siteMode'), lat: n('lat'), lon: n('lon'), agR: n('agR'), K: n('K'), vs30: n('vs30'),
-    impClass: g('impClass'), xiSLV: n('xiSLV'), xiSLC: n('xiSLC'), pSLC: n('pSLC'), nSlices: Math.max(2, Math.round(n('nSlices'))) };
+    qDeck: n('qDeck'), lDeck: n('lDeck'), hDeck: n('hDeck'), siteMode: g('siteMode'), lat: n('lat'), lon: n('lon'), agR: n('agR'), K: n('K'), vs30: n('vs30'),
+    impClass: g('impClass'), xiSLV: n('xiSLV'), xiSLC: n('xiSLC'), pSLC: n('pSLC'), mu: n('mu'), avRatio: n('avRatio'), cV: n('cV'), nSlices: Math.max(2, Math.round(n('nSlices'))), xi1: n('xi1'), T1fac: n('T1fac') };
 }
 
 // ---------- secciones
 function sec(id, n, title, cite, body) { return `<section id="p${id}"><h2><span class="n">${n}</span>${title}</h2><p class="cite">${cite}</p>${body}</section>`; }
-const lsShort = k => `<b>${k}</b> · ${LS[k].short}<br><span style="color:var(--muted)">Se exige ${LS[k].req}.</span>`;
+const lsShort = k => `<b>${k}</b> · ${LS[k].short}`;
+const lsReq = (k, n) => `<tr class="req"><td class="l" colspan="${n}">Se exige ${LS[k].req}.</td></tr>`;
 const lsCell = k => `<b>${k}</b> · ${LS[k].name}<br><span style="color:var(--muted)">${LS[k].def} Se exige ${LS[k].req}.</span>`;
 
+// Sección horizontal por la base: fábrica exterior (anillo de espesor t_ext) y núcleo, a la escala del alzado
+function secBase({ sc, oy }) {
+  const R = secBase.R, g = R.geo, I = R.inp, Bb = g.Bbase, Lb = g.Lbase, t = Math.min(I.tShell, Bb / 2, Lb / 2);
+  const cx = 410, cy = oy - 150, x0 = cx - Bb / 2 * sc, y0 = cy - Lb / 2 * sc, x1 = x0 + Bb * sc, y1 = y0 + Lb * sc;
+  const sub = (a, b) => `${a}<tspan baseline-shift="sub" font-size="75%">${b}</tspan>`;
+  let s = `<text x="${cx}" y="${y0 - 52}" text-anchor="middle" font-size="11.5" style="fill:var(--ink)">Sección por la base (z = 0)</text>`;
+  s += `<rect x="${x0}" y="${y0}" width="${Bb * sc}" height="${Lb * sc}" style="fill:var(--pier-line);opacity:.55;stroke:var(--pier-line)"/>`;
+  s += `<rect x="${x0 + t * sc}" y="${y0 + t * sc}" width="${(Bb - 2 * t) * sc}" height="${(Lb - 2 * t) * sc}" style="fill:var(--pier);stroke:var(--pier-line);stroke-width:.6"/>`;
+  s += `<line x1="${cx}" x2="${cx}" y1="${cy}" y2="${y1 + 30}" style="stroke:var(--muted);stroke-width:.7"/><circle cx="${cx}" cy="${cy}" r="1.8" style="fill:var(--muted)"/>`;
+  s += `<text x="${cx + 4}" y="${y1 + 42}" font-size="10" style="fill:var(--muted)">núcleo · ${sub('f', 'c,núc')} = ${f(I.fCore, 1)} MPa</text>`;
+  s += `<line x1="${x0 + t * sc / 2}" x2="${x0 + t * sc / 2}" y1="${y0 + 4}" y2="${y0 - 14}" style="stroke:var(--muted);stroke-width:.7"/>`;
+  s += `<text x="${x0}" y="${y0 - 32}" font-size="10" style="fill:var(--muted)">fábrica exterior · ${sub('t', 'ext')} = ${f(I.tShell, 2)} m</text><text x="${x0}" y="${y0 - 19}" font-size="10" style="fill:var(--muted)">${sub('f', 'c,ext')} = ${f(I.fShell, 1)} MPa</text>`;
+  s += `<line x1="${x0}" x2="${x1}" y1="${y1 + 12}" y2="${y1 + 12}" style="stroke:var(--muted);stroke-width:.8"/><text x="${x0 - 6}" y="${y1 + 16}" text-anchor="end" font-size="11" style="fill:var(--muted)">B = ${f(Bb, 2)} m</text>`;
+  s += `<line x1="${x1 + 10}" x2="${x1 + 10}" y1="${y0}" y2="${y1}" style="stroke:var(--muted);stroke-width:.8"/><text x="${x1 + 14}" y="${cy + 4}" font-size="11" style="fill:var(--muted)">L = ${f(Lb, 2)} m</text>`;
+  const ya = y1 + 64;
+  s += `<line x1="${cx - 40}" x2="${cx + 40}" y1="${ya}" y2="${ya}" style="stroke:var(--coral);stroke-width:1.6"/><path d="M${cx + 40} ${ya} l-8 -4 v8 z M${cx - 40} ${ya} l8 -4 v8 z" style="fill:var(--coral)"/><text x="${cx}" y="${ya + 15}" text-anchor="middle" font-size="10.5" style="fill:var(--coral)">sismo (dirección ${I.dir === 'T' ? 'transversal' : 'longitudinal'})</text>`;
+  return s;
+}
+// Esquema genérico del espectro elástico (sin valores): aceleración y desplazamiento
+function specSchema() {
+  const sub = (a, b) => `${a}<tspan baseline-shift="sub" font-size="75%">${b}</tspan>`;
+  const W = 760, Hh = 255, pw = 300, ph = 180, top = 30;
+  const panel = (ox, xs, ys, fn, xmax, ymax, corners, labels, ylab, title) => {
+    const X = t => ox + t / xmax * pw, Y = y => top + ph - y / ymax * ph;
+    let s = `<text x="${ox + pw / 2}" y="${top - 12}" text-anchor="middle" font-size="12" style="fill:var(--ink)">${title}</text>`;
+    s += `<line x1="${ox}" x2="${ox + pw + 10}" y1="${Y(0)}" y2="${Y(0)}" style="stroke:var(--ink)"/><line x1="${ox}" x2="${ox}" y1="${Y(0)}" y2="${top - 4}" style="stroke:var(--ink)"/>`;
+    s += `<text x="${ox + pw + 12}" y="${Y(0) + 4}" font-size="11.5" style="fill:var(--ink)">T</text><text x="${ox - 6}" y="${top + 2}" text-anchor="end" font-size="11.5" style="fill:var(--ink)">${ylab}</text>`;
+    for (const [t, nm] of corners) s += `<line x1="${X(t)}" x2="${X(t)}" y1="${Y(0)}" y2="${Y(fn(t))}" style="stroke:var(--muted);stroke-dasharray:3 3;stroke-width:.9"/><text x="${X(t)}" y="${Y(0) + 15}" text-anchor="middle" font-size="11" style="fill:var(--ink)">${nm}</text>`;
+    const pts = []; for (let i = 0; i <= 300; i++) { const t = xmax * i / 300; pts.push(`${i ? 'L' : 'M'}${X(t).toFixed(1)} ${Y(fn(t)).toFixed(1)}`); }
+    s += `<path d="${pts.join(' ')}" style="fill:none;stroke:var(--accent);stroke-width:2.2"/>`;
+    for (const [t, y, txt, anc] of labels) s += `<text x="${X(t)}" y="${Y(y)}" text-anchor="${anc || 'start'}" font-size="10.5" style="fill:var(--muted)">${txt}</text>`;
+    return s;
+  };
+  const TB = 0.3, TC = 0.9, TD = 2.0, TE = 3.0, TF = 4.0;
+  const Sa = t => t <= TB ? 1 + t / TB * 1.5 : t <= TC ? 2.5 : t <= TD ? 2.5 * TC / t : 2.5 * TC * TD / (t * t);
+  const Dp = 2.5 * TC * TD, dg = 0.395 * Dp;
+  const Sd = t => t <= TD ? Sa(t) * t * t : t <= TE ? Dp : t <= TF ? Dp + (t - TE) / (TF - TE) * (dg - Dp) : dg;
+  let s = `<svg viewBox="0 0 ${W} ${Hh}" role="img" aria-label="Esquema del espectro elástico">`;
+  s += panel(60, 0, 0, Sa, 3.4, 2.9, [[TB, sub('T', 'B')], [TC, sub('T', 'C')], [TD, sub('T', 'D')]],
+    [[0.02, 0.8, `${sub('a', 'g')}·S`], [TB + 0.05, 2.6, `2.5·${sub('a', 'g')}·S·η`], [1.25, 1.95, '∝ 1/T'], [2.4, 0.95, '∝ 1/T²']], `${sub('S', 'e')}`, 'Aceleración');
+  s += panel(430, 0, 0, Sd, 4.8, Dp * 1.25, [[TC, sub('T', 'C')], [TD, sub('T', 'D')], [TE, sub('T', 'E')], [TF, sub('T', 'F')]],
+    [[1.55, Dp * 0.55, '∝ T', 'start'], [TD + 0.05, Dp * 1.06, 'constante'], [4.8, dg * 0.5, `${sub('d', 'g')} = 0.025·${sub('a', 'g')}·S·${sub('T', 'C')}·${sub('T', 'D')}`, 'end']], `${sub('S', 'De')}`, 'Desplazamiento (anejo A)');
+  return s + '</svg>';
+}
+// Paso 7b: cota del mecanismo y espectro en altura
+function sec7b(R) {
+  const I = R.inp, p2 = R.p2, p4b = R.p4b, p6 = R.p6, p7 = R.p7, L7 = p7.lev, EL = p7.elev;
+  const cite = 'Circolare 2019: C8.7.1.2.1.4 (acciones espectrales según la cota), C8.7.1.2.1.8 y C7.2.3, [C7.2.5]–[C7.2.9]';
+  if (!EL) return sec('7b', '7b', 'Cota del mecanismo', cite, `
+  <p>La junta de cálculo está en la base (z = 0): el mecanismo está <b>a nivel del suelo</b> y, con los espectros de norma, la demanda es el espectro elástico del terreno (Circolare C8.7.1.2.1.8: «meccanismo locale collocato a livello del suolo»).</p>
+  <div class="interp">Si la junta de cálculo estuviera en altura, la parte de la pila bajo la junta filtraría y amplificaría el movimiento del suelo, y la demanda se tomaría del espectro en la cota de la junta (C7.2.3). La app lo aplica automáticamente cuando z &gt; 0, con la pila completa como estructura principal.</div>`);
+  const Tx = Math.max(4, Math.ceil(1.1 * Math.max(p6.SLV.T, p6.SLC.T) * 2) / 2), Ts = []; for (let i = 1; i <= 500; i++) Ts.push(Tx * i / 500);
+  const ag = L7.SLV.ag, xi = L7.SLV.xi;
+  const figZ = chart({ id: 'c7z', x0: 0, x1: Tx, y0: 0, y1: Math.ceil(Math.max(...Ts.map(T => p7.SeD(T, ag, xi))) * 1.1), xlabel: 'T [s]', ylabel: 'S_e, S_eZ [m/s²]',
+    series: [{ pts: Ts.map(T => [T, p7.Se(T, ag, xi)]), color: 'var(--muted)', dash: '4 3', w: 1.4 }, { pts: Ts.map(T => [T, EL.SeZraw(T, ag, xi)]), color: 'var(--amber)', w: 1.4 }, { pts: Ts.map(T => [T, p7.SeD(T, ag, xi)]), color: 'var(--coral)' }],
+    vlines: [{ x: p6.T0, color: 'var(--ink)' }, { x: EL.aC * EL.T1e, color: 'var(--amber)' }, { x: EL.bC * EL.T1e, color: 'var(--amber)' }, { x: p6.SLV.T, color: 'var(--coral)' }],
+    legend: [{ t: `terreno S_e (SLV, ξ = ${xi} %)`, color: 'var(--muted)', dash: '4 3' }, { t: `en altura [C7.2.6], z = ${f(EL.z, 1)} m`, color: 'var(--amber)' }, { t: 'envolvente usada como demanda', color: 'var(--coral)' },
+      { t: `T₀ = ${f(p6.T0, 3)} s`, color: 'var(--ink)', dash: '3 3' }, { t: `a·T₁ = ${f(EL.aC * EL.T1e, 3)} s · b·T₁ = ${f(EL.bC * EL.T1e, 3)} s`, color: 'var(--amber)', dash: '3 3' }, { t: `T_SLV = ${f(p6.SLV.T, 2)} s`, color: 'var(--coral)', dash: '3 3' }] });
+  const A5 = 1.1 * Math.pow(EL.xi1 / 100, -0.5);
+  const rows = ['SLD', 'SLV', 'SLC'].map(k => { const L = L7[k], xk = k === 'SLD' ? 5 : L.xi;
+    return `<tr><td class="l">${k}</td><td>${f(L.ag, 4)}</td><td>${f(p7.Se(EL.T1e, L.ag, EL.xi1), 2)}</td><td>${f(EL.aZ(L.ag), 2)}</td><td>${xk}</td><td>${f(EL.amp(xk) * EL.aZ(L.ag), 2)}</td><td>${f(p7.Se(p6.T0, L.ag, xk), 2)}</td><td>${f(p7.SeD(p6.T0, L.ag, xk), 2)}</td></tr>`; }).join('');
+  return sec('7b', '7b', 'Mecanismo en altura: espectro en la cota de la junta', cite, `
+  <p>La junta de cálculo está a z = ${f(EL.z, 2)} m: el mecanismo está <b>en altura</b>. El bloque que gira no recibe el movimiento del suelo, sino el de la parte de la pila que queda debajo, que lo filtra y lo amplifica. La Circolare manda usar el espectro en la cota z (C8.7.1.2.1.8, con la [C7.2.5]) obtenido con la formulación simplificada de C7.2.3. Se considera solo el primer modo de la estructura principal, que aquí es la pila completa, empotrada en la base y con el tablero en cabeza:</p>
+  <div class="eq">${v('T', '1')} = ${f(EL.T1, 3)} s${I.T1fac !== 1 ? ` × ${f(I.T1fac, 2)} = ${f(EL.T1e, 3)} s` : ''} · ${v('γ', '1')} = Σ${v('W', 'i')}ψ<sub>i</sub>/Σ${v('W', 'i')}ψ<sub>i</sub>² = <span class="res">${f(EL.g1, 3)}</span> · ψ<sub>1</sub>(z = ${f(EL.z, 1)} m) = <span class="res">${f(EL.psi, 3)}</span> · ξ<sub>1</sub> = ${f(EL.xi1, 1)} %</div>
+  <div class="eq">${v('a', 'Z')} = ${v('S', 'e')}(${v('T', '1')}, ξ<sub>1</sub>)·|${v('γ', '1')}·ψ<sub>1</sub>(z)|·√(1 + 0.0004·ξ<sub>1</sub>²) = ${v('S', 'e')}(${v('T', '1')}, ξ<sub>1</sub>)·<span class="res">${f(EL.kz, 3)}</span> <span class="tag">[C7.2.7]–[C7.2.8]</span></div>
+  <div class="eq">pico = 1.1·ξ<sub>1</sub><sup>−0.5</sup>·η(ξ)·${v('a', 'Z')} = ${f(A5, 2)}·η(ξ)·${v('a', 'Z')} en [${v('a')}·${v('T', '1')}, ${v('b')}·${v('T', '1')}] = [${f(EL.aC * EL.T1e, 3)}; ${f(EL.bC * EL.T1e, 3)}] s, con a = 0.8 y b = 1.1 <span class="tag">[C7.2.6], [C7.2.9]</span></div>
+  <div class="tw"><table><thead><tr><th class="l">Estado</th><th>a<sub>g</sub> [g]</th><th>S<sub>e</sub>(T₁, ξ₁) [m/s²]</th><th>a<sub>Z</sub> [m/s²]</th><th>ξ [%]</th><th>Pico S<sub>eZ</sub> [m/s²]</th><th>S<sub>e</sub>(T₀) suelo</th><th>S<sub>eZ</sub>(T₀) usado</th></tr></thead><tbody>${rows}</tbody></table></div>
+  ${fig(figZ, 'Espectro de aceleración SLV: terreno, espectro en altura y envolvente usada como demanda')}
+  <div class="interp">ψ<sub>1</sub>(z) = ${f(EL.psi, 2)}: a esa cota la pila se mueve el ${f(EL.psi * 100, 0)} % que la cabeza en su primer modo, así que la aceleración máxima en la junta es ${f(EL.kz, 2)} veces la espectral del suelo en T₁. ${p6.T0 >= EL.aC * EL.T1e && p6.T0 <= EL.bC * EL.T1e ? 'T₀ del bloque cae en la zona de resonancia con la pila: es el caso más desfavorable para el despegue (SLD).' : (p6.T0 < EL.aC * EL.T1e ? `T₀ = ${f(p6.T0, 3)} s es más corto que a·T₁: el bloque responde casi como la cota z, sin resonancia plena.` : 'T₀ es más largo que b·T₁: el espectro en altura ya decae.')} ${p6.SLV.T > 3 * EL.T1e ? `T<sub>SLV</sub> = ${f(p6.SLV.T, 2)} s es mucho mayor que T₁: en la zona de periodos largos gobierna el espectro del terreno y la demanda de cabeceo casi no cambia por estar en altura.` : ''}</div>
+  <div class="warn">Criterios adoptados por la app: (1) en 1.1·ξ<sub>1</sub><sup>−0.5</sup> se usa ξ<sub>1</sub> en tanto por uno (5 % → 1.1/√0.05 = 4.92), que da la amplificación de resonancia esperable; con ξ en % el pico quedaría por debajo de a<sub>Z</sub>. (2) La Circolare exige S<sub>eZ</sub> ≥ S<sub>e</sub> para T &gt; T₁; la app toma la envolvente con el espectro del terreno para todo T, porque cerca de la base el movimiento es el del suelo. (3) Sin interacción entre bloque y pila: la Circolare lo considera una estimación cautelativa. (4) T₁ y ξ₁ elásticos por defecto; si la pila bajo la junta se fisura, se pueden ajustar con el alargamiento de T₁ y ξ₁ del panel.</div>`);
+}
 function render(R) {
+  secBase.R = R;
   const I = R.inp, g = R.geo, p1 = R.p1, p2 = R.p2, p3 = R.p3, p4 = R.p4, p4b = R.p4b, p5 = R.p5, p6 = R.p6, p7 = R.p7, p8 = R.p8;
   const dirTxt = I.dir === 'T' ? 'transversal' : 'longitudinal';
   const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
   const projTxt = I.proj ? esc(I.proj) : 'Proyecto sin nombre', elemTxt = I.elem ? esc(I.elem) : 'Elemento sin nombre';
-  document.getElementById('idline').innerHTML = `<b>${projTxt}</b> · ${elemTxt} · dirección ${dirTxt}`;
+  document.getElementById('projTitle').innerHTML = projTxt;
+  document.getElementById('elemLine').innerHTML = `${elemTxt} · dirección ${dirTxt}`;
   document.title = (I.elem ? I.elem + ' · ' : '') + 'Cabeceo de pilas de fábrica';
   let h = '';
 
   // Paso 0
   h += sec('0', '0', 'Datos y bases de cálculo', 'UNE-EN 1998-1:2018 (versión corregida 2022) con Anexo Nacional · NTC 2018 (D.M. 17/01/2018) · Circolare 21 gennaio 2019, n. 7 C.S.LL.PP., C8.7.1.2.1 y C8.5.4', `
-  <div class="grid2"><div>
+  ${fig(pierSVG(R, { W: 560, H: 380, sc: 7.2, ox: 175, oy: 350, dims: true, extra: secBase }), 'Alzado en la dirección del giro y sección horizontal por la base, a la misma escala')}
   <h3>Hipótesis de este cálculo</h3>
   <div class="tw"><table><tbody>
   <tr><td class="l">Proyecto</td><td class="l">${projTxt}</td></tr>
@@ -668,16 +804,18 @@ function render(R) {
   <tr><td class="l">Límite voluntario ${v('d', 'C,lím')}</td><td class="l">${f(I.dClim, 2)} m</td></tr>
   <tr><td class="l">Canto en la dirección del giro (cabeza / base)</td><td class="l">${f(g.b0, 2)} / ${f(g.Bbase, 2)} m</td></tr>
   <tr><td class="l">Longitud de junta (cabeza / base)</td><td class="l">${f(g.l0, 2)} / ${f(g.Lbase, 2)} m</td></tr>
-  <tr><td class="l">Fábrica</td><td class="l">γ = ${f(I.gamma, 1)} kN/m³ · f₁ = ${f(I.fShell, 1)} MPa (t = ${f(I.tShell, 2)} m) · f₂ = ${f(I.fCore, 1)} MPa · E (promedio de la sección) = ${f(I.E, 0)} MPa</td></tr>
-  <tr><td class="l">Tablero en cabeza</td><td class="l">${v('P')} = ${f(I.qDeck, 1)}·${f(I.lDeck, 1)} = ${f(g.P, 3)} MN</td></tr>
+  <tr><td class="l">Taludes por cara [H/V]</td><td class="l">transversal ${f(I.taludT, 3)} · longitudinal ${f(I.taludL, 3)}</td></tr>
+  <tr><td class="l">Fábrica</td><td class="l">γ = ${f(I.gamma, 1)} kN/m³ · fábrica exterior ${v('f', 'c,ext')} = ${f(I.fShell, 1)} MPa (${v('t', 'ext')} = ${f(I.tShell, 2)} m) · núcleo ${v('f', 'c,núc')} = ${f(I.fCore, 1)} MPa · E (promedio de la sección) = ${f(I.E, 0)} MPa</td></tr>
+  <tr><td class="l">Tablero en cabeza</td><td class="l">${v('P')} = ${f(I.qDeck, 1)}·${f(I.lDeck, 1)} = ${f(g.P, 3)} MN · c.d.g. a ${v('h', 't')} = ${f(I.hDeck, 2)} m sobre la cabeza</td></tr>
   <tr><td class="l">Terreno</td><td class="l">tipo ${p7.soil} (${v('v', 's,30')} = ${f(I.vs30, 0)} m/s) · UNE-EN 1998-1, tabla 3.1 / AN.1</td></tr>
   <tr><td class="l">Importancia</td><td class="l">clase ${I.impClass} · ${v('γ', 'I')} = ${f(p7.gI, 1)}</td></tr>
+  <tr><td class="l">Componente vertical (criterio propio)</td><td class="l">${v('f', 'v')} = 1 − ${f(R.vert.cV, 2)}·${f(R.vert.avR, 2)}·${f(R.vert.agSLV, 3)} = ${f(R.vert.fv, 3)} (peso que estabiliza; nota en el anejo)</td></tr>
+  <tr><td class="l">Rozamiento admisible en la junta</td><td class="l">μ = ${f(I.mu, 2)}</td></tr>
   <tr><td class="l">Peligrosidad</td><td class="l">${v('a', 'gR')} = ${f(p7.agR, 4)} g · ${v('K')} = ${f(p7.K, 2)}</td></tr>
-  </tbody></table></div></div>
-  <div>${fig(pierSVG(R, { W: 320, H: 380, sc: 7.2, ox: 150, oy: 350, dims: true }), 'Alzado en la dirección del giro, a escala')}</div></div>
+  </tbody></table></div>
   <h3>Emplazamiento</h3>
   ${I.siteMode === 'coords' ? `<p>Coordenadas ${f(I.lat, 5)}° N, ${f(Math.abs(I.lon), 5)}° ${I.lon < 0 ? 'O' : 'E'}. ${v('a', 'gR')} y ${v('K')} se interpolan con los cuatro puntos de la malla AN.5 más próximos, ponderados por el inverso de la distancia (AN.2, 3.2.1(2)).</p>
-  <div class="tw"><table><thead><tr><th>Punto</th><th>Longitud</th><th>Latitud</th><th>Distancia (km)</th><th>K</th><th>a<sub>gR</sub> (g)</th></tr></thead><tbody>
+  <div class="tw"><table><thead><tr><th>Punto</th><th>Longitud</th><th>Latitud</th><th>Distancia [km]</th><th>K</th><th>a<sub>gR</sub> [g]</th></tr></thead><tbody>
   ${p7.near.map((q, i) => `<tr><td>${i + 1}</td><td>${f(q.p[0], 1)}</td><td>${f(q.p[1], 1)}</td><td>${f(q.d, 2)}</td><td>${f(q.p[2], 1)}</td><td>${f(q.p[3], 3)}</td></tr>`).join('')}
   <tr class="tot"><td>Interpolado</td><td></td><td></td><td></td><td>${f(p7.K, 2)}</td><td>${f(p7.agR, 4)}</td></tr></tbody></table></div>
   <div class="fig"><canvas id="map" width="900" height="480"></canvas><div class="cap">Mapa de peligrosidad dibujado con la malla AN.5 de la UNE-EN 1998-1:2018; la estrella marca el emplazamiento.</div></div>` : `<p>Peligrosidad introducida a mano: ${v('a', 'gR')} = ${f(p7.agR, 3)} g, ${v('K')} = ${f(p7.K, 2)}.</p>`}`);
@@ -685,13 +823,14 @@ function render(R) {
   // Paso 1
   const g1 = R.geo;
   h += sec('1', '1', 'Pesos y centros de gravedad', 'Geometría troncopiramidal con talud constante en cada cara', `
-  <div class="eq">${v('V')} = ${v('H')}·[${v('a', '0')}·${v('b', '0')} + ${v('m')}·${v('H')}·(${v('a', '0')} + ${v('b', '0')}) + (4/3)·${v('m')}²·${v('H')}²]
-  <span class="s"> = ${f(I.H, 1)}·[${f(g1.b0 * g1.l0, 2)} + ${f(I.talud * I.H * (g1.b0 + g1.l0), 2)} + ${f(4 / 3 * I.talud ** 2 * I.H ** 2, 2)}]</span> = <span class="res">${f(p1.V, 1)} m³</span></div>
-  <div class="tw"><table><thead><tr><th>Elemento</th><th>Peso (MN)</th><th>% del peso</th><th>z (m)</th><th>W·z (MN·m)</th></tr></thead><tbody>
+  <p>${v('B')}(${v('z')}) = ${v('B', '0')} + 2·${v('m', 'B')}·(${v('H')} − ${v('z')}) y ${v('L')}(${v('z')}) = ${v('L', '0')} + 2·${v('m', 'L')}·(${v('H')} − ${v('z')}), con ${v('B', '0')} = ${f(g1.b0, 2)} m y ${v('L', '0')} = ${f(g1.l0, 2)} m en cabeza, ${v('m', 'B')} = ${f(g1.mB, 3)} (talud ${I.dir === 'T' ? 'transversal' : 'longitudinal'}, hace variar el canto en la dirección del giro) y ${v('m', 'L')} = ${f(g1.mP, 3)} (talud ${I.dir === 'T' ? 'longitudinal' : 'transversal'}).</p>
+  <div class="eq">${v('V')} = ${v('H')}·[${v('B', '0')}·${v('L', '0')} + ${v('H')}·(${v('B', '0')}·${v('m', 'L')} + ${v('L', '0')}·${v('m', 'B')}) + (4/3)·${v('m', 'B')}·${v('m', 'L')}·${v('H')}²]
+  <span class="s"> = ${f(I.H, 1)}·[${f(g1.b0 * g1.l0, 2)} + ${f(I.H * (g1.b0 * g1.mP + g1.l0 * g1.mB), 2)} + ${f(4 / 3 * g1.mB * g1.mP * I.H ** 2, 2)}]</span> = <span class="res">${f(p1.V, 1)} m³</span></div>
+  <div class="tw"><table><thead><tr><th>Elemento</th><th>Peso [MN]</th><th>% del peso</th><th>z [m]</th><th>W·z [MN·m]</th></tr></thead><tbody>
   <tr><td>Pila (W = γ·V)</td><td>${f(p1.Wp, 2)}</td><td>${f(p1.Wp / p1.Wt * 100, 1)}</td><td>${f(p1.zG, 2)}</td><td>${f(p1.Wp * p1.zG, 1)}</td></tr>
-  <tr><td>Tablero (P)</td><td>${f(p1.P, 2)}</td><td>${f(p1.P / p1.Wt * 100, 1)}</td><td>${f(I.H, 2)}</td><td>${f(p1.P * I.H, 1)}</td></tr>
+  <tr><td>Tablero (P)</td><td>${f(p1.P, 2)}</td><td>${f(p1.P / p1.Wt * 100, 1)}</td><td>${f(I.H + I.hDeck, 2)}</td><td>${f(p1.P * (I.H + I.hDeck), 1)}</td></tr>
   <tr class="tot"><td>Total</td><td>${f(p1.Wt, 2)}</td><td>100.0</td><td>${f(p1.zGt, 2)}</td><td>${f(p1.Wt * p1.zGt, 1)}</td></tr></tbody></table></div>
-  <p>Masa total ${v('M')} = ${f(p1.Wt, 2)}/9.81 = <span class="res">${f(p1.M, 0)} t</span>.</p>
+  <p>Masa total ${v('M')} = ${f(p1.Wt, 2)}/9.81 = <span class="res">${f(p1.M, 0)} t</span>. Las fuerzas de inercia horizontales usan la masa completa. El peso que estabiliza se reduce por la componente vertical (criterio propio, ver el anejo): ${v('γ', 'ef')} = γ·${v('f', 'v')} = ${f(I.gamma, 1)}·${f(R.vert.fv, 3)} = <span class="res">${f(I.gamma * R.vert.fv, 2)} kN/m³</span>, y lo mismo para el tablero.</p>
   <div class="interp">El c.d.g. de la pila está a ${f(p1.zG / I.H * 100, 0)} % de la altura: el talud concentra la masa abajo, lo que favorece la estabilidad. El tablero pesa el ${f(p1.P / p1.Wt * 100, 1)} % del total, pero está en cabeza.</div>`);
 
   // Paso 2
@@ -711,184 +850,249 @@ function render(R) {
     niceTicks(lx0, lx1, 5).forEach(t => s += `<text x="${X(t)}" y="${Y(0) + 16}" text-anchor="middle" font-size="11" style="fill:var(--muted)">${t}</text><line x1="${X(t)}" x2="${X(t)}" y1="${Y(0)}" y2="${Y(zmax)}" style="stroke:var(--line);stroke-width:.5"/>`);
     niceTicks(0, zmax, 4).forEach(t => s += `<text x="${cx0 - 6}" y="${Y(t) + 4}" text-anchor="end" font-size="11" style="fill:var(--muted)">${t}</text>`);
     const path = (key, col, dash) => `<path d="${c2.filter(c => c[key] <= lx1 + 0.3).map((c, i) => `${i ? 'L' : 'M'}${Math.min(X(c[key]), cx0 + cw + 20).toFixed(1)} ${Y(c.z).toFixed(1)}`).join(' ')}" style="fill:none;stroke:${col};stroke-width:${dash ? 1.2 : 2.2};stroke-dasharray:${dash || 'none'}"/>`;
-    s += `<clipPath id="cl2"><rect x="${cx0}" y="${Y(zmax) - 5}" width="${cw}" height="${zmax * sc + 5}"/></clipPath><g clip-path="url(#cl2)">${path('lam0inf', 'var(--muted)', '4 3')}${path('lam0', 'var(--coral)')}</g>`;
+    s += `<clipPath id="cl2"><rect x="${cx0}" y="${Y(zmax) - 5}" width="${cw}" height="${zmax * sc + 5}"/></clipPath><g clip-path="url(#cl2)">${path('lam0inf', 'var(--muted)', '4 3')}${path('lam0', 'var(--coral)')}${isFinite(R.slide.mu) ? `<path d="${c2.map((c, i) => `${i ? 'L' : 'M'}${X(R.slide.mu * c.N / (c.Wsup + g.Ph)).toFixed(1)} ${Y(c.z).toFixed(1)}`).join(' ')}" style="fill:none;stroke:var(--sky);stroke-width:1.6;stroke-dasharray:6 3"/>` : ''}</g>`;
     s += `<circle cx="${X(p2.min.lam0)}" cy="${Y(p2.min.z)}" r="5" style="fill:var(--coral)"/><text x="${X(p2.min.lam0) + 8}" y="${Y(p2.min.z) - 8}" font-size="11.5" style="fill:var(--coral)">λ₀,mín = ${f(p2.min.lam0, 3)} (z = ${f(p2.min.z, 1)} m)</text>`;
-    s += `<text x="${cx0 + cw / 2}" y="${Y(0) + 26}" text-anchor="middle" font-size="12" style="fill:var(--ink)">λ₀</text><text x="${cx0 - 44}" y="${Y(zmax) - 12}" font-size="12" style="fill:var(--ink)">z (m)</text>`;
-    const lgx = cx0 + cw - 175, lgy = Y(zmax * 0.35);
+    s += `<text x="${cx0 + cw / 2}" y="${Y(0) + 26}" text-anchor="middle" font-size="12" style="fill:var(--ink)">λ₀</text><text x="${cx0 - 44}" y="${Y(zmax) - 12}" font-size="12" style="fill:var(--ink)">z [m]</text>`;
+    const lgx = cx0 + cw - 220, lgy = Y(zmax * 0.40);
     s += `<line x1="${lgx}" x2="${lgx + 26}" y1="${lgy}" y2="${lgy}" style="stroke:var(--coral);stroke-width:2.2"/><text x="${lgx + 32}" y="${lgy + 4}" font-size="11.5" style="fill:var(--ink)">f<tspan baseline-shift="sub" font-size="75%">c</tspan> = (${f(I.fShell, 1)}; ${f(I.fCore, 1)}) MPa</text>`;
     s += `<line x1="${lgx}" x2="${lgx + 26}" y1="${lgy + 18}" y2="${lgy + 18}" style="stroke:var(--muted);stroke-width:1.2;stroke-dasharray:4 3"/><text x="${lgx + 32}" y="${lgy + 22}" font-size="11.5" style="fill:var(--ink)">f<tspan baseline-shift="sub" font-size="75%">c</tspan> = ∞</text>`;
+    s += `<rect x="${lgx}" y="${lgy + 30}" width="26" height="10" style="fill:var(--accent);opacity:.18"/><text x="${lgx + 32}" y="${lgy + 40}" font-size="11.5" style="fill:var(--ink)">juntas candidatas a críticas</text>`;
+    s += `<line x1="${lgx}" x2="${lgx + 26}" y1="${lgy + 54}" y2="${lgy + 54}" style="stroke:var(--coral);stroke-dasharray:4 3"/><text x="${lgx + 32}" y="${lgy + 58}" font-size="11.5" style="fill:var(--ink)">junta de cálculo</text>`;
+    if (isFinite(R.slide.mu)) s += `<line x1="${lgx}" x2="${lgx + 26}" y1="${lgy + 72}" y2="${lgy + 72}" style="stroke:var(--sky);stroke-width:1.6;stroke-dasharray:6 3"/><text x="${lgx + 32}" y="${lgy + 76}" font-size="11.5" style="fill:var(--ink)">límite de deslizamiento (μ = ${f(R.slide.mu, 2)})</text>`;
     return s + '</svg>';
   })();
   h += sec('2', '2', 'Multiplicador de activación λ₀(z) y junta crítica', 'Circolare 2019, C8.7.1.2.1 (hipótesis y punto d: rótula retrasada) y C8.7.1.2.1.1', `
   <p>λ es el multiplicador de las cargas horizontales: cada masa recibe λ·W en su c.d.g., como una aceleración horizontal uniforme λ·g aplicada de forma estática. λ₀ es el valor que abre la junta (en la Circolare, α₀). La junta gira sobre el centro de un bloque de compresiones con ancho finito, no sobre la arista con ancho cero:</p>
-  <div class="eq">${v('c')} = ${v('N')}/(${v('f')}·${v('L')}) · ${v('u')} = ${v('c')}/2 · λ₀(${v('z')}) = (${v('W', 'sup')} + ${v('P')})·[${v('B')}(${v('z')})/2 − ${v('u')}] / [${v('W', 'sup')}·${v('h', 'G')} + ${v('P', 'h')}·(${v('H')} − ${v('z')})]</div>
-  <p>Si la zona comprimida ${v('c')} supera el espesor de la cáscara, el exceso trabaja con la resistencia del núcleo. Junta de cálculo (${I.zJoint === '' ? 'crítica' : 'elegida'}) z = ${f(p2.zc, 2)} m:</p>
+  <div class="eq">${v('c')} = ${v('N')}/(${v('f')}·${v('L')}) · ${v('u')} = ${v('c')}/2 · λ₀(${v('z')}) = ${v('f', 'v')}·(${v('W', 'sup')} + ${v('P')})·[${v('B')}(${v('z')})/2 − ${v('u')}] / [${v('W', 'sup')}·${v('h', 'G')} + ${v('P', 'h')}·(${v('H')} − ${v('z')} + ${v('h', 't')})]</div>
+  <p>Si la zona comprimida ${v('c')} supera el espesor de la fábrica exterior ${v('t', 'ext')}, el exceso trabaja con la resistencia del núcleo. Junta de cálculo (${I.zJoint === '' ? 'crítica' : 'elegida'}) z = ${f(p2.zc, 2)} m:</p>
   <div class="eq">${v('N')} = ${f(p2.J.N, 2)} MN · ${v('L')} = ${f(g.L(p2.zc), 2)} m · ${v('c')} = <span class="res">${f(p2.J.c, 3)} m</span>${p2.J.inShell ? '' : ' (entra en el núcleo)'} · ${v('u')} = <span class="res">${f(p2.J.u, 3)} m</span> · brazo = ${f(g.B(p2.zc) / 2, 3)} − ${f(p2.J.u, 3)} = ${f(p2.J.arm, 3)} m · λ₀ = <span class="res">${f(p2.J.lam0, 4)}</span></div>
-  ${fig(elev, 'Alzado y curva λ₀(z) a la misma escala vertical. Banda: juntas con λ₀ dentro del +5 % del mínimo. Línea roja de trazos horizontal: junta de cálculo.')}
-  <div class="tw"><table><thead><tr><th>z (m)</th><th>N (MN)</th><th>B/2 (m)</th><th>c (m)</th><th>u (m)</th><th>λ₀ compresión ∞</th><th>λ₀</th></tr></thead><tbody>
+  <p>Las fuerzas horizontales son proporcionales a los pesos (aceleración uniforme) aquí y en la curva de capacidad del paso 3. Lo que crece con la altura es el brazo de cada fuerza respecto a la junta y el desplazamiento del giro rígido: esa forma triangular entra en el paso 4 (Φ, Γ, e*). La amplificación de la aceleración del suelo con la altura entra en la demanda (paso 7b), si la junta está por encima de la base.</p>
+  ${fig(elev, 'Alzado y curva λ₀(z) a la misma escala vertical. Juntas candidatas a críticas: λ₀ ≤ 1.05·λ₀,mín.')}
+  <div class="tw"><table><thead><tr><th>z [m]</th><th>N [MN]</th><th>B/2 [m]</th><th>c [m]</th><th>u [m]</th><th>λ₀ compresión ∞</th><th>λ₀</th></tr></thead><tbody>
   ${p2.table.map(c => `<tr${Math.abs(c.z - p2.min.z) < 1e-6 ? ' class="hl"' : ''}><td>${f(c.z, 1)}</td><td>${f(c.N, 2)}</td><td>${f(g.B(c.z) / 2, 2)}</td><td>${f(c.c, 3)}</td><td>${f(c.u, 3)}</td><td>${f(c.lam0inf, 4)}</td><td>${f(c.lam0, 4)}</td></tr>`).join('')}</tbody></table></div>
-  <div class="interp">La junta crítica está a z = ${f(p2.min.z, 1)} m con λ₀ = ${f(p2.min.lam0, 3)}. Las juntas entre z = ${f(p2.zEqMin, 1)} y ${f(p2.zEqMax, 1)} m tienen λ₀ a menos de un 5 % del mínimo: cualquiera de ellas es candidata si su fábrica es peor. El retranqueo de la rótula reduce λ₀ un ${f((1 - p2.min.lam0 / p2.min.lam0inf) * 100, 1)} % respecto a la arista.</div>`);
+  <div class="interp">La junta crítica está a z = ${f(p2.min.z, 1)} m con λ₀ = ${f(p2.min.lam0, 3)}. Juntas candidatas a críticas (λ₀ ≤ 1.05·λ₀,mín): entre z = ${f(p2.zEqMin, 1)} y ${f(p2.zEqMax, 1)} m. El retranqueo de la rótula reduce λ₀ un ${f((1 - p2.min.lam0 / p2.min.lam0inf) * 100, 1)} % respecto a la arista.</div>
+  <h3>Deslizamiento en la junta</h3>
+  <p>Antes de abrirse, la junta transmite la fuerza horizontal ${v('F', 'H')} = λ₀·(${v('W', 'sup')} + ${v('P', 'h')}) con la vertical ${v('F', 'V')} = ${v('f', 'v')}·(${v('W', 'sup')} + ${v('P')}). Si ${v('F', 'H')}/${v('F', 'V')} supera el rozamiento admisible μ, la junta desliza antes de cabecear (criterio propio).</p>
+  <div class="eq">${v('F', 'H')}/${v('F', 'V')} = <span class="res">${f(R.slide.ratio, 3)}</span> ${R.slide.ok ? '≤' : '>'} μ = ${f(R.slide.mu, 2)} → ${R.slide.ok ? 'la junta de cálculo cabecea sin deslizar' : 'la junta de cálculo desliza antes de cabecear'}</div>
+  ${R.slide.zFrom != null ? `<div class="interp">Las juntas por encima de z = ${f(R.slide.zFrom, 1)} m deslizarían antes de cabecear (curva λ₀ a la derecha de la línea verde).</div>` : ''}`);
 
   // Paso 3
   const th0 = p3.th0;
   const rotFig = pierSVG(R, { W: 360, H: 420, sc: 7.2, ox: 130, oy: 390, th: th0, label: `θ₀ = ${f(deg(th0), 1)}° (vuelco)` });
-  const lamFig = chart({ id: 'c3', x0: 0, x1: Math.ceil(p3.dC0 * 1.08), y0: 0, y1: Math.ceil(p3.lam0 * 11) / 10, xlabel: 'd_C: desplazamiento horizontal de la cabeza (m)', ylabel: 'λ',
-    series: [{ pts: p3.pts.map(p => [p.dC, p.lam]), color: 'var(--accent)' }],
-    points: [{ x: 0, y: p3.lam0, color: 'var(--accent)', label: `λ₀ = ${f(p3.lam0, 3)}`, dx: 10, dy: 4 }, { x: p3.dC0, y: 0, color: 'var(--accent)', label: `d_C0 = ${f(p3.dC0, 2)} m`, anchor: 'end', dx: -8, dy: -10 }] });
+  const lamFig = chart({ id: 'c3', x0: 0, x1: Math.ceil(p3.dC0 * 1.08), y0: 0, y1: Math.ceil(p3.lam0 * 9.81 * 1.15 * 10) / 10, xlabel: 'd_C: desplazamiento horizontal de la cabeza [m]', ylabel: 'λ·g [m/s²]',
+    y2: { k: 1 / 9.81, label: 'λ [—]' },
+    series: [{ pts: p3.pts.map(p => [p.dC, p.lam * 9.81]), color: 'var(--accent)' }],
+    points: [{ x: 0, y: p3.lam0 * 9.81, color: 'var(--accent)', label: `λ₀·g = ${f(p3.lam0 * 9.81, 2)} m/s² (λ₀ = ${f(p3.lam0, 3)})`, dx: 10, dy: -8 }, { x: p3.dC0, y: 0, color: 'var(--accent)', label: `d_C0 = ${f(p3.dC0, 2)} m`, anchor: 'end', dx: -8, dy: -10 }] });
   h += sec('3', '3', 'Curva de capacidad λ–d_C', 'Circolare 2019, C8.7.1.2.1.2 (análisis cinemático no lineal con giro finito)', `
   <p>La parte de la pila sobre la junta gira un ángulo θ alrededor del pivote. Con (x<sub>i</sub>, z<sub>i</sub>) la posición de cada masa respecto al pivote en la configuración girada, el equilibrio de momentos da:</p>
   <div class="eq">λ(θ) = Σ ${v('W', 'i')}·(−${v('x', 'i')}) / Σ ${v('W', 'h,i')}·${v('z', 'i')} · tan θ₀ = Σ ${v('W')}·brazo / Σ ${v('W')}·${v('z')} → θ₀ = <span class="res">${f(deg(th0), 2)}°</span>, ${v('d', 'C0')} = <span class="res">${f(p3.dC0, 2)} m</span></div>
   <div class="grid2"><div>${fig(rotFig, 'Pila a escala en la posición de vuelco: el c.d.g. del conjunto queda en la vertical del pivote.')}</div><div>
-  <div class="tw"><table><thead><tr><th>Masa</th><th>z sobre la junta (m)</th><th>Giro de "vuelco propio"</th></tr></thead><tbody>
+  <div class="tw"><table><thead><tr><th>Masa</th><th>z sobre la junta [m]</th><th>Giro de "vuelco propio"</th></tr></thead><tbody>
   ${p3.ownAngles.map(o => `<tr${o.name === 'conjunto' ? ' class="hl"' : ''}><td>${o.name}</td><td>${f(o.z, 2)}</td><td>${f(deg(o.ang), 1)}°</td></tr>`).join('')}</tbody></table></div></div></div>
-  ${fig(lamFig, 'Curva λ–d_C del mecanismo')}
-  <div class="tw"><table><thead><tr><th>θ (°)</th>${[0, .125, .25, .375, .5, .625, .75, .875, 1].map(k => `<th>${f(deg(th0 * k), 1)}</th>`).join('')}</tr></thead><tbody>
-  <tr><td>d<sub>C</sub> (m)</td>${[0, .125, .25, .375, .5, .625, .75, .875, 1].map(k => `<td>${f(p3.state(th0 * k).dC, 2)}</td>`).join('')}</tr>
+  ${fig(lamFig, 'Curva de capacidad del mecanismo: aceleración horizontal uniforme λ·g (eje izquierdo) y multiplicador λ (eje derecho) frente al desplazamiento de la cabeza')}
+  <div class="tw"><table><thead><tr><th>θ [°]</th>${[0, .125, .25, .375, .5, .625, .75, .875, 1].map(k => `<th>${f(deg(th0 * k), 1)}</th>`).join('')}</tr></thead><tbody>
+  <tr><td>d<sub>C</sub> [m]</td>${[0, .125, .25, .375, .5, .625, .75, .875, 1].map(k => `<td>${f(p3.state(th0 * k).dC, 2)}</td>`).join('')}</tr>
   <tr><td>λ</td>${[0, .125, .25, .375, .5, .625, .75, .875, 1].map(k => `<td>${f(Math.max(0, p3.state(th0 * k).lam), 3)}</td>`).join('')}</tr></tbody></table></div>
   <div class="interp">La curva es casi una recta: λ ≈ λ₀·(1 − d_C/d_C0). El vuelco estático se produce cuando el c.d.g. de todas las masas que giran pasa por la vertical del pivote. ${I.deckFixed ? 'El tablero, con poco peso pero en cabeza, rebasa antes esa vertical y adelanta el vuelco del conjunto.' : ''}</div>`);
 
   // Paso 4
-  h += sec('4', '4', 'Oscilador equivalente', 'Circolare 2019, C8.7.1.2.1.3, [C8.7.1.3]–[C8.7.1.5] · FC: C8.5.4', `
-  <p>La forma del mecanismo es el giro rígido: ${v('Φ', 'i')} = (${v('z', 'i')} − ${v('z', 'c')})/(${v('H')} − ${v('z', 'c')}), con 1 en la cabeza (punto de control C). Es adimensional: es el desplazamiento virtual de cada sección, δ<sub>i</sub> = (z<sub>i</sub> − z<sub>c</sub>)·δθ, dividido por el de la cabeza, δ<sub>C</sub> = (H − z<sub>c</sub>)·δθ. Por eso W<sub>i</sub>·Φ<sub>i</sub> y W<sub>i</sub>·Φ<sub>i</sub>² tienen unidades de peso (MN). La pila sobre la junta se discretiza en ${I.nSlices} secciones (regla del punto medio):</p>
-  <div class="tw"><table><thead><tr><th>i</th><th>z (m)</th><th>z<sub>i</sub> (m)</th><th>B (m)</th><th>L (m)</th><th>W<sub>i</sub> (MN)</th><th>Φ<sub>i</sub> (—)</th><th>W<sub>i</sub>·Φ<sub>i</sub> (MN)</th><th>W<sub>i</sub>·Φ<sub>i</sub>² (MN)</th></tr></thead><tbody>
+  h += sec('4', '4', 'Sistema equivalente de un grado de libertad', 'Circolare 2019, C8.7.1.2.1.3, [C8.7.1.3]–[C8.7.1.5] · FC: C8.5.4 · UNE-EN 1998-1, anejo B', `
+  <p>Una pila que cabecea no tiene periodo propio: su periodo crece con la amplitud del giro (Housner, 1963). La equivalencia no es con un oscilador lineal, sino con un sistema de <b>un grado de libertad</b>. Todo el movimiento depende de un solo giro θ, con la forma Φ del sólido rígido. Ese sistema tiene una masa equivalente m* y una ley fuerza–desplazamiento que es la curva de capacidad: no lineal y con rama descendente. Los periodos que aparecen más adelante (T<sub>SLV</sub>, T<sub>SLC</sub>) no son propiedades de la pila. Son periodos de linealizaciones a una amplitud concreta, que solo sirven para leer la demanda en el espectro (pasos 6 y 7a).</p>
+  <p>La forma del mecanismo es el giro rígido: ${v('Φ', 'i')} = (${v('z', 'i')} − ${v('z', 'c')})/(${v('H')} − ${v('z', 'c')}), con 1 en la cabeza (punto de control C). Es adimensional: es el desplazamiento virtual de cada sección, δ<sub>i</sub> = (z<sub>i</sub> − z<sub>c</sub>)·δθ, dividido por el de la cabeza, δ<sub>C</sub> = (H − z<sub>c</sub>)·δθ. Por eso W<sub>i</sub>·Φ<sub>i</sub> y W<sub>i</sub>·Φ<sub>i</sub>² tienen unidades de peso [MN]. La pila sobre la junta se discretiza en ${I.nSlices} secciones (regla del punto medio):</p>
+  <div class="tw"><table><thead><tr><th>i</th><th>z [m]</th><th>z<sub>i</sub> [m]</th><th>B [m]</th><th>L [m]</th><th>W<sub>i</sub> [MN]</th><th>Φ<sub>i</sub> [—]</th><th>W<sub>i</sub>·Φ<sub>i</sub> [MN]</th><th>W<sub>i</sub>·Φ<sub>i</sub>² [MN]</th></tr></thead><tbody>
   ${p4.rows.map(r => `<tr><td>${r.i}</td><td>${r.B == null ? f(r.za, 1) : f(r.za, 1) + '–' + f(r.zb, 1)}</td><td>${f(r.zm, 2)}</td><td>${r.B == null ? '—' : f(r.B, 2)}</td><td>${r.L == null ? '—' : f(r.L, 2)}</td><td>${f(r.W, 3)}</td><td>${f(r.Phi, 3)}</td><td>${f(r.WPhi, 3)}</td><td>${f(r.WPhi2, 3)}</td></tr>`).join('')}
   <tr class="tot"><td>Σ</td><td></td><td></td><td></td><td></td><td>${f(p4.sW, 3)}</td><td></td><td>${f(p4.s1, 3)}</td><td>${f(p4.s2, 3)}</td></tr></tbody></table></div>
-  <div class="eq">${v('m', '', '*')} = Σ${v('W', 'i')}${v('Φ', 'i')}/${v('g')} = ${f(p4.s1, 3)}/9.81 = <span class="res">${f(p4.mstar, 0)} t</span> · Γ = Σ${v('W', 'i')}${v('Φ', 'i')}/Σ${v('W', 'i')}${v('Φ', 'i')}² = ${f(p4.s1, 3)}/${f(p4.s2, 3)} = <span class="res">${f(p4.Gam, 3)}</span> · ${v('e', '', '*')} = Γ·${v('m', '', '*')}/${v('M')} = <span class="res">${f(p4.estar, 3)}</span></div>
-  <p>Integral exacta: ${v('m', '', '*')} = ${f(p4.ex.mstar, 0)} t, Γ = ${f(p4.ex.Gam, 3)}, ${v('e', '', '*')} = ${f(p4.ex.estar, 3)}. Con pesos en MN, Γ y ${v('e', '', '*')} no dependen de usar pesos o masas; ${v('m', '', '*')} se divide por g.</p>
   <h3>Niveles de conocimiento y factor de confianza (s/ Circolare 2019, C8.5.4)</h3>
   <p>Para construcciones de fábrica, los valores de FC los da el texto de C8.5.4 (la tabla C8.5.IV de la Circolare es para edificios de hormigón armado y acero). Traducción:</p>
   <div class="tw"><table><thead><tr><th class="l">Nivel</th><th class="l">Requisitos mínimos</th><th>FC</th></tr></thead><tbody>
   <tr${I.FC === 1.35 ? ' class="hl"' : ''}><td class="l">LC1 · limitado</td><td class="l">Análisis histórico-crítico; levantamiento geométrico completo; investigaciones limitadas de los detalles; ensayos limitados de materiales</td><td>1.35</td></tr>
   <tr${I.FC === 1.2 ? ' class="hl"' : ''}><td class="l">LC2 · adecuado</td><td class="l">Levantamiento completo; investigaciones extensas de los detalles; ensayos extensos de materiales</td><td>1.20</td></tr>
   <tr${I.FC === 1 ? ' class="hl"' : ''}><td class="l">LC3 · exhaustivo</td><td class="l">Levantamiento completo y preciso; investigaciones y ensayos exhaustivos (FC = 1 solo en los parámetros ensayados)</td><td>1.00</td></tr></tbody></table></div>
-  <div class="eq">${v('a', '', '*')} = λ·${v('g')}/(${v('e', '', '*')}·FC) · ${v('d', '', '*')} = ${v('d', 'C')}/Γ → ${v('a', '0', '*')} = ${f(p3.lam0, 4)}·9.81/(${f(p4.estar, 4)}·${f(I.FC, 2)}) = <span class="res">${f(p4.a0s, 2)} m/s²</span> · ${v('d', '0', '*')} = ${f(p3.dC0, 2)}/${f(p4.Gam, 3)} = <span class="res">${f(p4.d0s, 2)} m</span></div>
+  <h3>Parámetros del oscilador equivalente</h3>
+  <p>Transformación de la curva: ${v('a', '', '*')} = λ·${v('g')}/(${v('e', '', '*')}·FC) · ${v('d', '', '*')} = ${v('d', 'C')}/Γ.</p>
+  <div class="tw"><table><thead><tr><th class="l">Parámetro</th><th class="l">Expresión</th><th>Valor</th></tr></thead><tbody>
+  <tr><td class="l">Masa del oscilador equivalente</td><td class="l">${v('m', '', '*')} = Σ${v('W', 'i')}${v('Φ', 'i')}/${v('g')} = ${f(p4.s1, 3)}/9.81</td><td><span class="res">${f(p4.mstar, 0)} t</span></td></tr>
+  <tr><td class="l">Factor de transformación (participación)</td><td class="l">Γ = Σ${v('W', 'i')}${v('Φ', 'i')}/Σ${v('W', 'i')}${v('Φ', 'i')}² = ${f(p4.s1, 3)}/${f(p4.s2, 3)}</td><td><span class="res">${f(p4.Gam, 3)}</span></td></tr>
+  <tr><td class="l">Masa total que gira sobre la junta</td><td class="l">${v('M')} = Σ${v('W', 'i')}/${v('g')} = ${f(p4.sW, 3)}/9.81</td><td><span class="res">${f(p4.Mt, 0)} t</span></td></tr>
+  <tr><td class="l">Fracción de masa participante</td><td class="l">${v('e', '', '*')} = Γ·${v('m', '', '*')}/${v('M')} = ${f(p4.Gam, 3)}·${f(p4.mstar, 0)}/${f(p4.Mt, 0)}</td><td><span class="res">${f(p4.estar, 3)}</span></td></tr>
+  <tr><td class="l">Aceleración de activación del oscilador</td><td class="l">${v('a', '0', '*')} = λ₀·${v('g')}/(${v('e', '', '*')}·FC) = ${f(p3.lam0, 4)}·9.81/(${f(p4.estar, 4)}·${f(I.FC, 2)})</td><td><span class="res">${f(p4.a0s, 2)} m/s²</span></td></tr>
+  <tr><td class="l">Desplazamiento de vuelco del oscilador</td><td class="l">${v('d', '0', '*')} = ${v('d', 'C0')}/Γ = ${f(p3.dC0, 2)}/${f(p4.Gam, 3)}</td><td><span class="res">${f(p4.d0s, 2)} m</span></td></tr>
+  </tbody></table></div>
+  ${(() => { const dv = [['m*', p4.mstar, p4.ex.mstar], ['Γ', p4.Gam, p4.ex.Gam], ['e*', p4.estar, p4.ex.estar]].map(([k, a, b]) => [k, Math.abs(a / b - 1)]).filter(x => x[1] > 0.10);
+    return dv.length ? `<div class="warn">Con ${I.nSlices} secciones, ${dv.map(x => `${x[0]} difiere un ${f(x[1] * 100, 1)} %`).join(', ')} del valor de la integral exacta: aumenta el nº de secciones para discretizar la pila.</div>` : ''; })()}
+  ${(() => { const k = 9.81, x1 = Math.ceil(p3.dC0 * 1.1), y1 = Math.ceil(Math.max(p3.lam0 * k, p4.a0s) * 1.5 * 10) / 10, sc = 1 / (p4.estar * I.FC);
+    return fig(chart({ id: 'c4t', x0: 0, x1, y0: 0, y1, xlabel: 'd_C, d* [m]', ylabel: 'λ·g, a* [m/s²]',
+      series: [{ pts: p3.pts.map(p => [p.dC, p.lam * k]), color: 'var(--muted)', w: 1.6 }, { pts: p4.pts.map(p => [p.d, p.a]), color: 'var(--accent)' }],
+      points: [{ x: 0, y: p3.lam0 * k, color: 'var(--muted)' }, { x: 0, y: p4.a0s, color: 'var(--accent)' }, { x: p3.dC0, y: 0, color: 'var(--muted)' }, { x: p4.d0s, y: 0, color: 'var(--accent)' }],
+      arrows: [{ x0: x1 * 0.04, y0: p3.lam0 * k, x1: x1 * 0.04, y1: p4.a0s, color: 'var(--ink)' }, { x0: p3.dC0, y0: y1 * 0.06, x1: p4.d0s, y1: y1 * 0.06, color: 'var(--ink)' }],
+      texts: [{ x: x1 * 0.06, y: (p3.lam0 * k + p4.a0s) / 2 + y1 * 0.12, t: `÷ (e*·FC) = ÷ ${f(p4.estar * I.FC, 3)}: ${f(p3.lam0 * k, 2)} → ${f(p4.a0s, 2)} m/s²`, color: 'var(--ink)' },
+        { x: (p3.dC0 + p4.d0s) / 2, y: y1 * 0.1, t: `÷ Γ = ÷ ${f(p4.Gam, 3)}: ${f(p3.dC0, 2)} → ${f(p4.d0s, 2)} m`, anchor: 'middle', color: 'var(--ink)' }],
+      legend: [{ t: 'curva física λ·g–d_C', color: 'var(--muted)' }, { t: 'oscilador a*–d*', color: 'var(--accent)' }] }),
+      'La curva del oscilador es la curva física escalada: las aceleraciones se dividen por e*·FC y los desplazamientos por Γ (Circolare [C8.7.1.3]–[C8.7.1.4]).'); })()}
   <div class="interp">El ${f(p4.estar * 100, 0)} % de la masa participa en el mecanismo. Γ = ${f(p4.Gam, 2)}: la cabeza se mueve ${f(p4.Gam, 2)} veces más que el oscilador equivalente. El desplazamiento d* coincide con el desplazamiento físico del punto de la pila a z* = ${f(p4.zstar, 1)} m. d* es un desplazamiento del oscilador, no un movimiento físico.</div>`);
 
   // Paso 4b
   const d4 = p4b;
-  const zoomPts = []; for (let i = 0; i <= 40; i++) { const th = p3.th0 * 0.004 * i / 40; const s = p3.state(th); zoomPts.push([s.dC / p4.Gam * 1000, s.lam * 9.81 / (p4.estar * I.FC)]); }
-  const fig4b = chart({ id: 'c4b', x0: 0, x1: Math.max(60, Math.ceil(d4.dy * 1000 * 3 / 10) * 10), y0: 0, y1: Math.ceil(p4.a0s * 1.2), xlabel: 'd* (mm) · oscilador equivalente', ylabel: 'a* (m/s²)',
-    series: [{ pts: zoomPts.filter(p => p[0] >= d4.dy * 1000), color: 'var(--accent)' }, { pts: zoomPts, color: 'var(--muted)', dash: '4 3', w: 1.2 }, { pts: [[0, 0], [d4.dy * 1000, d4.ay]], color: 'var(--violet)' }],
-    points: [{ x: d4.dy * 1000, y: d4.ay, color: 'var(--ink)', label: `d_y* = ${f(d4.dy * 1000, 1)} mm\na_y* = ${f(d4.ay, 2)} m/s²`, dx: 10, dy: 22 }],
-    legend: [{ t: 'rama elástica a* = (4π²/T₀²)·d*', color: 'var(--violet)' }, { t: 'curva del cuerpo rígido', color: 'var(--muted)', dash: '4 3' }], legendLeft: false });
-  const shp = (() => { const W = 260, Hh = 360, sc = 7.5, ox = 60, oy = 330; let s = `<svg viewBox="0 0 ${W} ${Hh}" role="img" aria-label="forma elástica">`;
-    s += `<line x1="${ox}" x2="${ox}" y1="${oy}" y2="${oy - I.H * sc}" style="stroke:var(--ink)"/><line x1="${ox - 30}" x2="${ox + 170}" y1="${oy}" y2="${oy}" style="stroke:var(--ink)"/>`;
-    s += `<path d="${d4.shape.filter((_, i) => i % 10 === 0).map((p, i) => `${i ? 'L' : 'M'}${ox + p.u * 150} ${oy - p.z * sc}`).join(' ')}" style="fill:none;stroke:var(--violet);stroke-width:2.2"/>`;
-    s += `<path d="M${ox} ${oy} L${ox + 150} ${oy - I.H * sc}" style="fill:none;stroke:var(--accent);stroke-width:1.5;stroke-dasharray:5 3"/>`;
-    s += `<text x="${ox + 6}" y="${oy - I.H * sc - 10}" font-size="11" style="fill:var(--violet)">forma elástica (T₀)</text><text x="${ox + 70}" y="${oy - 120}" font-size="11" style="fill:var(--accent)">giro rígido Φ</text></svg>`; return s; })();
+  const x4b = Math.max(0.06, Math.ceil(d4.dy * 3 * 100) / 100), thZ = Math.min(p3.th0, 1.2 * x4b * p4.Gam / p3.Hs);
+  const zoomPts = []; for (let i = 0; i <= 60; i++) { const th = thZ * i / 60; const s = p3.state(th); zoomPts.push([s.dC / p4.Gam, s.lam * 9.81 / (p4.estar * I.FC)]); }
+  const fig4b = chart({ id: 'c4b', x0: 0, x1: x4b, y0: 0, y1: Math.ceil(p4.a0s * 1.6 * 10) / 10, xlabel: 'd* [m] · oscilador equivalente', ylabel: 'a* [m/s²]',
+    series: [{ pts: zoomPts.filter(p => p[0] >= d4.dy), color: 'var(--accent)' }, { pts: zoomPts, color: 'var(--muted)', dash: '4 3', w: 1.2 }, { pts: [[0, 0], [d4.dy, d4.ay]], color: 'var(--violet)' }],
+    points: [{ x: d4.dy, y: d4.ay, color: 'var(--ink)', label: `d_y* = ${f(d4.dy, 3)} m\na_y* = ${f(d4.ay, 2)} m/s²`, dx: 10, dy: 22 }],
+    legend: [{ t: 'rama elástica a* = (4π²/T₀²)·d*', color: 'var(--violet)' }, { t: `curva del cuerpo rígido: desciende con pendiente −a₀*/d₀* = −${f(p4.a0s / p4.d0s, 2)} m/s²/m`, color: 'var(--muted)', dash: '4 3' }], legendLeft: true });
   h += sec('4b', '4b', 'Rama elástica inicial (antes del despegue)', 'Circolare 2019, C8.7.1.2.1.3, [C8.7.1.6]–[C8.7.1.7]: elementos libres de vibrar', `
-  <p>Una pila exenta es un "elemento libre de vibrar": antes de despegar responde como un voladizo elástico de periodo T₀. Se añade a la curva un tramo inicial ${v('a', '', '*')} = (4π²/${v('T', '0')}²)·${v('d', '', '*')} hasta cortar la curva del cuerpo rígido. T₀ se calcula como voladizo de sección variable, con el módulo de deformación promedio de la sección completa (cáscara y núcleo) E = ${f(I.E, 0)} MPa y G = ${f(I.Gratio, 2)}·E, y con las masas en cabeza (flexión + cortante, método de Rayleigh con la deformada bajo cargas horizontales iguales a los pesos):</p>
-  <div class="eq">${v('T', '0')} = 2π·√(Σ${v('W', 'i')}${v('u', 'i')}² / (${v('g')}·Σ${v('W', 'i')}${v('u', 'i')})) = <span class="res">${f(d4.T0, 3)} s</span> <span class="s">· u en cabeza bajo cargas = pesos: ${f(d4.uTopW * 1000, 1)} mm (flexión ${f(d4.uTopB * 1000, 1)} mm)</span></div>
-  <div class="tw"><table><thead><tr><th class="l">Estimación de T₀</th><th>T₀ (s)</th></tr></thead><tbody>
-  <tr class="hl"><td class="l">Voladizo troncopiramidal, flexión + cortante (adoptado)</td><td>${f(d4.T0, 3)}</td></tr>
+  <p>Una pila exenta, antes de despegar, responde como una ménsula elástica de periodo T₀. Se añade a la curva un tramo inicial ${v('a', '', '*')} = (4π²/${v('T', '0')}²)·${v('d', '', '*')} hasta cortar la curva del cuerpo rígido. T₀ se calcula como ménsula de sección variable empotrada en la junta de cálculo (z = ${f(p2.zc, 2)} m), con el módulo de deformación promedio de la sección completa (fábrica exterior y núcleo) E = ${f(I.E, 0)} MPa y G = ${f(I.Gratio, 2)}·E, y con las masas en cabeza (flexión + cortante, método de Rayleigh con la deformada bajo cargas horizontales iguales a los pesos):</p>
+  <div class="eq">${v('T', '0')} = 2π·√(Σ${v('W', 'i')}${v('u', 'i')}² / (${v('g')}·Σ${v('W', 'i')}${v('u', 'i')})) = <span class="res">${f(d4.T0, 3)} s</span> <span class="s">· u en cabeza bajo cargas = pesos: ${f(d4.uTopW, 3)} m (flexión ${f(d4.uTopB, 3)} m)</span></div>
+  <div class="tw"><table><thead><tr><th class="l">Estimación de T₀</th><th>T₀ [s]</th></tr></thead><tbody>
+  <tr class="hl"><td class="l">Ménsula troncopiramidal, flexión + cortante (adoptado)</td><td>${f(d4.T0, 3)}</td></tr>
   <tr><td class="l">Solo flexión</td><td>${f(d4.T0b, 3)}</td></tr>
-  <tr><td class="l">Circolare [C8.7.1.7], k = 6.2, λ = H/B<sub>base</sub> = ${f(I.H / g.Bbase, 2)}</td><td>${f(d4.T0circ, 3)}</td></tr></tbody></table></div>
-  <div class="eq">4π²/${v('T', '0')}² = ${f(d4.k0, 1)} s⁻² → ${v('d', 'y', '*')} = <span class="res">${f(d4.dy * 1000, 1)} mm</span> · ${v('a', 'y', '*')} = <span class="res">${f(d4.ay, 2)} m/s²</span> · en cabeza ≈ ${f(d4.dCy * 1000, 0)} mm</div>
-  <div class="grid2"><div style="max-width:300px">${fig(shp, 'Forma elástica frente a la forma del giro rígido')}</div><div>${fig(fig4b, 'Detalle del origen de la curva de capacidad completa')}</div></div>
-  <div class="interp">Antes de girar, la cabeza se mueve unos ${f(d4.dCy * 100, 1)} cm: la fase elástica es invisible a la escala del cabeceo, pero fija ${v('T', '0')}, que sirve para la verificación de despegue (SLD) y como inicio del intervalo de demanda.</div>`);
+  <tr><td class="l">Circolare [C8.7.1.7], k = 6.2, λ = (H − z<sub>c</sub>)/B(z<sub>c</sub>) = ${f((I.H - p2.zc) / g.B(p2.zc), 2)}</td><td>${f(d4.T0circ, 3)}</td></tr>
+  ${d4.elevated ? `<tr><td class="l">Pila completa desde la base: periodo ${v('T', '1')} de la estructura principal (paso 7)</td><td>${f(d4.T1, 3)}</td></tr>` : ''}</tbody></table></div>
+  <div class="eq">4π²/${v('T', '0')}² = ${f(d4.k0, 1)} s⁻² → ${v('d', 'y', '*')} = <span class="res">${f(d4.dy, 3)} m</span> · ${v('a', 'y', '*')} = <span class="res">${f(d4.ay, 2)} m/s²</span> · en cabeza ≈ ${f(d4.dCy, 3)} m</div>
+  ${fig(fig4b, 'Detalle del origen de la curva de capacidad completa')}
+  <div class="interp">Antes de girar, la cabeza se mueve unos ${f(d4.dCy, 3)} m: la fase elástica es invisible a la escala del cabeceo, pero fija ${v('T', '0')}, que sirve para la verificación de despegue (SLD) y como inicio del intervalo de demanda.</div>`);
 
   // Paso 5
   const capPts = p4.pts.map(p => [p.d, p.a]);
-  const fig5 = chart({ id: 'c5', x0: 0, x1: Math.ceil(p4.d0s * 1.08), y0: 0, y1: Math.ceil(p4.a0s * 1.2), xlabel: 'd* (m) · oscilador equivalente', ylabel: 'a* (m/s²)',
+  const fig5 = chart({ id: 'c5', x0: 0, x1: Math.ceil(p4.d0s * 1.08), y0: 0, y1: Math.ceil(p4.a0s * 1.2), xlabel: 'd* [m] · oscilador equivalente', ylabel: 'a* [m/s²]',
     series: [{ pts: capPts, color: 'var(--accent)' }], bands: [{ x0: 0, x1: p5.SLV.d, color: 'var(--coral)', op: .1 }],
+    legend: [{ t: 'zona admisible SLV (d* ≤ d_SLV)', color: 'var(--coral)', box: true, op: .15 }],
     vlines: [{ x: p5.cSLV.d, y1: p5.cSLV.a, color: 'var(--muted)' }, { x: p5.cSLC.d, y1: p5.cSLC.a, color: 'var(--muted)' }].concat(p5.uLim ? [{ x: p5.uLim.d, y1: p5.uLim.a, color: 'var(--coral)' }] : []),
     points: [{ x: 0, y: p4.a0s, color: 'var(--accent)', label: `a₀* = ${f(p4.a0s, 2)} m/s²`, dx: 8, dy: -8 },
       { x: p5.cSLV.d, y: p5.cSLV.a, color: 'var(--muted)', hollow: true, label: `0.4·d₀* = ${f(p5.cSLV.d, 2)} m`, dx: 8, dy: -10 },
       { x: p5.cSLC.d, y: p5.cSLC.a, color: 'var(--muted)', hollow: true, label: `0.6·d₀* = ${f(p5.cSLC.d, 2)} m`, dx: 8, dy: -10 },
-      { x: p4.d0s, y: 0, color: 'var(--accent)', label: `d₀* = ${f(p4.d0s, 2)} m`, anchor: 'end', dx: -8, dy: -10 }].concat(p5.uLim ? [{ x: p5.uLim.d, y: p5.uLim.a, color: 'var(--coral)', label: `d_lím* = ${f(p5.uLim.d, 3)} m`, dx: 10, dy: 26 }] : []) });
+      { x: p4.d0s, y: 0, color: 'var(--accent)', label: `d₀* = ${f(p4.d0s, 2)} m`, dx: 8, dy: -10 }].concat(p5.uLim ? [{ x: p5.uLim.d, y: p5.uLim.a, color: 'var(--coral)', label: `d_lím* = ${f(p5.uLim.d, 3)} m`, anchor: 'end', dx: -10, dy: 24 }] : []) });
   const colU = p5.uLim ? `<td>${f(p5.uLim.d, 3)}</td>` : '<td>—</td>';
   h += sec('5', '5', 'Capacidad de desplazamiento', 'Circolare 2019, C8.7.1.2.1.6 · límite voluntario del usuario (análogo a la pérdida de apoyo, "sfilamento di travi")', `
   <p>${v('d', '0', '*')} es el desplazamiento de vuelco estático: donde la curva de capacidad llega a ${v('a', '', '*')} = 0. La Circolare fija los umbrales en el 40 % (SLV) y el 60 % (SLC) de ${v('d', '0', '*')}, o antes si rompe una conexión que reduce la capacidad más de un 50 %. El usuario añade su límite ${v('d', '', '*')}<sub>lím</sub> = ${v('d', 'C,lím')}/Γ = ${f(I.dClim, 2)}/${f(p4.Gam, 3)} = ${f(p5.lim, 3)} m.</p>
   <div class="tw"><table><thead><tr><th class="l">Umbral</th><th>Circolare SLV (0.4·d₀*)</th><th>Circolare SLC (0.6·d₀*)</th><th>Usuario (d<sub>C,lím</sub>/Γ)</th></tr></thead><tbody>
-  <tr><td class="l">d* (m)</td><td>${f(p5.cSLV.d, 3)}</td><td>${f(p5.cSLC.d, 3)}</td>${colU}</tr>
-  <tr><td class="l">a*(d*) (m/s²)</td><td>${f(p5.cSLV.a, 2)}</td><td>${f(p5.cSLC.a, 2)}</td><td>${p5.uLim ? f(p5.uLim.a, 2) : '—'}</td></tr>
-  <tr><td class="l">Giro θ (°)</td><td>${f(deg(p5.cSLV.th), 1)}</td><td>${f(deg(p5.cSLC.th), 1)}</td><td>${p5.uLim ? f(deg(p5.uLim.th), 1) : '—'}</td></tr>
-  <tr><td class="l">d<sub>C</sub> en cabeza (m)</td><td>${f(p5.cSLV.dC, 2)}</td><td>${f(p5.cSLC.dC, 2)}</td><td>${p5.uLim ? f(p5.uLim.dC, 2) : '—'}</td></tr></tbody></table></div>
+  <tr><td class="l">d* [m]</td><td>${f(p5.cSLV.d, 3)}</td><td>${f(p5.cSLC.d, 3)}</td>${colU}</tr>
+  <tr><td class="l">a*(d*) [m/s²]</td><td>${f(p5.cSLV.a, 2)}</td><td>${f(p5.cSLC.a, 2)}</td><td>${p5.uLim ? f(p5.uLim.a, 2) : '—'}</td></tr>
+  <tr><td class="l">Giro θ [°]</td><td>${f(deg(p5.cSLV.th), 1)}</td><td>${f(deg(p5.cSLC.th), 1)}</td><td>${p5.uLim ? f(deg(p5.uLim.th), 1) : '—'}</td></tr>
+  <tr><td class="l">d<sub>C</sub> en cabeza [m]</td><td>${f(p5.cSLV.dC, 2)}</td><td>${f(p5.cSLC.dC, 2)}</td><td>${p5.uLim ? f(p5.uLim.dC, 2) : '—'}</td></tr></tbody></table></div>
   <div class="eq">${v('d', 'SLV')} = mín(${f(p5.cSLV.d, 3)}; ${isFinite(p5.lim) ? f(p5.lim, 3) : '—'}) = <span class="res">${f(p5.SLV.d, 3)} m</span> (gobierna: ${p5.SLV.gov}) · ${v('d', 'SLC')} = mín(${f(p5.cSLC.d, 3)}; ${isFinite(p5.lim) ? f(p5.lim, 3) : '—'}) = <span class="res">${f(p5.SLC.d, 3)} m</span> (gobierna: ${p5.SLC.gov})</div>
   ${fig(fig5, 'Curva de capacidad con los umbrales de la Circolare (huecos) y el del usuario')}
-  <div class="interp">${p5.SLV.gov === 'usuario' ? `El límite del usuario reduce el umbral SLV de ${f(p5.cSLV.d, 2)} a ${f(p5.SLV.d, 3)} m (${f(p5.cSLV.d / p5.SLV.d, 1)} veces menos). Con el umbral de la Circolare la cabeza se desplazaría ${f(p5.cSLV.dC, 2)} m, algo físicamente inverosímil: el tablero habría perdido el apoyo.` : `Gobierna el umbral de la Circolare. Comprueba que un desplazamiento de cabeza de ${f(p5.SLV.dC, 2)} m es compatible con los apoyos del tablero.`}</div>`);
+  <div class="interp">${p5.SLV.gov === 'usuario' ? `El límite del usuario reduce el umbral SLV de ${f(p5.cSLV.d, 2)} a ${f(p5.SLV.d, 3)} m (${f(p5.cSLV.d / p5.SLV.d, 1)} veces menos). Con el umbral de la Circolare la cabeza se desplazaría ${f(p5.cSLV.dC, 2)} m, una magnitud posiblemente incompatible con las condiciones de apoyo del tablero.` : `Gobierna el umbral de la Circolare. Comprueba que un desplazamiento de cabeza de ${f(p5.SLV.dC, 2)} m es compatible con los apoyos del tablero.`}</div>`);
 
   // Paso 6
   const kS = p5.SLV.a / p5.SLV.d, kSLV = (2 * Math.PI / p6.SLV.T) ** 2, kSLC = (2 * Math.PI / p6.SLC.T) ** 2;
   const xm6 = Math.max(2 * p5.SLV.d, 0.5);
-  const fig6 = chart({ id: 'c6', x0: 0, x1: xm6, y0: 0, y1: Math.ceil(p4.a0s * 1.5), xlabel: 'd* (m) · oscilador equivalente', ylabel: 'a* (m/s²)',
+  const fig6 = chart({ id: 'c6', x0: 0, x1: xm6, y0: 0, y1: Math.ceil(p4.a0s * 1.5), xlabel: 'd* [m] · oscilador equivalente', ylabel: 'a* [m/s²]',
     series: [{ pts: [[0, 0], [p4b.dy, p4b.ay]].concat(capPts.filter(p => p[0] > p4b.dy)), color: 'var(--accent)' },
-      { pts: [[0, 0], [xm6, kS * xm6]], color: 'var(--muted)', dash: '4 3', w: 1.2 }, { pts: [[0, 0], [xm6, kSLV * xm6]], color: 'var(--coral)', w: 1.8 }, { pts: [[0, 0], [xm6, kSLC * xm6]], color: 'var(--amber)', w: 1.5 }],
-    points: [{ x: p5.SLV.d, y: p5.SLV.a, color: 'var(--coral)', label: `d_SLV = ${f(p5.SLV.d, 3)} m`, dx: 10, dy: 22 }],
-    legend: [{ t: `T_sec = ${f(p6.SLV.Tsec, 2)} s`, color: 'var(--muted)', dash: '4 3' }, { t: `T_SLV = 1.68π√(d/a*) = ${f(p6.SLV.T, 2)} s`, color: 'var(--coral)' }, { t: `T_SLC = 1.56π√(d/a*) = ${f(p6.SLC.T, 2)} s`, color: 'var(--amber)' }] });
+      { pts: [[0, 0], [xm6, kS * xm6]], color: 'var(--muted)', dash: '4 3', w: 1.2 }, { pts: [[0, 0], [xm6, kSLV * xm6]], color: 'var(--coral)', w: 1.8 }, { pts: [[0, 0], [xm6, kSLC * xm6]], color: 'var(--violet)', w: 1.5 }],
+    points: [{ x: p5.SLV.d, y: p5.SLV.a, color: 'var(--accent)', label: `d_SLV = ${f(p5.SLV.d, 3)} m`, dx: 10, dy: 22 }],
+    legend: [{ t: 'curva de capacidad', color: 'var(--accent)' }, { t: `recta del periodo T_sec = ${f(p6.SLV.Tsec, 2)} s`, color: 'var(--muted)', dash: '4 3' }, { t: `recta del periodo T_SLV = ${f(p6.SLV.T, 2)} s`, color: 'var(--coral)' }, { t: `recta del periodo T_SLC = ${f(p6.SLC.T, 2)} s`, color: 'var(--violet)' }], legendLeft: true });
   h += sec('6', '6', 'Periodos', 'Circolare 2019, C8.7.1.2.1.8, [C8.7.1.10]–[C8.7.1.11]', `
-  <div class="tw"><table><thead><tr><th class="l">Periodo</th><th class="l">Significado físico</th><th>Valor (s)</th></tr></thead><tbody>
+  <div class="tw"><table><thead><tr><th class="l">Periodo</th><th class="l">Significado físico</th><th>Valor [s]</th></tr></thead><tbody>
   <tr><td class="l">${v('T', '0')}</td><td class="l">Vibración elástica de la pila antes de despegar</td><td>${f(p6.T0, 3)}</td></tr>
   <tr><td class="l">${v('T', 'sec')} = 2π√(d/a*)</td><td class="l">Periodo de cabeceo con la amplitud del umbral (${v('d', 'C')} = ${f(p5.SLV.dC, 2)} m en cabeza)</td><td>${f(p6.SLV.Tsec, 3)}</td></tr>
   <tr class="hl"><td class="l">${v('T', 'SLV')} = 1.68π√(${v('d', 'SLV')}/a*)</td><td class="l">Oscilador lineal equivalente del SLV (84 % del secante, por la dispersión cerca de la inestabilidad)</td><td>${f(p6.SLV.T, 3)}</td></tr>
   <tr class="hl"><td class="l">${v('T', 'SLC')} = 1.56π√(${v('d', 'SLC')}/a*)</td><td class="l">Oscilador lineal equivalente del SLC (78 % del secante)</td><td>${f(p6.SLC.T, 3)}</td></tr></tbody></table></div>
-  ${fig(fig6, 'Rectas de periodo desde el origen: la de T_SLV es más empinada que la secante (rigidez ficticia mayor).')}
+  ${fig(fig6, 'd_SLV es un punto de la curva de capacidad (paso 5). La recta secante pasa por él y define T_sec. T_SLV y T_SLC son periodos reducidos que solo se usan para leer la demanda en el espectro; sus rectas no cortan la curva en ningún umbral.')}
   <div class="interp">El periodo de cabeceo crece con la amplitud (Housner, 1963): una pila que cabecea no tiene un periodo propio fijo. La demanda se busca en el intervalo [${f(p6.T0, 2)}; ${f(p6.SLV.T, 2)}] s. ${p6.SLV.T > p7.TD ? `T_SLV supera T_D = ${f(p7.TD, 1)} s: está en la rama de desplazamiento espectral constante, así que la reducción 2π → 1.68π no cambia la demanda.` : ''}${p6.SLV.T > 4 ? ' T_SLV supera 4 s: se usa el anejo A.' : ''}</div>`);
 
   // Paso 7a
-  h += sec('7a', '7a', 'Criterios de comprobación', 'Linealización equivalente · Circolare 2019, C8.7.1.2.1.8', `
-  <ol><li>Se supone que el sismo lleva el mecanismo justo al umbral ${v('d', 'SLV')}.</li>
-  <li>En esa situación la pila se sustituye por un oscilador lineal de periodo ${v('T', 'SLV')} y amortiguamiento equivalente ξ.</li>
-  <li>La demanda es el desplazamiento espectral de ese oscilador: Δ<sub>d</sub> = máx ${v('S', 'De')}(T) en [${v('T', '0')}, ${v('T', 'SLV')}].</li>
-  <li>Se compara desplazamiento con desplazamiento: si Δ<sub>d</sub> ≤ ${v('d', 'SLV')}, el sismo no es capaz de llevar la pila al umbral.</li></ol>
-  <p>La Circolare lo formula a la inversa: busca la aceleración del suelo ${v('a', 'g,SLV')} que haría Δ<sub>d</sub> = ${v('d', 'SLV')} y la compara con la ${v('a', 'g')} del emplazamiento. El cociente es el índice de seguridad.</p>
+  h += sec('7a', '7a', 'Criterios de comprobación', 'Circolare 2019, C8.7.1.2.1.5 [C8.7.1.9] y C8.7.1.2.1.8 (linealización equivalente)', `
+  <p>Cada estado límite se comprueba con su propio sismo (periodo de retorno, paso 7) comparando demanda y capacidad del oscilador equivalente.</p>
+  <p><b>SLD · despegue.</b> Antes de despegar la pila es una ménsula elástica de periodo ${v('T', '0')}. Se comprueba en aceleración: la aceleración espectral ${v('S', 'e')}(${v('T', '0')}) con ξ = 5 % no debe superar la de despegue ${v('a', 'y', '*')} (Circolare [C8.7.1.9]). El límite del usuario ${v('d', 'C,lím')} no interviene: solo acota los umbrales del SLV y del SLC.</p>
+  <p><b>SLV y SLC · cabeceo.</b> Se comprueban en desplazamiento con una linealización equivalente (Circolare C8.7.1.2.1.8). Se supone que el sismo lleva el mecanismo justo hasta el umbral ${v('d', 'SL')}. En ese estado la pila se sustituye por un oscilador lineal de periodo ${v('T', 'SL')} y amortiguamiento ξ<sub>SL</sub>. La demanda es su desplazamiento espectral, Δ<sub>d</sub> = máx ${v('S', 'De')}(T) en [${v('T', '0')}, ${v('T', 'SL')}], y se cumple si Δ<sub>d</sub> ≤ ${v('d', 'SL')}.</p>
+  <div class="tw"><table><thead><tr><th class="l">Estado</th><th class="l">Umbral d<sub>SL</sub></th><th class="l">Periodo T<sub>SL</sub></th><th>ξ</th></tr></thead><tbody>
+  <tr><td class="l">SLV</td><td class="l">mín(0.4·d₀*; d*<sub>lím</sub>) = ${f(p5.SLV.d, 3)} m</td><td class="l">1.68π·√(d/a*) = ${f(p6.SLV.T, 2)} s</td><td>${f(I.xiSLV, 0)} %</td></tr>
+  <tr><td class="l">SLC</td><td class="l">mín(0.6·d₀*; d*<sub>lím</sub>) = ${f(p5.SLC.d, 3)} m</td><td class="l">1.56π·√(d/a*) = ${f(p6.SLC.T, 2)} s</td><td>${f(I.xiSLC, 0)} %</td></tr></tbody></table></div>
+  <p>En los tres casos la Circolare formula también la forma inversa: la aceleración del suelo ${v('a', 'g')} de capacidad que agota el criterio, comparada con la ${v('a', 'g')} del emplazamiento. El cociente es el índice de seguridad.</p>
+  <p>Si la junta está en altura, la demanda se toma del espectro en la cota de la junta (paso 7b).</p>
   <div class="warn">El amortiguamiento equivalente de ${f(I.xiSLV, 0)} % (SLV) y ${f(I.xiSLC, 0)} % (SLC) procede de la Circolare, que lo da "en ausencia de valoraciones más precisas" para mecanismos locales de edificios de fábrica (disipación por impactos del cabeceo). Es un valor empírico no calibrado específicamente para pilas de puente: conviene estudiar su sensibilidad.</div>`);
 
   // Paso 7
-  const L7 = p7.lev, Ts = []; for (let i = 1; i <= 400; i++) Ts.push(4 * i / 400);
+  const L7 = p7.lev, Tx = Math.max(4, Math.ceil(1.1 * Math.max(p6.SLV.T, p6.SLC.T) * 2) / 2), Ts = []; for (let i = 1; i <= 500; i++) Ts.push(Tx * i / 500);
   const colsL = { SLD: 'var(--sky)', SLV: 'var(--coral)', SLC: 'var(--violet)' };
-  const figSe = chart({ id: 'c7a', x0: 0, x1: 4, y0: 0, y1: Math.ceil(Math.max(...['SLD', 'SLV', 'SLC'].map(k => p7.Se(p7.TC, L7[k].ag, L7[k].xi) / 9.81)) * 11) / 10, xlabel: 'T (s)', ylabel: 'S_e (g)',
-    series: ['SLD', 'SLV', 'SLC'].map(k => ({ pts: Ts.map(T => [T, p7.Se(T, L7[k].ag, L7[k].xi) / 9.81]), color: colsL[k] })),
-    vlines: [{ x: p6.T0, color: 'var(--ink)' }, { x: p6.SLV.T, color: 'var(--coral)' }, { x: p6.SLC.T, color: 'var(--violet)' }],
-    points: [{ x: p6.T0, y: p7.Se(p6.T0, L7.SLD.ag, 5) / 9.81, color: 'var(--sky)', label: `S_e(T₀) = ${f(p7.Se(p6.T0, L7.SLD.ag, 5), 2)} m/s² (SLD)`, dx: 10, dy: 30 }],
-    legend: ['SLD', 'SLV', 'SLC'].map(k => ({ t: `${k}: a_g = ${f(L7[k].ag, 3)} g, ξ = ${L7[k].xi} %`, color: colsL[k] })).concat([{ t: `T₀ = ${f(p6.T0, 3)} s`, color: 'var(--ink)', dash: '3 3' }, { t: `T_SLV = ${f(p6.SLV.T, 2)} s`, color: 'var(--coral)', dash: '3 3' }, { t: `T_SLC = ${f(p6.SLC.T, 2)} s`, color: 'var(--violet)', dash: '3 3' }]) });
-  const figSd = chart({ id: 'c7b', x0: 0, x1: 4, y0: 0, y1: Math.ceil(Math.max(...['SLD', 'SLV', 'SLC'].map(k => p7.SDe(4, L7[k].ag, L7[k].xi))) * 1200) / 1000 * 1000, xlabel: 'T (s)', ylabel: 'S_De (mm)',
-    series: ['SLD', 'SLV', 'SLC'].map(k => ({ pts: Ts.map(T => [T, p7.SDe(T, L7[k].ag, L7[k].xi) * 1000]), color: colsL[k] })),
-    vlines: [{ x: p6.T0, color: 'var(--ink)' }, { x: p6.SLV.T, color: 'var(--coral)' }, { x: p6.SLC.T, color: 'var(--violet)' }],
-    points: [{ x: p6.SLV.T, y: p8.SLV.Dd * 1000, color: 'var(--coral)', label: `Δd SLV = ${f(p8.SLV.Dd * 1000, 1)} mm`, dx: 8, dy: 16 }, { x: p6.SLC.T, y: p8.SLC.Dd * 1000, color: 'var(--violet)', label: `Δd SLC = ${f(p8.SLC.Dd * 1000, 1)} mm`, anchor: 'end', dx: -8, dy: -8 }],
-    legend: ['SLD', 'SLV', 'SLC'].map(k => ({ t: `${k}: ξ = ${L7[k].xi} %`, color: colsL[k] })).concat([{ t: `T₀ = ${f(p6.T0, 3)} s`, color: 'var(--ink)', dash: '3 3' }, { t: `T_SLV = ${f(p6.SLV.T, 2)} s`, color: 'var(--coral)', dash: '3 3' }, { t: `T_SLC = ${f(p6.SLC.T, 2)} s`, color: 'var(--violet)', dash: '3 3' }]), legendLeft: true });
+  const EL = p7.elev, sZ = EL ? 'Z' : '';
+  const perV = [{ x: p6.T0, color: 'var(--ink)' }, { x: p6.SLV.T, color: 'var(--coral)' }, { x: p6.SLC.T, color: 'var(--violet)' }];
+  const perL = [{ t: `T₀ = ${f(p6.T0, 3)} s`, color: 'var(--ink)', dash: '3 3' }, { t: `T_SLV = ${f(p6.SLV.T, 2)} s`, color: 'var(--coral)', dash: '3 3' }, { t: `T_SLC = ${f(p6.SLC.T, 2)} s`, color: 'var(--violet)', dash: '3 3' }];
+  const figSe = chart({ id: 'c7a', x0: 0, x1: Tx, y0: 0, y1: Math.ceil(Math.max(...['SLD', 'SLV', 'SLC'].map(k => Math.max(...Ts.map(T => p7.SeD(T, L7[k].ag, L7[k].xi))))) * 1.6), xlabel: 'T [s]', ylabel: `S_e${sZ} [m/s²]`,
+    series: ['SLD', 'SLV', 'SLC'].map(k => ({ pts: Ts.map(T => [T, p7.SeD(T, L7[k].ag, L7[k].xi)]), color: colsL[k] })),
+    vlines: perV,
+    points: [{ x: p6.T0, y: p7.SeD(p6.T0, L7.SLD.ag, 5), color: 'var(--sky)', label: `S_e${sZ}(T₀) = ${f(p7.SeD(p6.T0, L7.SLD.ag, 5), 2)} m/s² (SLD)`, dx: 10, dy: 30 }],
+    legend: ['SLD', 'SLV', 'SLC'].map(k => ({ t: `${k}: a_g = ${f(L7[k].ag, 3)} g, ξ = ${L7[k].xi} %`, color: colsL[k] })).concat(perL), legendLeft: true });
+  const SdMax = Math.max(...['SLD', 'SLV', 'SLC'].map(k => Math.max(...Ts.map(T => p7.SDeD(T, L7[k].ag, L7[k].xi)))));
+  const figSd = chart({ id: 'c7b', x0: 0, x1: Tx, y0: 0, y1: Math.ceil(SdMax * 2.0 * 100) / 100, xlabel: 'T [s]', ylabel: `S_De${sZ} [m]`,
+    series: ['SLD', 'SLV', 'SLC'].map(k => ({ pts: Ts.map(T => [T, p7.SDeD(T, L7[k].ag, L7[k].xi)]), color: colsL[k] })),
+    bands: [{ x0: p6.T0, x1: p6.SLV.T, color: 'var(--coral)', op: .07 }, { x0: p6.T0, x1: p6.SLC.T, color: 'var(--violet)', op: .07 }],
+    vlines: perV,
+    hlines: ['SLV', 'SLC'].map(k => { const a = p8[k].Tm, b = Math.max(p8[k].Tm2, a + Tx * 0.012); return { x0: a, x1: b, y: p8[k].Dd, color: colsL[k], w: 4.5, dash: 'none' }; }),
+    texts: [{ x: p8.SLV.Tm + Tx * 0.01, y: p8.SLV.Dd - SdMax * 0.08, t: `Δ_d SLV = ${f(p8.SLV.Dd, 3)} m`, color: 'var(--coral)' }, { x: p8.SLC.Tm + Tx * 0.01, y: p8.SLC.Dd - SdMax * 0.08, t: `Δ_d SLC = ${f(p8.SLC.Dd, 3)} m`, color: 'var(--violet)' }],
+    legend: ['SLD', 'SLV', 'SLC'].map(k => ({ t: `${k}: ξ = ${L7[k].xi} %`, color: colsL[k] })).concat(perL, [{ t: 'periodos recorridos por el cabeceo SLV [T₀, T_SLV]', color: 'var(--coral)', box: true, op: .15 }, { t: 'periodos recorridos por el cabeceo SLC [T₀, T_SLC]', color: 'var(--violet)', box: true, op: .15 }]), legendLeft: true });
+  // diagrama S_e–S_De con rectas de periodo
+  const SeMax = Math.max(...['SLD', 'SLV', 'SLC'].map(k => Math.max(...Ts.map(T => p7.SeD(T, L7[k].ag, L7[k].xi)))));
+  const xA = Math.ceil(SdMax * 1.1 * 100) / 100, yA = Math.ceil(SeMax * 1.1 * 2) / 2;
+  const rad = (T, col) => ({ pts: [[0, 0], [xA, (2 * Math.PI / T) ** 2 * xA]], color: col, dash: '3 3', w: 1 });
+  const figAD = chart({ id: 'c7c', x0: 0, x1: xA, y0: 0, y1: yA, xlabel: `S_De${sZ} [m]`, ylabel: `S_e${sZ} [m/s²]`,
+    series: ['SLD', 'SLV', 'SLC'].map(k => ({ pts: Ts.map(T => [p7.SDeD(T, L7[k].ag, L7[k].xi), p7.SeD(T, L7[k].ag, L7[k].xi)]), color: colsL[k] }))
+      .concat([rad(p6.T0, 'var(--ink)'), rad(p6.SLV.T, 'var(--coral)'), rad(p6.SLC.T, 'var(--violet)')]),
+    points: [{ x: p7.SDeD(p6.T0, L7.SLD.ag, 5), y: p7.SeD(p6.T0, L7.SLD.ag, 5), color: 'var(--sky)' },
+      { x: p7.SDeD(p6.SLV.T, L7.SLV.ag, L7.SLV.xi), y: p7.SeD(p6.SLV.T, L7.SLV.ag, L7.SLV.xi), color: 'var(--coral)' },
+      { x: p7.SDeD(p6.SLC.T, L7.SLC.ag, L7.SLC.xi), y: p7.SeD(p6.SLC.T, L7.SLC.ag, L7.SLC.xi), color: 'var(--violet)' }],
+    legend: ['SLD', 'SLV', 'SLC'].map(k => ({ t: `${k}: ξ = ${L7[k].xi} %`, color: colsL[k] })).concat([{ t: `recta del periodo T₀ = ${f(p6.T0, 3)} s`, color: 'var(--ink)', dash: '3 3' }, { t: `recta del periodo T_SLV = ${f(p6.SLV.T, 2)} s`, color: 'var(--coral)', dash: '3 3' }, { t: `recta del periodo T_SLC = ${f(p6.SLC.T, 2)} s`, color: 'var(--violet)', dash: '3 3' }]) });
   h += sec('7', '7', 'Demanda sísmica', 'UNE-EN 1998-1:2018: 3.2.1(3), 3.2.2.2 (ecs. 3.2–3.7), 4.4.3.2(2), 2.1(4), anejo A · Anexo Nacional: AN.2 (tabla AN.2), AN.5', `
   <p>La demanda sísmica son los <b>espectros de respuesta elásticos en el emplazamiento</b> definidos por la UNE-EN 1998-1:2018 (Eurocódigo 8, parte 1), apartado 3.2.2.2 (espectro de aceleración, ecs. 3.2–3.6) y 3.2.2.2(3.7) con el anejo A (espectro de desplazamientos), con los parámetros de su <b>Anexo Nacional español</b> (UNE-EN 1998-1:2018, julio de 2018, versión corregida de febrero de 2022): aceleración de referencia a<sub>gR</sub> y coeficiente K de la malla AN.5, y forma del espectro de la tabla AN.2. <b>No se utiliza la NCSE-02.</b></p>
   <p>Cada estado límite se comprueba con un sismo de distinto <b>periodo de retorno</b> y con un <b>amortiguamiento</b> distinto:</p>
-  <div class="tw"><table><thead><tr><th class="l">Estado límite</th><th class="l">Probabilidad de superación</th><th>Periodo de retorno</th><th class="l">Cómo se obtiene a<sub>g</sub></th><th>ξ</th><th class="l">Por qué ese amortiguamiento</th></tr></thead><tbody>
-  <tr><td class="l"><b>SLD</b> · daño</td><td class="l">10 % en 10 años</td><td>≈ 95 años</td><td class="l">ν·γ<sub>I</sub>·a<sub>gR</sub> (4.4.3.2(2); 2.1(1)P nota 3, valores recomendados adoptados por el AN)</td><td>${L7.SLD.xi} %</td><td class="l">Pila elástica antes de despegar (Circolare [C8.7.1.9])</td></tr>
-  <tr><td class="l"><b>SLV</b> · salvaguarda de la vida</td><td class="l">10 % en 50 años</td><td>475 años</td><td class="l">γ<sub>I</sub>·a<sub>gR</sub> (3.2.1(3); 2.1(1)P nota 1)</td><td>${L7.SLV.xi} %</td><td class="l">Disipación por impactos del cabeceo (Circolare C8.7.1.2.1.8)</td></tr>
-  <tr><td class="l"><b>SLC</b> · prevención del colapso</td><td class="l">${f(I.pSLC * 100, 0)} % en 50 años</td><td>≈ ${f(-50 / Math.log(1 - I.pSLC), 0)} años</td><td class="l">γ<sub>I</sub>·a<sub>gR</sub>·(P<sub>L</sub>/P<sub>LR</sub>)<sup>−1/3</sup> (2.1(4), nota, k = 3)</td><td>${L7.SLC.xi} %</td><td class="l">Idem, con mayor amplitud (Circolare C8.7.1.2.1.8)</td></tr></tbody></table></div>
-  <div class="eq">${v('C')} = (800/${v('v', 's,30')})<sup>0.465</sup> = (800/${f(I.vs30, 0)})<sup>0.465</sup> = <span class="res">${f(p7.C, 3)}</span> · terreno ${p7.soil} · ${v('T', 'C')} = <span class="res">${f(p7.TC, 3)} s</span> · ${v('T', 'B')} = ${v('T', 'C')}/5 = ${f(p7.TB, 3)} s · ${v('T', 'D')} = ${f(p7.TD, 1)} s · ${v('T', 'E')} = ${f(p7.TE, 1)} s · ${v('T', 'F')} = ${f(p7.TF, 1)} s</div>
-  <div class="tw"><table><thead><tr><th class="l">Estado límite</th><th>a<sub>g</sub> (g)</th><th class="l">Justificación</th><th>S</th><th>ξ (%)</th><th>η</th></tr></thead><tbody>
-  ${['SLD', 'SLV', 'SLC'].map(k => `<tr><td class="l">${lsCell(k)}</td><td>${f(L7[k].ag, 4)}</td><td class="l">${L7[k].why}<br><span style="color:var(--muted)">${L7[k].ref}</span></td><td>${f(L7[k].S, 3)}</td><td>${L7[k].xi}</td><td>${f(L7[k].eta, 3)}</td></tr>`).join('')}</tbody></table></div>
-  ${fig(figSe, 'Espectro elástico de aceleración')}${fig(figSd, 'Espectro de desplazamientos S_De = S_e·(T/2π)²')}
-  <div class="interp">${v('T', '0')} = ${f(p6.T0, 2)} s ${p6.T0 >= p7.TB && p6.T0 <= p7.TC ? 'cae en la meseta de aceleración: el peor sitio para un elemento rígido' : 'queda fuera de la meseta de aceleración'}. En el SLV la aceleración espectral en ${v('T', '0')} con ξ = ${L7.SLV.xi} % es ${f(p7.Se(p6.T0, L7.SLV.ag, L7.SLV.xi), 2)} m/s² ${p7.Se(p6.T0, L7.SLV.ag, L7.SLV.xi) > p4b.ay ? '> a_y*: con el sismo de proyecto la pila despega y cabecea' : '≤ a_y*: la pila no llega a despegar ni con el sismo de proyecto'}.</div>`);
+  <div class="tw"><table><thead><tr><th class="l">Estado límite</th><th class="l">Probabilidad de superación</th><th>Periodo de retorno</th><th class="l">a<sub>g</sub> =</th><th>ξ</th></tr></thead><tbody>
+  <tr><td class="l"><b>SLD</b> · daño</td><td class="l">10 % en 10 años</td><td>≈ 95 años</td><td class="l">ν·γ<sub>I</sub>·a<sub>gR</sub> (4.4.3.2(2); 2.1(1)P nota 3, valores recomendados adoptados por el AN)</td><td>${L7.SLD.xi} %</td></tr>
+  <tr><td class="l"><b>SLV</b> · salvaguarda de la vida</td><td class="l">10 % en 50 años</td><td>475 años</td><td class="l">γ<sub>I</sub>·a<sub>gR</sub> (3.2.1(3); 2.1(1)P nota 1)</td><td>${L7.SLV.xi} %</td></tr>
+  <tr><td class="l"><b>SLC</b> · prevención del colapso</td><td class="l">${f(I.pSLC * 100, 0)} % en 50 años</td><td>≈ ${f(-50 / Math.log(1 - I.pSLC), 0)} años</td><td class="l">γ<sub>I</sub>·a<sub>gR</sub>·(P<sub>L</sub>/P<sub>LR</sub>)<sup>−1/3</sup> (2.1(4), nota, k = 3)</td><td>${L7.SLC.xi} %</td></tr></tbody></table></div>
+  ${fig(specSchema(), 'Esquema del espectro elástico (UNE-EN 1998-1, 3.2.2.2 y anejo A). T_B: inicio de la meseta de aceleración constante. T_C: fin de la meseta; desde ahí S_e ∝ 1/T (velocidad espectral constante). T_D: inicio del desplazamiento espectral constante (S_e ∝ 1/T²). T_E y T_F (anejo A): transición del desplazamiento espectral hacia el desplazamiento del terreno d_g. En los espectros del emplazamiento, las líneas verticales discontinuas marcan los periodos de la pila (T₀, T_SLV, T_SLC).')}
+  <div class="tw"><table><thead><tr><th class="l">Parámetro</th><th class="l">Expresión</th><th>Valor</th></tr></thead><tbody>
+  <tr><td class="l">Coeficiente del terreno</td><td class="l">${v('C')} = (800/${v('v', 's,30')})<sup>0.465</sup> = (800/${f(I.vs30, 0)})<sup>0.465</sup></td><td><span class="res">${f(p7.C, 3)}</span></td></tr>
+  <tr><td class="l">Tipo de terreno</td><td class="l">según ${v('v', 's,30')} = ${f(I.vs30, 0)} m/s (tabla 3.1 y AN.1)</td><td><span class="res">${p7.soil}</span></td></tr>
+  <tr><td class="l">Factor de suelo</td><td class="l">${v('S')}(${v('a', 'g')}) según la tabla AN.2; un valor por estado límite (tabla siguiente)</td><td>—</td></tr>
+  <tr><td class="l">Fin de la meseta</td><td class="l">${v('T', 'C')} = ${p7.soil === 'A' ? `${v('K')}/4 = ${f(p7.K, 2)}/4` : p7.soil === 'D' ? `${v('K')}/2 = ${f(p7.K, 2)}/2` : `${v('K')}·${v('C')}/4 = ${f(p7.K, 2)}·${f(p7.C, 3)}/4`}</td><td><span class="res">${f(p7.TC, 3)} s</span></td></tr>
+  <tr><td class="l">Inicio de la meseta</td><td class="l">${v('T', 'B')} = ${v('T', 'C')}/5</td><td><span class="res">${f(p7.TB, 3)} s</span></td></tr>
+  <tr><td class="l">Inicio del desplazamiento constante</td><td class="l">${v('T', 'D')}</td><td><span class="res">${f(p7.TD, 1)} s</span></td></tr>
+  <tr><td class="l">Esquinas del anejo A</td><td class="l">${v('T', 'E')} · ${v('T', 'F')} (terreno ${p7.soil})</td><td><span class="res">${f(p7.TE, 1)} · ${f(p7.TF, 1)} s</span></td></tr></tbody></table></div>
+  <div class="tw"><table><thead><tr><th class="l">Estado límite</th><th>a<sub>g</sub> [g]</th><th class="l">Justificación</th><th>S</th><th>ξ [%]</th><th>η</th></tr></thead><tbody>
+  ${['SLD', 'SLV', 'SLC'].map(k => `<tr><td class="l"><b>${k}</b> · ${LS[k].name}</td><td>${f(L7[k].ag, 4)}</td><td class="l">${L7[k].why}<br><span style="color:var(--muted)">${L7[k].ref}</span></td><td>${f(L7[k].S, 3)}</td><td>${L7[k].xi}</td><td>${f(L7[k].eta, 3)}</td></tr><tr class="req"><td class="l" colspan="6">${LS[k].def} Se exige ${LS[k].req}.</td></tr>`).join('')}</tbody></table></div>
+  ${Math.max(L7.SLV.ag, L7.SLC.ag) > 0.4 ? `<div class="warn">⚠ a<sub>g</sub> &gt; 0.4 g (${['SLD', 'SLV', 'SLC'].filter(k => L7[k].ag > 0.4).join(', ')}): el Anexo Nacional toma S = 1, y el espectro de norma no representa los pulsos de largo periodo de los registros cercanos a falla. El daño de la junta por los impactos no se considera.</div>` : ''}
+  ${fig(figSe, `Espectro elástico de aceleración${EL ? ` en la cota de la junta (z = ${f(EL.z, 1)} m, ver 7b)` : ' del terreno'}. Se usa en el SLD: S_e${sZ}(T₀) frente a a_y*.`)}${fig(figSd, `Espectro de desplazamientos S_De${sZ} = S_e${sZ}·(T/2π)²${EL ? ' en la cota de la junta' : ''}. Se usa en el SLV y el SLC. Δ_d es el mayor desplazamiento espectral entre T₀ y T_SL: el periodo del cabeceo crece con la amplitud y recorre todo ese intervalo durante el sismo (Circolare C8.7.1.2.1.8). La línea gruesa marca dónde se alcanza ese máximo.`)}${fig(figAD, `Los tres espectros en ejes S_e–S_De (aceleración frente a desplazamiento). Cada periodo es una recta desde el origen; los puntos marcan la lectura de cada estado límite: SLD en T₀, SLV en T_SLV y SLC en T_SLC.`)}
+  <div class="interp">${v('T', '0')} = ${f(p6.T0, 2)} s ${EL ? '' : (p6.T0 >= p7.TB && p6.T0 <= p7.TC ? 'cae en la meseta de aceleración: el peor sitio para un elemento rígido' : 'queda fuera de la meseta de aceleración') + '. '}${EL ? '' : ''}En el SLV la aceleración espectral${EL ? ' en la cota de la junta' : ''} en ${v('T', '0')} con ξ = ${L7.SLV.xi} % es ${f(p7.SeD(p6.T0, L7.SLV.ag, L7.SLV.xi), 2)} m/s² ${p7.SeD(p6.T0, L7.SLV.ag, L7.SLV.xi) > p4b.ay ? '> a_y*: con el sismo de proyecto la pila despega y cabecea' : '≤ a_y*: la pila no llega a despegar ni con el sismo de proyecto'}.</div>`);
+  h += sec7b(R);
 
   // Paso 8
   const agD = L7.SLD.ag;
-  const adrs = (ag, xi, Tm) => { const pts = []; for (let i = 1; i <= 300; i++) { const T = Tm * i / 300; pts.push([p7.SDe(T, ag, xi), p7.Se(T, ag, xi)]); } return pts; };
-  const dyMM = p4b.dy * 1000, xa = Math.max(3 * dyMM, 2.2 * p7.SDe(p6.T0, agD, 5) * 1000, 30);
-  const capMM = [[0, 0], [dyMM, p4b.ay]].concat(p4.pts.filter(p => p.d * 1000 > dyMM && p.d * 1000 < xa * 1.1).map(p => [p.d * 1000, p.a]));
-  const extra = p3.state(p3.th0 * 0.02); capMM.push([xa * 1.1, p4.a0s * (1 - xa * 1.1 / 1000 / p4.d0s)]);
-  const fig8a = chart({ id: 'c8a', x0: 0, x1: xa, y0: 0, y1: Math.ceil(Math.max(p4.a0s, p8.SLD.dem) * 1.3), xlabel: 'd*, S_De (mm)', ylabel: 'a*, S_e (m/s²)',
-    series: [{ pts: adrs(agD, 5, 1.5).map(p => [p[0] * 1000, p[1]]), color: 'var(--sky)' }, { pts: capMM, color: 'var(--accent)' }, { pts: [[0, 0], [xa, (2 * Math.PI / p6.T0) ** 2 * xa / 1000]], color: 'var(--muted)', dash: '2 3', w: 1 }],
-    points: [{ x: p7.SDe(p6.T0, agD, 5) * 1000, y: p8.SLD.dem, color: 'var(--sky)', label: `demanda S_e(T₀) = ${f(p8.SLD.dem, 2)} m/s²`, dx: 10, dy: 24 }, { x: dyMM, y: p4b.ay, color: 'var(--accent)', label: `activación a_y* = ${f(p4b.ay, 2)} m/s²`, dx: 10, dy: -10 }], legend: [{ t: 'demanda SLD (ξ = 5 %)', color: 'var(--sky)' }, { t: 'capacidad', color: 'var(--accent)' }, { t: `recta del periodo T₀ = ${f(p6.T0, 3)} s`, color: 'var(--muted)', dash: '2 3' }] });
-  const xb = Math.max(1.4 * p5.SLV.d, 1.6 * p8.SLC.Dd);
+  const adrs = (ag, xi, Tm) => { const pts = []; for (let i = 1; i <= 300; i++) { const T = Tm * i / 300; pts.push([p7.SDeD(T, ag, xi), p7.SeD(T, ag, xi)]); } return pts; };
+  const dyMM = p4b.dy, xa = Math.max(3 * dyMM, 2.2 * p7.SDeD(p6.T0, agD, 5), 0.03);
+  const capMM = [[0, 0], [dyMM, p4b.ay]].concat(p4.pts.filter(p => p.d > dyMM && p.d < xa * 1.1).map(p => [p.d, p.a]));
+  const extra = p3.state(p3.th0 * 0.02); capMM.push([xa * 1.1, p4.a0s * (1 - xa * 1.1 / p4.d0s)]);
+  const fig8a = chart({ id: 'c8a', x0: 0, x1: xa, y0: 0, y1: Math.ceil(Math.max(p4.a0s, p8.SLD.dem) * 1.3), xlabel: 'd*, S_De [m]', ylabel: 'a*, S_e [m/s²]',
+    series: [{ pts: adrs(agD, 5, 1.5), color: 'var(--sky)' }, { pts: capMM, color: 'var(--accent)' }, { pts: [[0, 0], [xa, (2 * Math.PI / p6.T0) ** 2 * xa]], color: 'var(--muted)', dash: '2 3', w: 1 }],
+    points: [{ x: p7.SDeD(p6.T0, agD, 5), y: p8.SLD.dem, color: 'var(--sky)', label: `demanda S_e${sZ}(T₀) = ${f(p8.SLD.dem, 2)} m/s²`, dx: 10, dy: 24 }, { x: dyMM, y: p4b.ay, color: 'var(--accent)', label: `capacidad (despegue) a_y* = ${f(p4b.ay, 2)} m/s²`, dx: 10, dy: -10 }],
+    hlines: [{ x0: p7.SDeD(p6.T0, agD, 5), x1: Math.max(dyMM, p7.SDeD(p6.T0, agD, 5)) + xa * 0.06, y: p8.SLD.dem, color: 'var(--muted)' }, { x0: dyMM, x1: Math.max(dyMM, p7.SDeD(p6.T0, agD, 5)) + xa * 0.06, y: p4b.ay, color: 'var(--muted)' }],
+    arrows: [{ x0: Math.max(dyMM, p7.SDeD(p6.T0, agD, 5)) + xa * 0.05, y0: p8.SLD.dem, x1: Math.max(dyMM, p7.SDeD(p6.T0, agD, 5)) + xa * 0.05, y1: p4b.ay, both: true, color: 'var(--ink)', w: 1 }],
+    texts: [{ x: Math.max(dyMM, p7.SDeD(p6.T0, agD, 5)) + xa * 0.07, y: (p8.SLD.dem + p4b.ay) / 2, t: `margen = a_y*/S_e(T₀) = ${f(p8.SLD.cap / p8.SLD.dem, 2)}`, color: 'var(--ink)' }], legend: [{ t: 'demanda SLD (ξ = 5 %)', color: 'var(--sky)' }, { t: 'capacidad', color: 'var(--accent)' }, { t: `recta del periodo T₀ = ${f(p6.T0, 3)} s`, color: 'var(--muted)', dash: '2 3' }] });
+  const xb = Math.max(1.25 * Math.max(p5.SLV.d, p5.SLC.d), 1.6 * p8.SLC.Dd);
   const capB = [[0, 0], [p4b.dy, p4b.ay]].concat(p4.pts.filter(p => p.d > p4b.dy && p.d < xb * 1.1).map(p => [p.d, p.a]));
   capB.push([xb * 1.1, p4.a0s * (1 - xb * 1.1 / p4.d0s)]);
-  const fig8b = chart({ id: 'c8b', x0: 0, x1: xb, y0: 0, y1: Math.ceil(p4.a0s * 1.3), xlabel: 'd*, S_De (m)', ylabel: 'a*, S_e (m/s²)',
-    series: [{ pts: adrs(L7.SLV.ag, L7.SLV.xi, 4), color: 'var(--coral)' }, { pts: adrs(L7.SLC.ag, L7.SLC.xi, 4), color: 'var(--violet)' }, { pts: capB, color: 'var(--accent)' },
-      { pts: [[0, 0], [xb, (2 * Math.PI / p6.SLV.T) ** 2 * xb]], color: 'var(--coral)', dash: '2 3', w: 1 }],
-    points: [{ x: p8.SLV.Dd, y: p7.Se(p6.SLV.T, L7.SLV.ag, L7.SLV.xi), color: 'var(--coral)', label: `Δd SLV = ${f(p8.SLV.Dd * 1000, 0)} mm`, dx: 10, dy: -6 },
-      { x: p8.SLC.Dd, y: p7.Se(p6.SLC.T, L7.SLC.ag, L7.SLC.xi), color: 'var(--violet)', label: `Δd SLC = ${f(p8.SLC.Dd * 1000, 0)} mm`, dx: 10, dy: -14 },
-      { x: p5.SLV.d, y: p5.SLV.a, color: 'var(--accent)', label: `d_SLV = ${f(p5.SLV.d, 3)} m`, anchor: 'end', dx: -8, dy: 28 }],
-    legend: [{ t: `demanda SLV (ξ = ${L7.SLV.xi} %)`, color: 'var(--coral)' }, { t: `demanda SLC (ξ = ${L7.SLC.xi} %)`, color: 'var(--violet)' }, { t: 'capacidad', color: 'var(--accent)' }, { t: `recta del periodo T_SLV = ${f(p6.SLV.T, 2)} s`, color: 'var(--coral)', dash: '2 3' }] });
+  const y8 = Math.ceil(p4.a0s * 1.6 * 10) / 10;
+  const sameD = Math.abs(p5.SLV.d - p5.SLC.d) < 1e-9;
+  const yV = y8 * 0.30, yC = y8 * 0.16;   // alturas de las cotas de margen
+  const fig8b = chart({ id: 'c8b', x0: 0, x1: xb, y0: 0, y1: y8, xlabel: 'd*, S_De [m]', ylabel: 'a*, S_e [m/s²]',
+    series: [{ pts: adrs(L7.SLV.ag, L7.SLV.xi, Tx), color: 'var(--coral)', w: 1.2 }, { pts: adrs(L7.SLC.ag, L7.SLC.xi, Tx), color: 'var(--violet)', w: 1.2 }, { pts: capB, color: 'var(--accent)', w: 2.4 }],
+    vlines: [{ x: p8.SLV.Dd, y0: 0, y1: y8, color: 'var(--coral)', w: 1.6, dash: '5 3' }, { x: p8.SLC.Dd, y0: 0, y1: y8, color: 'var(--violet)', w: 1.6, dash: '5 3' },
+      { x: p5.SLV.d, y0: 0, y1: p5.SLV.a, color: 'var(--accent)', w: 1.2, dash: '2 2' }].concat(sameD ? [] : [{ x: p5.SLC.d, y0: 0, y1: p5.SLC.a, color: 'var(--accent)', w: 1.2, dash: '2 2' }]),
+    points: [{ x: p5.SLV.d, y: p5.SLV.a, color: 'var(--accent)', label: sameD ? `d_SLV = d_SLC = ${f(p5.SLV.d, 3)} m` : `d_SLV = ${f(p5.SLV.d, 3)} m`, anchor: 'end', dx: -8, dy: -20 }].concat(sameD ? [] : [{ x: p5.SLC.d, y: p5.SLC.a, color: 'var(--accent)', label: `d_SLC = ${f(p5.SLC.d, 3)} m`, anchor: 'end', dx: -8, dy: -12 }]),
+    arrows: [{ x0: p8.SLV.Dd, y0: yV, x1: p5.SLV.d, y1: yV, both: true, color: 'var(--coral)', w: 1.2 }, { x0: p8.SLC.Dd, y0: yC, x1: p5.SLC.d, y1: yC, both: true, color: 'var(--violet)', w: 1.2 }],
+    texts: [{ x: (p8.SLV.Dd + p5.SLV.d) / 2, y: yV + y8 * 0.025, t: `SLV: Δ_d = ${f(p8.SLV.Dd, 3)} m → d_SLV = ${f(p5.SLV.d, 3)} m · margen ${f(p8.SLV.ratio, 1)}`, anchor: 'middle', color: 'var(--coral)' },
+      { x: (p8.SLC.Dd + p5.SLC.d) / 2, y: yC + y8 * 0.025, t: `SLC: Δ_d = ${f(p8.SLC.Dd, 3)} m → d_SLC = ${f(p5.SLC.d, 3)} m · margen ${f(p8.SLC.ratio, 1)}`, anchor: 'middle', color: 'var(--violet)' },
+      ],
+    legend: [{ t: 'capacidad', color: 'var(--accent)' }, { t: `espectro SLV (ξ = ${L7.SLV.xi} %)`, color: 'var(--coral)' }, { t: `espectro SLC (ξ = ${L7.SLC.xi} %)`, color: 'var(--violet)' }, { t: 'Δ_d SLV (paso 7)', color: 'var(--coral)', dash: '5 3' }, { t: 'Δ_d SLC (paso 7)', color: 'var(--violet)', dash: '5 3' }] });
   const pill = ok => `<span class="pill ${ok ? 'ok' : 'no'}">${ok ? 'cumple' : 'no cumple'}</span>`;
-  h += sec('8', '8', 'Verificación', 'Circolare 2019: C8.7.1.2.1.5 [C8.7.1.9] (SLD, elementos libres de vibrar) y C8.7.1.2.1.8 [C8.7.1.12] (SLV y SLC)', `
+  h += sec('8', '8', 'Verificación', `Circolare 2019: C8.7.1.2.1.5 [C8.7.1.9] (SLD, elementos libres de vibrar) y C8.7.1.2.1.8 [C8.7.1.12] (SLV y SLC)${EL ? ' · espectro en la cota de la junta, C7.2.3' : ''}`, `
   <div class="tw"><table><thead><tr><th class="l">Estado límite</th><th class="l">Comprobación</th><th>Demanda</th><th>Capacidad</th><th>Margen</th><th>a<sub>g</sub> de capacidad</th><th>a<sub>g</sub> del sitio</th><th>Índice</th><th></th></tr></thead><tbody>
-  <tr><td class="l">${lsShort('SLD')}</td><td class="l">${v('S', 'e')}(${v('T', '0')}, 5 %) ≤ ${v('a', 'y', '*')}</td><td>${f(p8.SLD.dem, 2)} m/s²</td><td>${f(p8.SLD.cap, 2)} m/s²</td><td>${f(p8.SLD.cap / p8.SLD.dem, 2)}</td><td>${f(p8.SLD.agc, 3)} g</td><td>${f(L7.SLD.ag, 3)} g</td><td>${f(p8.SLD.idx, 2)}</td><td>${pill(p8.SLD.ok)}</td></tr>
-  <tr><td class="l">${lsShort('SLV')}</td><td class="l">Δ<sub>d</sub> ≤ ${v('d', 'SLV')}</td><td>${f(p8.SLV.Dd * 1000, 1)} mm</td><td>${f(p8.SLV.d * 1000, 0)} mm</td><td>${f(p8.SLV.ratio, 2)}</td><td>${f(p8.SLV.agc, 3)} g${p8.SLV.extrap ? ' ⚠' : ''}</td><td>${f(L7.SLV.ag, 3)} g</td><td>${f(p8.SLV.idx, 2)}</td><td>${pill(p8.SLV.ok)}</td></tr>
-  <tr><td class="l">${lsShort('SLC')}</td><td class="l">Δ<sub>d</sub> ≤ ${v('d', 'SLC')}</td><td>${f(p8.SLC.Dd * 1000, 1)} mm</td><td>${f(p8.SLC.d * 1000, 0)} mm</td><td>${f(p8.SLC.ratio, 2)}</td><td>${f(p8.SLC.agc, 3)} g${p8.SLC.extrap ? ' ⚠' : ''}</td><td>${f(L7.SLC.ag, 3)} g</td><td>${f(p8.SLC.idx, 2)}</td><td>${pill(p8.SLC.ok)}</td></tr></tbody></table></div>
-  ${(p8.SLV.extrap || p8.SLC.extrap) ? '<div class="warn">⚠ Las aceleraciones de capacidad extrapolan el espectro muy por encima de su rango (y para a_g > 0.4 g el AN toma S = 1): se interpretan como "sin riesgo de alcanzar el umbral". El dato fiable es el margen en desplazamiento.</div>' : ''}
-  ${fig(fig8a, '(a) SLD: ¿despega la pila con el sismo frecuente?')}${fig(fig8b, '(b) SLV y SLC: ¿llega el cabeceo al umbral?')}
-  <div class="interp">SLD: ${p8.SLD.ok ? `la pila no despega con el sismo frecuente; el despegue empezaría con a_g = ${f(p8.SLD.agc, 3)} g.` : `la pila despega con el sismo frecuente (a_g de activación ${f(p8.SLD.agc, 3)} g).`} SLV: el oscilador equivalente se mueve ${f(p8.SLV.Dd * 1000, 0)} mm (≈ ${f(p8.SLV.Dd * p4.Gam * 1000, 0)} mm en cabeza) frente a un umbral de ${f(p8.SLV.d * 1000, 0)} mm: margen ${f(p8.SLV.ratio, 1)}.</div>
-  <div class="warn">No cubierto: compresión y deslizamiento de la junta durante los impactos, interacción con el tablero y las pilas vecinas, y la otra dirección.</div>`);
+  <tr><td class="l">${lsShort('SLD')}</td><td class="l">${v('S', 'e' + sZ)}(${v('T', '0')}, 5 %${EL ? ', z' : ''}) ≤ ${v('a', 'y', '*')}</td><td>${f(p8.SLD.dem, 2)} m/s²</td><td>${f(p8.SLD.cap, 2)} m/s²</td><td>${f(p8.SLD.cap / p8.SLD.dem, 2)}</td><td>${f(p8.SLD.agc, 3)} g</td><td>${f(L7.SLD.ag, 3)} g</td><td>${f(p8.SLD.idx, 2)}</td><td>${pill(p8.SLD.ok)}</td></tr>
+  <tr><td class="l">${lsShort('SLV')}</td><td class="l">Δ<sub>d</sub> ≤ ${v('d', 'SLV')}</td><td>${f(p8.SLV.Dd, 3)} m</td><td>${f(p8.SLV.d, 3)} m</td><td>${f(p8.SLV.ratio, 2)}</td><td>${f(p8.SLV.agc, 3)} g</td><td>${f(L7.SLV.ag, 3)} g</td><td>${f(p8.SLV.idx, 2)}</td><td>${pill(p8.SLV.ok)}</td></tr>
+  <tr><td class="l">${lsShort('SLC')}</td><td class="l">Δ<sub>d</sub> ≤ ${v('d', 'SLC')}</td><td>${f(p8.SLC.Dd, 3)} m</td><td>${f(p8.SLC.d, 3)} m</td><td>${f(p8.SLC.ratio, 2)}</td><td>${f(p8.SLC.agc, 3)} g</td><td>${f(L7.SLC.ag, 3)} g</td><td>${f(p8.SLC.idx, 2)}</td><td>${pill(p8.SLC.ok)}</td></tr>
+  <tr><td class="l"><b>Deslizamiento</b> · junta de cálculo</td><td class="l">${v('F', 'H')}/${v('F', 'V')} ≤ μ</td><td>${f(R.slide.ratio, 3)}</td><td>${f(R.slide.mu, 2)}</td><td>${f(R.slide.mu / R.slide.ratio, 2)}</td><td>—</td><td>—</td><td>—</td><td>${pill(R.slide.ok)}</td></tr><tr class="req"><td class="l" colspan="9">Se exige que la junta no deslice antes de cabecear.</td></tr></tbody></table></div>
+  ${fig(fig8a, '(a) SLD · despegue de la pila. La aceleración de demanda es la intersección del espectro S_e con la recta del periodo T₀. Para que se cumpla el estado límite, la capacidad a_y* debe ser mayor o igual que esa demanda.')}${fig(fig8b, '(b) SLV y SLC · cabeceo. No se busca la intersección de capacidad y demanda: se comparan desplazamientos. Δ_d (paso 7) debe ser menor o igual que el umbral d_SL de la curva de capacidad (paso 5).')}
+  <div class="interp">SLD: ${p8.SLD.ok ? `la pila no despega con el sismo frecuente; el despegue empezaría con a_g = ${f(p8.SLD.agc, 3)} g.` : `la pila despega con el sismo frecuente (a_g de activación ${f(p8.SLD.agc, 3)} g).`} SLV: el oscilador equivalente se mueve ${f(p8.SLV.Dd, 3)} m (≈ ${f(p8.SLV.Dd * p4.Gam, 3)} m en cabeza) frente a un umbral de ${f(p8.SLV.d, 3)} m: margen ${f(p8.SLV.ratio, 1)}.</div>
+  <div class="warn">No cubierto: interacción con el tablero y las pilas vecinas, y la otra dirección.</div>`);
 
   // Conclusiones
   h += sec('C', 'C', 'Conclusiones', 'Resumen de datos y resultados', `
@@ -897,11 +1101,14 @@ function render(R) {
   <tr><td class="l">Dirección · tablero</td><td>${dirTxt} · ${I.deckFixed ? 'fijo' : 'deslizante'}</td></tr>
   <tr><td class="l">H · canto cabeza / base</td><td>${f(I.H, 1)} m · ${f(g.b0, 2)} / ${f(g.Bbase, 2)} m</td></tr>
   <tr><td class="l">W pila · P tablero</td><td>${f(p1.Wp, 2)} · ${f(p1.P, 2)} MN</td></tr>
-  <tr><td class="l">f cáscara / núcleo · E · FC</td><td>${f(I.fShell, 1)} / ${f(I.fCore, 1)} MPa · ${f(I.E, 0)} MPa · ${f(I.FC, 2)}</td></tr>
+  <tr><td class="l">Taludes transversal / longitudinal</td><td>${f(I.taludT, 3)} / ${f(I.taludL, 3)}</td></tr>
+  <tr><td class="l">f<sub>c</sub> fábrica exterior / núcleo · E · FC</td><td>${f(I.fShell, 1)} / ${f(I.fCore, 1)} MPa · ${f(I.E, 0)} MPa · ${f(I.FC, 2)}</td></tr>
   <tr><td class="l">a<sub>gR</sub> · K · terreno · γ<sub>I</sub></td><td>${f(p7.agR, 3)} g · ${f(p7.K, 1)} · ${p7.soil} · ${f(p7.gI, 1)}</td></tr>
   <tr><td class="l">Límite d<sub>C,lím</sub></td><td>${f(I.dClim, 2)} m</td></tr></tbody></table></div>
   <div class="tw"><table><thead><tr><th class="l">Resultado</th><th>Valor</th></tr></thead><tbody>
+  <tr><td class="l">Factor de la componente vertical f<sub>v</sub></td><td>${f(R.vert.fv, 3)}</td></tr>
   <tr><td class="l">Junta crítica · λ₀</td><td>z = ${f(p2.zc, 1)} m · ${f(p2.J.lam0, 3)}</td></tr>
+  <tr><td class="l">Mecanismo · espectro de demanda</td><td>${EL ? `en altura · espectro en z = ${f(EL.z, 1)} m` : 'a nivel del suelo · espectro del terreno'}</td></tr>
   <tr><td class="l">Vuelco estático θ₀ · d<sub>C0</sub></td><td>${f(deg(p3.th0), 1)}° · ${f(p3.dC0, 2)} m</td></tr>
   <tr><td class="l">Γ · m* · e*</td><td>${f(p4.Gam, 3)} · ${f(p4.mstar, 0)} t · ${f(p4.estar, 3)}</td></tr>
   <tr><td class="l">a₀* · d₀*</td><td>${f(p4.a0s, 2)} m/s² · ${f(p4.d0s, 2)} m</td></tr>
@@ -909,8 +1116,9 @@ function render(R) {
   <tr><td class="l">d<sub>SLV</sub> (gobierna)</td><td>${f(p5.SLV.d, 3)} m (${p5.SLV.gov})</td></tr>
   <tr class="hl"><td class="l">SLD · despegue</td><td>${p8.SLD.ok ? 'no despega' : 'despega'} · índice ${f(p8.SLD.idx, 2)}</td></tr>
   <tr class="hl"><td class="l">SLV · margen en desplazamiento</td><td>${f(p8.SLV.ratio, 1)} · ${p8.SLV.ok ? 'cumple' : 'no cumple'}</td></tr>
-  <tr class="hl"><td class="l">SLC · margen en desplazamiento</td><td>${f(p8.SLC.ratio, 1)} · ${p8.SLC.ok ? 'cumple' : 'no cumple'}</td></tr></tbody></table></div></div>
-  <div class="interp">${p8.SLD.ok && p8.SLV.ok && p8.SLC.ok ? `El elemento cumple los tres estados límite en dirección ${dirTxt}. Con el sismo frecuente no despega; con el de proyecto despega y cabecea, pero su desplazamiento equivalente (${f(p8.SLV.Dd * 1000, 0)} mm) queda ${f(p8.SLV.ratio, 1)} veces por debajo del umbral.` : 'Alguno de los estados límite no se cumple: revisa la tabla de verificación.'} El resultado depende sobre todo del límite ${v('d', 'C,lím')} y de la hipótesis del amortiguamiento equivalente.</div>`);
+  <tr class="hl"><td class="l">SLC · margen en desplazamiento</td><td>${f(p8.SLC.ratio, 1)} · ${p8.SLC.ok ? 'cumple' : 'no cumple'}</td></tr>
+  <tr class="hl"><td class="l">Deslizamiento · F<sub>H</sub>/F<sub>V</sub> frente a μ</td><td>${f(R.slide.ratio, 3)} / ${f(R.slide.mu, 2)} · ${R.slide.ok ? 'cumple' : 'no cumple'}</td></tr></tbody></table></div></div>
+  <div class="interp">${p8.SLD.ok && p8.SLV.ok && p8.SLC.ok && R.slide.ok ? `El elemento cumple los tres estados límite y la comprobación de deslizamiento en dirección ${dirTxt}. Con el sismo frecuente no despega; con el de proyecto despega y cabecea, pero su desplazamiento equivalente (${f(p8.SLV.Dd, 3)} m) queda ${f(p8.SLV.ratio, 1)} veces por debajo del umbral.` : 'Alguno de los estados límite no se cumple: revisa la tabla de verificación.'} El resultado depende sobre todo del límite ${v('d', 'C,lím')} y de la hipótesis del amortiguamiento equivalente.</div>`);
 
   // Anejo
   h += sec('A', 'A', 'Anejo de notación', 'Estados límite, glosario, expresiones utilizadas y referencias', `
@@ -921,35 +1129,45 @@ function render(R) {
   <tr><td class="l">SLC</td><td class="l">Stato Limite di prevenzione del Collasso</td><td class="l">${LS.SLC.def}</td><td class="l">NC, cerca del colapso (EN 1998-3)</td></tr></tbody></table></div>
   <h3>Glosario</h3>
   <dl class="gl">
-  <dt>z, z<sub>i</sub>, z<sub>G</sub></dt><dd>Altura desde la base; de la masa i; de un centro de gravedad (m)</dd>
-  <dt>H, B, L</dt><dd>Altura total; canto en la dirección del giro; longitud de la junta perpendicular al giro (m)</dd>
-  <dt>W, P, N</dt><dd>Peso de la pila; carga del tablero en cabeza; axil en la junta (MN)</dd>
-  <dt>c, u</dt><dd>Anchura del bloque de compresiones; retranqueo de la rótula respecto a la arista (m)</dd>
+  <dt>z, z<sub>i</sub>, z<sub>G</sub></dt><dd>Altura desde la base; de la masa i; de un centro de gravedad [m]</dd>
+  <dt>H, B, L</dt><dd>Altura total; canto en la dirección del giro; longitud de la junta perpendicular al giro [m]</dd>
+  <dt>B<sub>0</sub>, L<sub>0</sub>, m<sub>B</sub>, m<sub>L</sub></dt><dd>Dimensiones en cabeza; talud por cara [H/V] que hace variar B y el que hace variar L</dd>
+  <dt>f<sub>c,ext</sub>, t<sub>ext</sub>, f<sub>c,núc</sub></dt><dd>Resistencia a compresión y espesor de la fábrica exterior; resistencia del núcleo [MPa, m]</dd>
+  <dt>W, P, N</dt><dd>Peso de la pila; carga del tablero en cabeza; axil en la junta [MN]</dd>
+  <dt>P<sub>h</sub>, h<sub>t</sub></dt><dd>Parte del tablero que empuja en horizontal (P si está fijo, 0 si desliza); altura de su c.d.g. sobre la cabeza [m]</dd>
+  <dt>c, u</dt><dd>Anchura del bloque de compresiones; retranqueo de la rótula respecto a la arista [m]</dd>
   <dt>λ, λ₀</dt><dd>Multiplicador de cargas horizontales (α en la Circolare); valor de activación</dd>
   <dt>θ, θ₀</dt><dd>Giro de la pila; giro de vuelco estático</dd>
-  <dt>d<sub>C</sub>, d<sub>C0</sub>, d<sub>C,lím</sub></dt><dd>Desplazamiento de la cabeza (punto de control C); en el vuelco; límite del usuario (m)</dd>
-  <dt>Φ<sub>i</sub>, Γ, m*, e*</dt><dd>Forma del mecanismo; factor de transformación; masa equivalente (t); fracción de masa participante e* = Γ·m*/M</dd>
-  <dt>a*, d*</dt><dd>Aceleración (m/s²) y desplazamiento (m) del oscilador equivalente (no son movimientos físicos)</dd>
+  <dt>d<sub>C</sub>, d<sub>C0</sub>, d<sub>C,lím</sub></dt><dd>Desplazamiento de la cabeza (punto de control C); en el vuelco; límite del usuario [m]</dd>
+  <dt>Φ<sub>i</sub>, Γ, m*, e*</dt><dd>Forma del mecanismo; factor de transformación; masa equivalente [t]; fracción de masa participante e* = Γ·m*/M</dd>
+  <dt>a*, d*</dt><dd>Aceleración [m/s²] y desplazamiento [m] del oscilador equivalente (no son movimientos físicos)</dd>
   <dt>a₀*, d₀*</dt><dd>Aceleración de activación y desplazamiento de vuelco del oscilador</dd>
-  <dt>T₀, a<sub>y</sub>*, d<sub>y</sub>*</dt><dd>Periodo elástico antes del despegue; punto de despegue sobre la curva completa</dd>
+  <dt>T₀, a<sub>y</sub>*, d<sub>y</sub>*</dt><dd>Periodo elástico del bloque sobre la junta antes del despegue (ménsula empotrada en z<sub>c</sub>); punto de despegue sobre la curva completa</dd>
+  <dt>z<sub>c</sub>, z*</dt><dd>Cota de la junta de cálculo; cota del punto de la pila que se mueve como el oscilador [m]</dd>
   <dt>d<sub>SLV</sub>, d<sub>SLC</sub></dt><dd>Umbrales de desplazamiento del oscilador</dd>
   <dt>T<sub>sec</sub>, T<sub>SLV</sub>, T<sub>SLC</sub></dt><dd>Periodo secante (cabeceo con la amplitud del umbral); periodos del oscilador lineal equivalente</dd>
   <dt>a<sub>gR</sub>, a<sub>g</sub>, K, S, C</dt><dd>Aceleración de referencia (suelo A); de cálculo; coeficiente de contribución; factor de suelo; coeficiente del terreno (AN)</dd>
-  <dt>T<sub>B</sub>…T<sub>F</sub>, η, ξ</dt><dd>Periodos de esquina del espectro; corrección por amortiguamiento; amortiguamiento (%)</dd>
+  <dt>T<sub>B</sub>…T<sub>F</sub>, η, ξ</dt><dd>Periodos de esquina del espectro; corrección por amortiguamiento; amortiguamiento [%]</dd>
   <dt>S<sub>e</sub>, S<sub>De</sub>, Δ<sub>d</sub></dt><dd>Espectro de aceleración; de desplazamiento; demanda de desplazamiento</dd>
-  <dt>E, G</dt><dd>Módulo de deformación promedio de la sección completa (cáscara y núcleo); módulo de cortante (MPa)</dd>
+  <dt>E, G</dt><dd>Módulo de deformación promedio de la sección completa (fábrica exterior y núcleo); módulo de cortante [MPa]</dd>
+  <dt>T<sub>1</sub>, ξ<sub>1</sub>, γ<sub>1</sub>, ψ<sub>1</sub>(z)</dt><dd>Periodo, amortiguamiento [%], factor de participación y forma modal (1 en cabeza) de la pila completa como estructura principal; solo si la junta está en altura</dd>
+  <dt>a<sub>Z</sub>, S<sub>eZ</sub>, S<sub>DeZ</sub></dt><dd>Aceleración máxima en la cota z; espectros de aceleración y de desplazamiento en esa cota</dd>
+  <dt>a<sub>vg</sub>/a<sub>g</sub>, c<sub>v</sub>, f<sub>v</sub></dt><dd>Relación entre aceleración vertical y horizontal del suelo; fracción de la vertical simultánea al pico horizontal; factor de reducción del peso que estabiliza (criterio propio)</dd>
+  <dt>μ, F<sub>H</sub>, F<sub>V</sub></dt><dd>Coeficiente de rozamiento admisible en la junta; fuerzas horizontal y vertical en la junta al activarse el mecanismo (MN)</dd>
   <dt>FC, γ<sub>I</sub>, ν</dt><dd>Factor de confianza; factor de importancia; reducción para el sismo frecuente</dd></dl>
   <h3>Expresiones utilizadas</h3>
   <div class="tw"><table><thead><tr><th class="l">Paso</th><th class="l">Expresión</th><th class="l">Referencia</th></tr></thead><tbody>
-  <tr><td class="l">1</td><td class="l m">V = H·[a₀·b₀ + m·H·(a₀ + b₀) + (4/3)·m²·H²] · W = γ·V · z<sub>G</sub> = ∫w(z)·z·dz / W</td><td class="l">Geometría</td></tr>
-  <tr><td class="l">2</td><td class="l m">c = N/(f·L) (con cáscara: N = L·[f₁·t + f₂·(c − t)]) · u = c/2 (centroide del bloque)</td><td class="l">Circolare C8.7.1.2.1, punto d</td></tr>
-  <tr><td class="l">2</td><td class="l m">λ₀(z) = (W<sub>sup</sub> + P)·[B(z)/2 − u] / [W<sub>sup</sub>·h<sub>G</sub> + P<sub>h</sub>·(H − z)]</td><td class="l">Circolare C8.7.1.2.1.1</td></tr>
+  <tr><td class="l">1</td><td class="l m">B(z) = B₀ + 2m<sub>B</sub>(H − z) · L(z) = L₀ + 2m<sub>L</sub>(H − z) · V = H·[B₀L₀ + H·(B₀m<sub>L</sub> + L₀m<sub>B</sub>) + (4/3)·m<sub>B</sub>m<sub>L</sub>·H²] · W = γ·V · z<sub>G</sub> = ∫w(z)·z·dz / W</td><td class="l">Geometría</td></tr>
+  <tr><td class="l">2</td><td class="l m">c = N/(f<sub>c,ext</sub>·L) si c ≤ t<sub>ext</sub>; si no, N = L·[f<sub>c,ext</sub>·t<sub>ext</sub> + f<sub>c,núc</sub>·(c − t<sub>ext</sub>)] · u = centroide del bloque comprimido</td><td class="l">Circolare C8.7.1.2.1, punto d</td></tr>
+  <tr><td class="l">0–3</td><td class="l m">f<sub>v</sub> = 1 − c<sub>v</sub>·(a<sub>vg</sub>/a<sub>g</sub>)·a<sub>g,SLV</sub>/g · peso estabilizante = f<sub>v</sub>·W (pila y tablero); fuerzas de inercia con la masa completa</td><td class="l">Criterio propio (ver nota); combinación 1.0·E<sub>H</sub> + 0.3·E<sub>V</sub> de UNE-EN 1998-1, 4.3.3.5.2</td></tr>
+  <tr><td class="l">2</td><td class="l m">F<sub>H</sub>/F<sub>V</sub> = λ₀·(W<sub>sup</sub> + P<sub>h</sub>) / [f<sub>v</sub>·(W<sub>sup</sub> + P)] ≤ μ</td><td class="l">Criterio propio: deslizamiento antes del cabeceo</td></tr>
+  <tr><td class="l">2</td><td class="l m">λ₀(z) = f<sub>v</sub>·(W<sub>sup</sub> + P)·[B(z)/2 − u] / [W<sub>sup</sub>·h<sub>G</sub> + P<sub>h</sub>·(H − z + h<sub>t</sub>)]</td><td class="l">Circolare C8.7.1.2.1.1</td></tr>
   <tr><td class="l">3</td><td class="l m">x = x₀·cos θ + z₀·sin θ · z = −x₀·sin θ + z₀·cos θ · λ(θ) = Σ W<sub>i</sub>·(−x<sub>i</sub>) / Σ W<sub>h,i</sub>·z<sub>i</sub></td><td class="l">Circolare C8.7.1.2.1.2</td></tr>
   <tr><td class="l">3</td><td class="l m">tan θ₀ = Σ W·brazo / Σ W·z · d<sub>C</sub>(θ) = x<sub>C</sub>(θ) − x<sub>C</sub>(0)</td><td class="l">Equilibrio del sólido rígido</td></tr>
-  <tr><td class="l">4</td><td class="l m">Φ<sub>i</sub> = (z<sub>i</sub> − z<sub>c</sub>)/(H − z<sub>c</sub>) · m* = Σ W<sub>i</sub>Φ<sub>i</sub>/g · Γ = Σ W<sub>i</sub>Φ<sub>i</sub> / Σ W<sub>i</sub>Φ<sub>i</sub>² · M = Σ W<sub>i</sub>/g · e* = Γ·m*/M</td><td class="l">Circolare [C8.7.1.5]; EN 1998-1, anejo B</td></tr>
+  <tr><td class="l">4</td><td class="l m">Φ<sub>i</sub> = (z<sub>i</sub> − z<sub>c</sub>)/(H − z<sub>c</sub>) · m* = Σ W<sub>i</sub>Φ<sub>i</sub>/g · Γ = Σ W<sub>i</sub>Φ<sub>i</sub> / Σ W<sub>i</sub>Φ<sub>i</sub>² · M = Σ W<sub>i</sub>/g · e* = Γ·m*/M</td><td class="l">Circolare [C8.7.1.5]; EN 1998-1, anejo B · tablero: Φ = (H + h<sub>t</sub> − z<sub>c</sub>)/(H − z<sub>c</sub>)</td></tr>
   <tr><td class="l">4</td><td class="l m">a* = λ·g/(e*·FC) · d* = d<sub>C</sub>/Γ · z* = z<sub>c</sub> + (H − z<sub>c</sub>)/Γ</td><td class="l">Circolare [C8.7.1.3]–[C8.7.1.4]</td></tr>
-  <tr><td class="l">4b</td><td class="l m">I = L·B³/12 · A = L·B · u(z): flexión M/(E·I) + cortante V/(κ·G·A), κ = 5/6 · T₀ = 2π·√(Σ W<sub>i</sub>u<sub>i</sub>² / (g·Σ W<sub>i</sub>u<sub>i</sub>))</td><td class="l">Método de Rayleigh</td></tr>
-  <tr><td class="l">4b</td><td class="l m">T₀ = k·λ<sub>s</sub>·L·√(γ/(E·g)), k = 6.2 (comparación) · a* = (4π²/T₀²)·d*</td><td class="l">Circolare [C8.7.1.6]–[C8.7.1.7]</td></tr>
+  <tr><td class="l">4b</td><td class="l m">I = L·B³/12 · A = L·B · u(z): flexión M/(E·I) + cortante V/(κ·G·A), κ = 5/6, ménsula empotrada en z<sub>c</sub> (T₀) o en la base (T₁), tablero como masa rígida en H + h<sub>t</sub>: u<sub>t</sub> = u<sub>cabeza</sub> + θ<sub>cabeza</sub>·h<sub>t</sub> · T = 2π·√(Σ W<sub>i</sub>u<sub>i</sub>² / (g·Σ W<sub>i</sub>u<sub>i</sub>)) · ψ<sub>1</sub> = u/u<sub>cabeza</sub> · γ<sub>1</sub> = Σ W<sub>i</sub>ψ<sub>i</sub> / Σ W<sub>i</sub>ψ<sub>i</sub>²</td><td class="l">Método de Rayleigh</td></tr>
+  <tr><td class="l">4b</td><td class="l m">T₀ = k·λ<sub>s</sub>·L·√(γ/(E·g)), k = 6.2, L = H − z<sub>c</sub>, λ<sub>s</sub> = L/B(z<sub>c</sub>) (comparación) · a* = (4π²/T₀²)·d*</td><td class="l">Circolare [C8.7.1.6]–[C8.7.1.7]</td></tr>
   <tr><td class="l">5</td><td class="l m">d<sub>SLV</sub> = mín(0.4·d₀*; d<sub>C,lím</sub>/Γ) · d<sub>SLC</sub> = mín(0.6·d₀*; d<sub>C,lím</sub>/Γ)</td><td class="l">Circolare C8.7.1.2.1.6; límite del usuario</td></tr>
   <tr><td class="l">6</td><td class="l m">T<sub>sec</sub> = 2π·√(d/a*) · T<sub>SLV</sub> = 1.68π·√(d<sub>SLV</sub>/a*(d<sub>SLV</sub>)) · T<sub>SLC</sub> = 1.56π·√(d<sub>SLC</sub>/a*(d<sub>SLC</sub>))</td><td class="l">Circolare [C8.7.1.10]–[C8.7.1.11]</td></tr>
   <tr><td class="l">7</td><td class="l m">a<sub>gR</sub> = Σ(a<sub>gR,j</sub>/d<sub>j</sub>) / Σ(1/d<sub>j</sub>) (4 puntos) · a<sub>g</sub> = γ<sub>I</sub>·a<sub>gR</sub></td><td class="l">AN.2 (3.2.1(2)), AN.5; EN 1998-1, 3.2.1(3)</td></tr>
@@ -957,10 +1175,12 @@ function render(R) {
   <tr><td class="l">7</td><td class="l m">C = (800/v<sub>s,30</sub>)<sup>0.465</sup> · S(a<sub>g</sub>) (tabla AN.2) · T<sub>C</sub> = K·C/4 (A: K/4; D: K/2) · T<sub>B</sub> = T<sub>C</sub>/5 · T<sub>D</sub> = 2.0 s</td><td class="l">AN.2, tabla AN.2</td></tr>
   <tr><td class="l">7</td><td class="l m">η = √(10/(5 + ξ)) ≥ 0.55 · S<sub>e</sub>(T): 0–T<sub>B</sub>: a<sub>g</sub>S[1 + T/T<sub>B</sub>·(2.5η − 1)]; T<sub>B</sub>–T<sub>C</sub>: 2.5a<sub>g</sub>Sη; T<sub>C</sub>–T<sub>D</sub>: 2.5a<sub>g</sub>Sη·T<sub>C</sub>/T; T<sub>D</sub>–4 s: 2.5a<sub>g</sub>Sη·T<sub>C</sub>T<sub>D</sub>/T²</td><td class="l">EN 1998-1, 3.2.2.2, ecs. (3.2)–(3.6)</td></tr>
   <tr><td class="l">7</td><td class="l m">S<sub>De</sub>(T) = S<sub>e</sub>(T)·(T/2π)² · T<sub>E</sub>–T<sub>F</sub>: S<sub>De</sub> = 0.025a<sub>g</sub>ST<sub>C</sub>T<sub>D</sub>[2.5η + (T − T<sub>E</sub>)/(T<sub>F</sub> − T<sub>E</sub>)·(1 − 2.5η)] · T &gt; T<sub>F</sub>: S<sub>De</sub> = d<sub>g</sub> = 0.025a<sub>g</sub>ST<sub>C</sub>T<sub>D</sub></td><td class="l">EN 1998-1, ecs. (3.7), (3.12); anejo A, (A.1)–(A.2)</td></tr>
-  <tr><td class="l">8</td><td class="l m">SLD: S<sub>e</sub>(T₀, 5 %) ≤ a<sub>y</sub>* · SLV/SLC: Δ<sub>d</sub> = máx S<sub>De</sub>(T) en [T₀, T<sub>SL</sub>] ≤ d<sub>SL</sub> · índice = a<sub>g,cap</sub>/a<sub>g</sub></td><td class="l">Circolare [C8.7.1.9], [C8.7.1.12]</td></tr>
+  <tr><td class="l">7b</td><td class="l m">a<sub>Z</sub> = S<sub>e</sub>(T₁, ξ₁)·|γ₁·ψ₁(z)|·√(1 + 0.0004ξ₁²) · S<sub>eZ</sub>(T): T &lt; aT₁: 1.1ξ₁<sup>−0.5</sup>η(ξ)a<sub>Z</sub> / [1 + (1.1ξ₁<sup>−0.5</sup>η(ξ) − 1)(1 − T/aT₁)<sup>1.6</sup>]; aT₁–bT₁: 1.1ξ₁<sup>−0.5</sup>η(ξ)a<sub>Z</sub>; T ≥ bT₁: 1.1ξ₁<sup>−0.5</sup>η(ξ)a<sub>Z</sub> / [1 + (1.1ξ₁<sup>−0.5</sup>η(ξ) − 1)(T/bT₁ − 1)<sup>1.2</sup>] · a = 0.8, b = 1.1 · S<sub>eZ</sub> ≥ S<sub>e</sub> · S<sub>DeZ</sub> = S<sub>eZ</sub>·(T/2π)²</td><td class="l">Circolare C7.2.3, [C7.2.5]–[C7.2.9]; C8.7.1.2.1.4 y .8</td></tr>
+  <tr><td class="l">8</td><td class="l m">SLD: S<sub>e</sub>(T₀, 5 %) ≤ a<sub>y</sub>* (en altura: S<sub>eZ</sub>(T₀, 5 %, z)) · SLV/SLC: Δ<sub>d</sub> = máx S<sub>De</sub>(T) en [T₀, T<sub>SL</sub>] (en altura: S<sub>DeZ</sub>, y ≥ S<sub>DeZ</sub>(bT₁) si T<sub>SL</sub> &gt; bT₁) ≤ d<sub>SL</sub> · índice = a<sub>g,cap</sub>/a<sub>g</sub></td><td class="l">Circolare [C8.7.1.9], [C8.7.1.12]</td></tr>
   </tbody></table></div>
+  <p class="cite"><b>Nota sobre la componente vertical.</b> La Circolare no considera la componente vertical en el análisis cinemático. La app la tiene en cuenta de forma simplificada y del lado de la seguridad con un criterio propio: en el instante del pico horizontal actúa una fracción c<sub>v</sub> de la aceleración vertical, que reduce el peso que estabiliza la pila y el tablero en el factor f<sub>v</sub>. Se calcula una sola vez con la a<sub>g</sub> del SLV (sismo de proyecto) y se aplica a todos los estados límite: es conservador para el SLD, con menor a<sub>g</sub>, y algo menos exigente que el valor exacto para el SLC. En la rama de desplazamiento constante del espectro el factor reduce a* pero apenas cambia la demanda Δ<sub>d</sub>.</p>
   <h3>Referencias</h3>
-  <p>UNE-EN 1998-1:2018 (versión corregida 2022), Eurocódigo 8, parte 1, con Anexo Nacional. · Ministero delle Infrastrutture e dei Trasporti, Circolare 21 gennaio 2019, n. 7 C.S.LL.PP., Suppl. Ord. n. 5 a la G.U. n. 35 de 11/02/2019. · D.M. 17 gennaio 2018, NTC 2018. · Housner, G. W. (1963), The behavior of inverted pendulum structures during earthquakes, BSSA 53(2).</p>`);
+  <p>UNE-EN 1998-1:2018 (versión corregida 2022), Eurocódigo 8, parte 1, con Anexo Nacional. · Ministero delle Infrastrutture e dei Trasporti, Circolare 21 gennaio 2019, n. 7 C.S.LL.PP., Suppl. Ord. n. 5 a la G.U. n. 35 de 11/02/2019 (C7.2.3 espectros de planta; C8.5.4; C8.7.1.2.1). · D.M. 17 gennaio 2018, NTC 2018. · Housner, G. W. (1963), The behavior of inverted pendulum structures during earthquakes, BSSA 53(2).</p>`);
 
   const main = document.getElementById('main'); main.innerHTML = h;
   main.querySelectorAll('.interp,.warn,.cap,td,li,p,h2,h3').forEach(el => {
