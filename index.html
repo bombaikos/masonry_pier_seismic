@@ -54,7 +54,7 @@ section{background:var(--paper);border:1px solid var(--line);border-radius:10px;
 section h2{font-size:1.18rem;margin:0 0 2px;font-weight:600;text-wrap:balance}
 section h2 .n{color:var(--accent);font-family:var(--f-mono);font-weight:500;margin-right:6px}
 .cite{font-size:.78rem;color:var(--muted);margin:0 0 12px}
-.cite .norms{font-size:1rem;color:var(--ink)}
+.norms{font-size:1rem;color:var(--ink);margin:0 0 2px}
 section h3{font-size:.95rem;margin:16px 0 6px;font-weight:600}
 p{margin:6px 0;max-width:78ch}
 .m{font-family:var(--f-math);font-size:1.06em}
@@ -602,7 +602,7 @@ async function exportDocx(btn) {
     children.push(new Paragraph({ children: [new TextRun({ text: 'Proyecto: ', bold: true, font: FONT }), new TextRun({ text: I.proj || '—', font: FONT })] }));
     children.push(new Paragraph({ children: [new TextRun({ text: 'Elemento: ', bold: true, font: FONT }), new TextRun({ text: I.elem || '—', font: FONT })] }));
     children.push(new Paragraph({ children: [new TextRun({ text: 'Dirección: ', bold: true, font: FONT }), new TextRun({ text: I.dir === 'T' ? 'transversal' : 'longitudinal', font: FONT }), new TextRun({ text: '   ·   Fecha: ', bold: true, font: FONT }), new TextRun({ text: new Date().toLocaleDateString('es-ES'), font: FONT })] }));
-    children.push(new Paragraph({ spacing: { after: 240 }, children: [new TextRun({ text: 'Análisis cinemático no lineal de pilas de fábrica. Normas: UNE-EN 1998-1:2018 (corr. 2022) con Anexo Nacional (acción sísmica), EN 1998-3:2025 y Circolare 2019 n. 7 (Italia). Informe generado automáticamente por la app, sin intervención de IA.', font: FONT, italics: true, color: '5B646B', size: 20 })] }));
+    children.push(new Paragraph({ spacing: { after: 240 }, children: [new TextRun({ text: 'Análisis cinemático no lineal de pilas de fábrica.', font: FONT })] }));
     const bd = { style: BorderStyle.SINGLE, size: 4, color: 'DCDAD3' };
     const figs = []; // promesas en orden
     for (const sec of document.querySelectorAll('#main > section')) {
@@ -611,6 +611,7 @@ async function exportDocx(btn) {
           const tg = n.tagName, cl = n.classList;
           if (tg === 'H2') children.push(new Paragraph({ heading: HeadingLevel.HEADING_1, pageBreakBefore: false, spacing: { before: 360, after: 120 }, children: runsOf(n, { b: true, color: '10283B', size: 30 }) }));
           else if (tg === 'H3') children.push(new Paragraph({ heading: HeadingLevel.HEADING_2, spacing: { before: 200, after: 80 }, children: runsOf(n, { b: true, size: 24 }) }));
+          else if (cl.contains('norms')) children.push(new Paragraph({ spacing: { after: 40 }, children: runsOf(n) }));
           else if (cl.contains('cite')) children.push(P(n, { st: { color: '5B646B', size: 18, i: false } }));
           else if (cl.contains('eq')) children.push(new Paragraph({ children: runsOf(n, { math: true }), spacing: { before: 60, after: 120 }, shading: { type: ShadingType.CLEAR, fill: 'EEEDE7', color: 'auto' } }));
           else if (cl.contains('interp')) children.push(new Paragraph({ children: runsOf(n), spacing: { after: 160 }, shading: { type: ShadingType.CLEAR, fill: 'E4F0F9', color: 'auto' }, border: { left: { style: BorderStyle.SINGLE, size: 18, color: '1F7FBF', space: 6 } } }));
@@ -717,7 +718,7 @@ function readInputs() {
 }
 
 // ---------- secciones
-function sec(id, n, title, cite, body) { return `<section id="p${id}"><h2><span class="n">${n}</span>${title}</h2><p class="cite">${cite}</p>${body}</section>`; }
+function sec(id, n, title, cite, body) { return `<section id="p${id}"><h2><span class="n">${n}</span>${title}</h2>${cite ? `<p class="cite">${cite}</p>` : ''}${body}</section>`; }
 const lsShort = k => `<b>${k}</b> · ${LS[k].short}`;
 const lsReq = (k, n) => `<tr class="req"><td class="l" colspan="${n}">Se exige ${LS[k].req}.</td></tr>`;
 const lsCell = k => `<b>${k}</b> · ${LS[k].name}<br><span style="color:var(--muted)">${LS[k].def} Se exige ${LS[k].req}.</span>`;
@@ -805,7 +806,8 @@ function render(R) {
   let h = '';
 
   // Paso 0
-  h += sec('0', '0', 'Datos y bases de cálculo', '<span class="norms">UNE-EN 1998-1:2018 (corr. 2022) con Anexo Nacional (acción sísmica) · EN 1998-3:2025 · Circolare 2019 n. 7 (Italia)</span>', `
+  h += sec('0', '0', 'Datos y bases de cálculo', '', `
+  <p class="norms">UNE-EN 1998-1:2018 (corr. 2022) con Anexo Nacional (acción sísmica)</p><p class="norms">EN 1998-3:2025</p><p class="norms" style="margin-bottom:12px">Circolare 2019 n. 7 (Italia)</p>
   ${fig(pierSVG(R, { W: 560, H: 380, sc: 7.2, ox: 175, oy: 350, dims: true, extra: secBase }), 'Alzado en la dirección del giro y sección horizontal por la base, a la misma escala')}
   <h3>Hipótesis de este cálculo</h3>
   <div class="tw"><table><tbody>
