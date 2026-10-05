@@ -789,7 +789,7 @@ function buildForm() {
   let h = `<h2>Ejemplos</h2><div style="display:flex;gap:6px"><select id="exSel">${Object.entries(EXAMPLES).map(([k, e]) => `<option value="${k}">${e.label}</option>`).join('')}</select><button id="btnEx" type="button" style="flex:none">Cargar</button></div>
   <p class="hint">Curvas sintéticas para probar la app. Al cargar un ejemplo se sustituyen todos los datos.</p>`;
   FIELDS.forEach(([title, fl], gi) => {
-    h += `<h2>${gi === 0 ? 'Paso 0 · ' : ''}${title}</h2>` + (gi === 1 ? '<div class="q">' : '');
+    h += `<h2>${gi === 0 ? 'Paso 1 · ' : ''}${title}</h2>` + (gi === 1 ? '<div class="q">' : '');
     for (const [id, lab, type, def, extra] of fl) {
       let ctl;
       if (type === 'select') ctl = `<select id="${id}">${extra.map(([vv, t]) => `<option value="${vv}"${vv === def ? ' selected' : ''}>${hT(t)}</option>`).join('')}</select>`;
@@ -845,6 +845,20 @@ function readInputs() {
 }
 
 // ---------- secciones
+// Numeración consecutiva de las secciones (1, 2, 3…), la misma que pone Word en el informe. Los identificadores internos (p7b…) no cambian;
+// se renumeran los títulos, el menú de pasos y las referencias «paso X» / «pasos X a Y» del texto.
+let STEP_MAP = {};
+function renumberNav() {
+  document.querySelectorAll('nav.steps a').forEach(a => { const id = a.getAttribute('href').slice(2); a.style.display = id in STEP_MAP ? '' : 'none';
+    if (id in STEP_MAP && /^Paso /.test(a.textContent)) a.textContent = 'Paso ' + STEP_MAP[id]; });
+}
+function renumberSteps(h) {
+  const map = {}; let k = 0; STEP_MAP = map;
+  for (const m of h.matchAll(/<section id="p([0-9A-Za-z]+)"><h2><span class="n">/g)) if (!(m[1] in map)) map[m[1]] = ++k;
+  const ref = t => t in map ? String(map[t]) : t;
+  h = h.replace(/\b([Pp]asos?) ([0-9][0-9a-z]*)(?![.\d])( a ([0-9][0-9a-z]*)(?![.\d]))?/g, (m, w, a, rest, b) => w + ' ' + ref(a) + (rest ? ' a ' + ref(b) : ''));
+  return h.replace(/<section id="p([0-9A-Za-z]+)"><h2><span class="n">[^<]*<\/span>/g, (m, id) => `<section id="p${id}"><h2><span class="n">${map[id]}</span>`);
+}
 function sec(id, n, title, cite, body) { return `<section id="p${id}"><h2><span class="n">${n}</span>${title}</h2><p class="cite">${cite}</p>${body}</section>`; }
 const warns = (R, k) => (R.warn[k] || []).map(t => `<div class="warn">⚠ ${t}</div>`).join('');
 const pill = ok => `<span class="pill ${ok ? 'ok' : 'no'}">${ok ? 'cumple' : 'no cumple'}</span>`;
@@ -1272,7 +1286,8 @@ function render(R) {
   <h3>Referencias</h3>
   <p>UNE-EN 1998-1:2018 (versión corregida 2022), Eurocódigo 8, parte 1, con Anexo Nacional. · UNE-EN 1998-2:2018, Eurocódigo 8, parte 2: puentes, con Anexo Nacional. · EN 1998-3:2025, Eurocode 8, parte 3: evaluación y refuerzo de edificios y puentes (CEN, sept. 2025; versión en inglés, sin UNE ni Anexo Nacional) UNE-EN 1998-3:2018, Eurocódigo 8, parte 3: evaluación y adecuación sísmica de edificios, con Anexo Nacional (anexo C, C.4.1). · Fajfar, P. (2000), A nonlinear analysis method for performance-based seismic design, Earthquake Spectra 16(3), 573–592. · Vidic, T., Fajfar, P. y Fischinger, M. (1994), Consistent inelastic design spectra: strength and displacement, Earthquake Engineering and Structural Dynamics 23, 507–521.</p>`);
 
-  const main = document.getElementById('main'); main.innerHTML = h;
+  h = renumberSteps(h);
+  const main = document.getElementById('main'); main.innerHTML = h; renumberNav();
   main.querySelectorAll('.interp,.warn,.cap,td,th,li,p,h2,h3').forEach(el => {
     const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT); const nodes = [];
     while (walker.nextNode()) nodes.push(walker.currentNode);

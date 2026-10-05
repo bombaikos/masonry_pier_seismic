@@ -718,7 +718,7 @@ const FIELDS = [
 function buildForm() {
   let h = '';
   FIELDS.forEach(([title, fl], gi) => {
-    h += `<h2>${gi === 0 ? 'Paso 0 · ' : ''}${title}</h2>` + (gi === 1 ? '<div class="q">' : '');
+    h += `<h2>${gi === 0 ? 'Paso 1 · ' : ''}${title}</h2>` + (gi === 1 ? '<div class="q">' : '');
     for (const [id, lab, type, def, extra] of fl) {
       let ctl;
       if (type === 'select') ctl = `<select id="${id}">${extra.map(([vv, t]) => `<option value="${vv}"${vv === def ? ' selected' : ''}>${t}</option>`).join('')}</select>`;
@@ -746,6 +746,20 @@ function readInputs() {
 }
 
 // ---------- secciones
+// Numeración consecutiva de las secciones (1, 2, 3…), la misma que pone Word en el informe. Los identificadores internos (p7b…) no cambian;
+// se renumeran los títulos, el menú de pasos y las referencias «paso X» / «pasos X a Y» del texto.
+let STEP_MAP = {};
+function renumberNav() {
+  document.querySelectorAll('nav.steps a').forEach(a => { const id = a.getAttribute('href').slice(2); a.style.display = id in STEP_MAP ? '' : 'none';
+    if (id in STEP_MAP && /^Paso /.test(a.textContent)) a.textContent = 'Paso ' + STEP_MAP[id]; });
+}
+function renumberSteps(h) {
+  const map = {}; let k = 0; STEP_MAP = map;
+  for (const m of h.matchAll(/<section id="p([0-9A-Za-z]+)"><h2><span class="n">/g)) if (!(m[1] in map)) map[m[1]] = ++k;
+  const ref = t => t in map ? String(map[t]) : t;
+  h = h.replace(/\b([Pp]asos?) ([0-9][0-9a-z]*)(?![.\d])( a ([0-9][0-9a-z]*)(?![.\d]))?/g, (m, w, a, rest, b) => w + ' ' + ref(a) + (rest ? ' a ' + ref(b) : ''));
+  return h.replace(/<section id="p([0-9A-Za-z]+)"><h2><span class="n">[^<]*<\/span>/g, (m, id) => `<section id="p${id}"><h2><span class="n">${map[id]}</span>`);
+}
 function sec(id, n, title, cite, body) { return `<section id="p${id}"><h2><span class="n">${n}</span>${title}</h2><p class="cite">${cite}</p>${body}</section>`; }
 const lsShort = k => `<b>${k}</b> · ${LS[k].short}`;
 const lsReq = (k, n) => `<tr class="req"><td class="l" colspan="${n}">Se exige ${LS[k].req}.</td></tr>`;
@@ -1221,7 +1235,8 @@ function render(R) {
   <p>UNE-EN 1998-1:2018 (versión corregida 2022), Eurocódigo 8, parte 1, con Anexo Nacional. · EN 1998-3:2025, Eurocode 8, parte 3: evaluación y refuerzo de edificios y puentes (CEN, sept. 2025; versión en inglés, sin UNE ni Anexo Nacional). · Ministero delle Infrastrutture e dei Trasporti, Circolare 21 gennaio 2019, n. 7 C.S.LL.PP., Suppl. Ord. n. 5 a la G.U. n. 35 de 11/02/2019 (C7.2.3 espectros de planta; C8.5.4; C8.7.1.2.1). · D.M. 17 gennaio 2018, NTC 2018. · Housner, G. W. (1963), The behavior of inverted pendulum structures during earthquakes, BSSA 53(2).</p>`);
 
   h = h.replace(/SLD/g, 'DL').replace(/SLV/g, 'SD').replace(/SLC/g, 'NC');   // siglas de EN 1998-3 (claves internas SLD/SLV/SLC)
-  const main = document.getElementById('main'); main.innerHTML = h;
+  h = renumberSteps(h);
+  const main = document.getElementById('main'); main.innerHTML = h; renumberNav();
   main.querySelectorAll('.interp,.warn,.cap,td,li,p,h2,h3').forEach(el => {
     const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT); const nodes = [];
     while (walker.nextNode()) nodes.push(walker.currentNode);
