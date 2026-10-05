@@ -1081,16 +1081,17 @@ function render(R) {
   const y8 = Math.ceil(p4.a0s * 1.6 * 10) / 10;
   const sameD = Math.abs(p5.SLV.d - p5.SLC.d) < 1e-9;
   const yV = y8 * 0.30, yC = y8 * 0.16;   // alturas de las cotas de margen
+  const demPt = (k, color) => { let bT = p6.T0, bd = 1e9; for (let i = 1; i <= 600; i++) { const T = Tx * i / 600, dd = Math.abs(p7.SDeD(T, L7[k].ag, L7[k].xi) - p8[k].Dd); if (dd < bd) { bd = dd; bT = T; } } return { x: p8[k].Dd, y: p7.SeD(bT, L7[k].ag, L7[k].xi), color, r: 5.5 }; };
   const fig8b = chart({ id: 'c8b', x0: 0, x1: xb, y0: 0, y1: y8, xlabel: 'd*, S_De [m]', ylabel: 'a*, S_e [m/s²]',
     series: [{ pts: adrs(L7.SLV.ag, L7.SLV.xi, Tx), color: 'var(--coral)', w: 1.2 }, { pts: adrs(L7.SLC.ag, L7.SLC.xi, Tx), color: 'var(--violet)', w: 1.2 }, { pts: capB, color: 'var(--accent)', w: 2.4 }],
     vlines: [{ x: p8.SLV.Dd, y0: 0, y1: y8, color: 'var(--coral)', w: 1.6, dash: '5 3' }, { x: p8.SLC.Dd, y0: 0, y1: y8, color: 'var(--violet)', w: 1.6, dash: '5 3' },
       { x: p5.SLV.d, y0: 0, y1: p5.SLV.a, color: 'var(--accent)', w: 1.2, dash: '2 2' }].concat(sameD ? [] : [{ x: p5.SLC.d, y0: 0, y1: p5.SLC.a, color: 'var(--accent)', w: 1.2, dash: '2 2' }]),
-    points: [{ x: p5.SLV.d, y: p5.SLV.a, color: 'var(--accent)', label: sameD ? `d_SLV = d_SLC = ${f(p5.SLV.d, 3)} m` : `d_SLV = ${f(p5.SLV.d, 3)} m`, anchor: 'end', dx: -8, dy: -20 }].concat(sameD ? [] : [{ x: p5.SLC.d, y: p5.SLC.a, color: 'var(--accent)', label: `d_SLC = ${f(p5.SLC.d, 3)} m`, anchor: 'end', dx: -8, dy: -12 }]),
+    points: [{ x: p5.SLV.d, y: p5.SLV.a, color: 'var(--accent)', label: sameD ? `capacidad (d_SLV = d_SLC = ${f(p5.SLV.d, 3)} m)` : `capacidad (d_SLV = ${f(p5.SLV.d, 3)} m)`, anchor: 'end', dx: -8, dy: -20 }].concat(sameD ? [] : [{ x: p5.SLC.d, y: p5.SLC.a, color: 'var(--accent)', label: `capacidad (d_SLC = ${f(p5.SLC.d, 3)} m)`, anchor: 'end', dx: -8, dy: -12 }]).concat([demPt('SLV', 'var(--coral)'), demPt('SLC', 'var(--violet)')]),
     arrows: [{ x0: p8.SLV.Dd, y0: yV, x1: p5.SLV.d, y1: yV, both: true, color: 'var(--coral)', w: 1.2 }, { x0: p8.SLC.Dd, y0: yC, x1: p5.SLC.d, y1: yC, both: true, color: 'var(--violet)', w: 1.2 }],
     texts: [{ x: (p8.SLV.Dd + p5.SLV.d) / 2, y: yV + y8 * 0.025, t: `SLV: Δ_d = ${f(p8.SLV.Dd, 3)} m → d_SLV = ${f(p5.SLV.d, 3)} m · margen ${f(p8.SLV.ratio, 1)}`, anchor: 'middle', color: 'var(--coral)' },
       { x: (p8.SLC.Dd + p5.SLC.d) / 2, y: yC + y8 * 0.025, t: `SLC: Δ_d = ${f(p8.SLC.Dd, 3)} m → d_SLC = ${f(p5.SLC.d, 3)} m · margen ${f(p8.SLC.ratio, 1)}`, anchor: 'middle', color: 'var(--violet)' },
       ],
-    legend: [{ t: 'capacidad', color: 'var(--accent)' }, { t: `espectro SLV (ξ = ${L7.SLV.xi} %)`, color: 'var(--coral)' }, { t: `espectro SLC (ξ = ${L7.SLC.xi} %)`, color: 'var(--violet)' }, { t: 'Δ_d SLV (paso 7)', color: 'var(--coral)', dash: '5 3' }, { t: 'Δ_d SLC (paso 7)', color: 'var(--violet)', dash: '5 3' }] });
+    legend: [{ t: 'capacidad', color: 'var(--accent)' }, { t: `demanda esp. SLV (ξ = ${L7.SLV.xi} %)`, color: 'var(--coral)' }, { t: `demanda esp. SLC (ξ = ${L7.SLC.xi} %)`, color: 'var(--violet)' }, { t: 'Δ_d SLV (paso 7)', color: 'var(--coral)', dash: '5 3' }, { t: 'Δ_d SLC (paso 7)', color: 'var(--violet)', dash: '5 3' }] });
   const pill = ok => `<span class="pill ${ok ? 'ok' : 'no'}">${ok ? 'cumple' : 'no cumple'}</span>`;
   h += sec('8', '8', 'Comprobaciones', `EN 1998-3:2025: (11.51)–(11.52) (DL) y (11.42)–(11.45) (SD y NC), γSd 4.2.2(5), γRd tablas 11.10, 11.11 y 11.13 · máximo de S_De en [T0, T_LS]: Circolare [C8.7.1.12]${EL ? ' · espectro en la cota de la junta, Circolare C7.2.3' : ''}`, `
   <div class="tw"><table><thead><tr><th class="l">Estado límite</th><th class="l">Comprobación</th><th>Demanda</th><th>Capacidad</th><th>Margen</th><th>a<sub>g</sub> de capacidad</th><th>a<sub>g</sub> del sitio</th><th>Índice</th><th></th></tr></thead><tbody>
