@@ -30,6 +30,10 @@ m3 = [380, 420, 420, 420, 420]; phi3 = [1.0, 0.82, 0.62, 0.40, 0.19]
 d, F = curve(K0=1.0e6, F1=6500, R=2.5, kh=3000, dp=0.045, ks=20000, dend=0.10)
 sp3 = spectrum(0.087, 1.0, 450, 1.0); r = n2(d, F, m3, phi3, 0, sp3)
 ex['E3'] = dict(d=d, F=F, m=m3, phi=phi3, r=r, sp={k: v for k, v in sp3.items() if k != 'Se'})
+LSIN = {'E1': (0.192, 500, False, 1, 1.0), 'E2': (0.1416, 270, True, 2, 1.15), 'E3': (0.087, 450, True, 3, 1.0)}
+for k, (a, vs, fab, KL, gs) in LSIN.items():
+    e = ex[k]; e['ls_in'] = dict(fab=fab, KL=KL, gSd=gs)
+    e['ls'] = limit_states(e['d'], e['F'], e['m'], e['phi'], a, 1.0, vs, 1.0, KL=KL, gSd=gs, fab=fab)
 for k, e in ex.items():
     r = e['r']; print(k, 'm*=%.1f Γ=%.4f e*=%.3f du=%.4f' % (r['ms'], r['Gam'], r['es'], r['du']), 'TC=%.3f' % e['sp']['TC'])
     for h in r['hist']: print('   ', {a: (round(b, 5) if isinstance(b, float) else b) for a, b in h.items()})

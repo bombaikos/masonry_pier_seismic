@@ -7,12 +7,13 @@ const cmp = (lab, a, b, tol = 1e-6) => { const ok = Math.abs(a - b) <= tol * Mat
 for (const k of ['E1', 'E2', 'E3']) {
   const e = ex[k];
   const inp = { curveTxt: e.d.map((x, i) => `${x}\t${e.F[i]}`).join('\n'), dUnit: 'm', fUnit: 'kN', massTxt: e.m.map((m, i) => `M${i + 1}; ${m}; ${e.phi[i]}`).join('\n'),
-    ctrlRow: 1, duCrit: 'drop', duPct: 80, dmCrit: 'max', iterate: true, tol: 5, siteMode: 'manual', agR: site[k][0], K: 1.0, vs30: site[k][1], tipo: 'puente', impClass: 'II', xi: 5 };
+    ctrlRow: 1, duCrit: 'drop', duPct: 80, dmCrit: 'max', iterate: true, tol: 5, siteMode: 'manual', agR: site[k][0], K: 1.0, vs30: site[k][1], tipo: 'puente', impClass: 'II', xi: 5, mat: e.ls_in.fab ? 'fabrica' : 'ha', KL: e.ls_in.KL, gSd: e.ls_in.gSd };
   const R = E.computeN2(inp, grid), r = e.r;
   cmp(k + ' m*', R.p2.ms, r.ms); cmp(k + ' Γ', R.p2.Gam, r.Gam); cmp(k + ' e*', R.p2.es, r.es); cmp(k + ' du', R.p2.du, r.du);
   if (R.p6.its.length !== r.hist.length) { bad++; console.log('  nº iteraciones', R.p6.its.length, r.hist.length); }
   r.hist.forEach((h, i) => { const j = R.p6.its[i]; if (!j) return; for (const [a, b] of [['dm', 'dm'], ['Fy', 'Fy'], ['Em', 'Em'], ['dy', 'dy'], ['T', 'T'], ['Se', 'Se'], ['det', 'det'], ['qu', 'qu'], ['dt', 'dt']]) cmp(`${k} it${i} ${a}`, j[a], h[b]); if (j.cas !== h.case) { bad++; console.log('  caso', j.cas, h.case); } });
   cmp(k + ' dt', R.p7.res.dt, r.dt);
+  R.p8.forEach((x, i) => { const y = e.ls[i]; cmp(`${k} ${x.k} dt`, x.dt, y.dt); cmp(`${k} ${x.k} γSd·dt`, x.dtv, y.dtv); cmp(`${k} ${x.k} capacidad`, x.cap, y.cap); if (x.ok !== y.ok) { bad++; console.log('  ok', k, x.k, x.ok, y.ok); } });
   console.log(k, 'caso', R.p5.cas, 'T*', R.p5.T.toFixed(4), 'dt', R.p7.res.dt.toFixed(5), 'its', R.p6.its.length, R.p6.stop, 'avisos', JSON.stringify(R.warn).slice(0, 300));
   console.log('   EL', R.p8.map(x => `${x.k}: ag ${x.ag.toFixed(3)} dt ${x.dt.toFixed(4)} caso ${x.cas} ok ${x.ok}`).join(' | '));
 }

@@ -275,12 +275,18 @@ function computeN2(inp, grid) {
 
   // Paso 8 · estados límite (EN 1998-3, 2.1 y AN): a_g(T_R) = γ_I·a_gR·(T_R/475)^(1/3)
   const LSdef = [{ k: 'DL', TR: 225, P: '20 % en 50 años' }, { k: 'SD', TR: 475, P: '10 % en 50 años' }, { k: 'NC', TR: 2475, P: '2 % en 50 años' }];
+  // Seguridad: γSd (EN 1998-3:2025, 4.2.2(5)); γRd de la capacidad de desplazamiento global, solo fábrica (11.5.1.5.1(7) y (10), tablas 11.8 y 11.9)
+  const KL = [1, 2, 3].includes(inp.KL) ? inp.KL : 1, gSd = inp.gSd > 0 ? inp.gSd : 1, rd = inp.mat === 'fabrica';
+  const safety = { KL, gSd, rd, gRdNC: rd ? [1.9, 1.8, 1.7][KL - 1] : 1, gRdDL: rd ? [2.0, 1.7, 1.5][KL - 1] : 1 };
+  R.safety = safety;
   R.p8 = LSdef.map(L => {
     const f = Math.pow(L.TR / 475, 1 / 3), agL = ag * f;
     const r = runN2(cv, ms, sp, agL, xi, dm0, opt), x = r.fin;
     const dtL = Gam * x.dt;
-    const cap = L.k === 'DL' ? Gam * N2.first.dy : L.k === 'SD' ? 0.75 * du : du;
-    return { ...L, f, ag: agL, S: sp.Sof(agL), T: x.T, cas: x.cas, mu: x.mu, dts: x.dt, dt: dtL, cap, ok: dtL <= cap, stop: r.stop, reach: d[n - 1] >= 1.5 * dtL };
+    const cap0 = L.k === 'DL' ? Gam * N2.first.dy : L.k === 'SD' ? 0.75 * du : du;       // capacidad física sin γRd
+    const cap = L.k === 'DL' ? cap0 / safety.gRdDL : cap0 / safety.gRdNC;                  // SD: 3/4 de la capacidad en NC
+    const dtv = safety.gSd * dtL;                                                         // demanda γSd·d_t
+    return { ...L, f, ag: agL, S: sp.Sof(agL), T: x.T, cas: x.cas, mu: x.mu, dts: x.dt, dt: dtL, dtv, cap0, cap, ok: dtv <= cap, stop: r.stop, reach: d[n - 1] >= 1.5 * dtL };
   });
   return R;
 }

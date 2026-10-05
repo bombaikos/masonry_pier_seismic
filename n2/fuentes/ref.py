@@ -83,3 +83,18 @@ def site(grid, lon, lat):
             return sum(wi*p[3] for wi, p in zip(w, nn))/sum(w), sum(wi*p[2] for wi, p in zip(w, nn))/sum(w), 'b'
     nn = sorted(grid, key=dist)[:4]; w = [1/dist(p) for p in nn]
     return sum(wi*p[3] for wi, p in zip(w, nn))/sum(w), sum(wi*p[2] for wi, p in zip(w, nn))/sum(w), 'c'
+
+
+def limit_states(d, F, m, phi, agR, K, vs30, gI, KL=1, gSd=1.0, fab=True, du_pct=0.8):
+    """Paso 8: gSd·dt <= d_LS (EN 1998-3:2025, 11.39) con d_NC = du/gRd (11.37), d_DL = dy/gRd (11.38), d_SD = 3/4 d_NC."""
+    base = n2(d, F, m, phi, 0, spectrum(agR, K, vs30, gI), du_pct=du_pct)
+    Gam, du = base['Gam'], base['du']
+    gNC = [1.9, 1.8, 1.7][KL-1] if fab else 1.0
+    gDL = [2.0, 1.7, 1.5][KL-1] if fab else 1.0
+    out = []
+    for k, TR in (('DL', 225), ('SD', 475), ('NC', 2475)):
+        r = n2(d, F, m, phi, 0, spectrum(agR*(TR/475)**(1/3), K, vs30, gI), du_pct=du_pct)
+        dt = r['dt']
+        cap = Gam*base['hist'][0]['dy']/gDL if k == 'DL' else (0.75 if k == 'SD' else 1.0)*du/gNC
+        out.append(dict(k=k, dt=dt, dtv=gSd*dt, cap=cap, ok=gSd*dt <= cap))
+    return out
