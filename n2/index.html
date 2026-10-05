@@ -467,6 +467,7 @@ async function exportDocx(btn) {
       });
       return out;
     };
+    const hRuns = n => runsOf({ childNodes: [...n.childNodes].filter(c => !(c.classList && c.classList.contains('n'))) });   // el número lo pone Word
     const P = (node, opt = {}) => new Paragraph({ children: runsOf(node, opt.st || {}), spacing: { after: 120 }, ...opt.p });
     const children = [];
     // portada
@@ -491,15 +492,22 @@ async function exportDocx(btn) {
       const walk = async el => {
         for (const n of el.children) {
           const tg = n.tagName, cl = n.classList;
-          if (tg === 'H2') children.push(new Paragraph({ heading: HeadingLevel.HEADING_1, children: runsOf(n) }));
-          else if (tg === 'H3') children.push(new Paragraph({ heading: HeadingLevel.HEADING_2, children: runsOf(n) }));
+          if (tg === 'H2') children.push(new Paragraph({ heading: HeadingLevel.HEADING_1, numbering: { reference: 'ines-titulos', level: 0 }, children: hRuns(n) }));
+          else if (tg === 'H3') children.push(new Paragraph({ heading: HeadingLevel.HEADING_2, numbering: { reference: 'ines-titulos', level: 1 }, children: hRuns(n) }));
           else if (cl.contains('cite')) children.push(P(n, { st: { color: '5B646B', size: 18, i: false } }));
           else if (cl.contains('eq')) children.push(new Paragraph({ children: runsOf(n, { math: true }), spacing: { before: 60, after: 120 }, shading: { type: ShadingType.CLEAR, fill: 'EEEDE7', color: 'auto' } }));
           else if (cl.contains('interp')) children.push(new Paragraph({ children: runsOf(n), spacing: { after: 160 }, shading: { type: ShadingType.CLEAR, fill: 'E4F0F9', color: 'auto' }, border: { left: { style: BorderStyle.SINGLE, size: 18, color: '1F7FBF', space: 6 } } }));
           else if (cl.contains('warn')) children.push(new Paragraph({ children: runsOf(n), spacing: { after: 160 }, shading: { type: ShadingType.CLEAR, fill: 'F6EEDF', color: 'auto' }, border: { left: { style: BorderStyle.SINGLE, size: 18, color: 'B27414', space: 6 } } }));
           else if (tg === 'P') children.push(P(n));
           else if (tg === 'OL' || tg === 'UL') { const inst = tg === 'OL' ? ++olInst : 0; for (const li of n.children) children.push(new Paragraph({ numbering: tg === 'OL' ? { reference: 'ines-numeros', level: 0, instance: inst } : { reference: 'ines-vinetas', level: 0 }, children: runsOf(li), spacing: { after: 60 } })); }
-          else if (tg === 'DL') { const dts = n.querySelectorAll('dt'); dts.forEach(dt => children.push(new Paragraph({ children: [...runsOf(dt, { b: true, math: true }), new TextRun({ text: ': ', font: FONT }), ...runsOf(dt.nextElementSibling)], spacing: { after: 40 } }))); }
+          else if (tg === 'DL') {
+            const cell = (kids, w, o = {}) => new TableCell({ width: { size: w, type: WidthType.DXA }, borders: { top: bd, bottom: bd, left: bd, right: bd }, shading: o.head ? { type: ShadingType.CLEAR, fill: 'EEEDE7', color: 'auto' } : undefined, margins: { top: 40, bottom: 40, left: 80, right: 80 }, children: [new Paragraph({ children: kids })] });
+            const dts = [...n.querySelectorAll('dt')], W1 = 2600, W2 = 9638 - W1;
+            children.push(new Table({ width: { size: 9638, type: WidthType.DXA }, columnWidths: [W1, W2], rows: [
+              new TableRow({ tableHeader: true, children: [cell([new TextRun({ text: 'Variable', bold: true, font: FONT, size: 18 })], W1, { head: true }), cell([new TextRun({ text: 'Significado', bold: true, font: FONT, size: 18 })], W2, { head: true })] }),
+              ...dts.map(dt => new TableRow({ cantSplit: true, children: [cell(runsOf(dt, { math: true, size: 18 }), W1), cell(runsOf(dt.nextElementSibling, { size: 18 }), W2)] }))] }));
+            children.push(new Paragraph({ children: [], spacing: { after: 80 } }));
+          }
           else if (cl.contains('tw')) {
             const t = n.querySelector('table'); if (!t) continue;
             const trs = [...t.querySelectorAll('tr')], ncol = Math.max(...trs.map(r => r.children.length));
@@ -531,6 +539,9 @@ async function exportDocx(btn) {
           { id: 'Heading2', name: 'Heading 2', basedOn: 'Normal', next: 'Normal', quickFormat: true, run: { font: FONT, bold: true, size: 24, color: '1F7FBF' }, paragraph: { spacing: { before: 200, after: 80 }, outlineLevel: 1 } }
         ] },
       numbering: { config: [
+        { reference: 'ines-titulos', levels: [
+          { level: 0, format: LevelFormat.DECIMAL, text: '%1', alignment: AlignmentType.LEFT, style: { paragraph: { indent: { left: 567, hanging: 567 } } } },
+          { level: 1, format: LevelFormat.DECIMAL, text: '%1.%2', alignment: AlignmentType.LEFT, style: { paragraph: { indent: { left: 709, hanging: 709 } } } }] },
         { reference: 'ines-vinetas', levels: [{ level: 0, format: LevelFormat.BULLET, text: '•', alignment: AlignmentType.LEFT, style: { paragraph: { indent: { left: 420, hanging: 240 } } } }] },
         { reference: 'ines-numeros', levels: [{ level: 0, format: LevelFormat.DECIMAL, text: '%1.', alignment: AlignmentType.LEFT, style: { paragraph: { indent: { left: 420, hanging: 240 } } } }] }
       ] },
