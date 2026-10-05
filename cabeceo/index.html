@@ -575,7 +575,7 @@ async function exportDocx(btn) {
   try {
     say('Preparando el informe…'); btn.disabled = true;
     const D = await loadDocxLib();
-    const { Document, Packer, Paragraph, TextRun, HeadingLevel, Table, TableRow, TableCell, WidthType, ImageRun, AlignmentType, ShadingType, BorderStyle, Footer, Header, PageNumber } = D;
+    const { Document, Packer, Paragraph, TextRun, HeadingLevel, Table, TableRow, TableCell, WidthType, ImageRun, AlignmentType, ShadingType, BorderStyle, Footer, Header, PageNumber, LevelFormat, TableOfContents, PageBreak } = D;
     const FONT = 'Calibri', MATH = 'Cambria';
     const runsOf = (node, st = {}) => {
       const out = [];
@@ -600,25 +600,31 @@ async function exportDocx(btn) {
     if (logoSrc) children.push(new Table({ width: { size: 9638, type: WidthType.DXA }, columnWidths: [9638], rows: [new TableRow({ children: [new TableCell({ width: { size: 9638, type: WidthType.DXA }, shading: { type: ShadingType.CLEAR, fill: '10283B', color: 'auto' },
       margins: { top: 200, bottom: 200, left: 240, right: 240 }, children: [new Paragraph({ children: [new ImageRun({ type: 'png', data: dataUrlToBuf(logoSrc), transformation: { width: 150, height: 58 } })] })] })] })] }));
     const I = readInputs();
-    children.push(new Paragraph({ heading: HeadingLevel.TITLE, spacing: { before: 360, after: 120 }, children: [new TextRun({ text: 'Cabeceo de pilas de fábrica', font: FONT, bold: true, size: 44, color: '10283B' })] }));
+    children.push(new Paragraph({ heading: HeadingLevel.TITLE, children: [new TextRun('Cabeceo de pilas de fábrica')] }));
     children.push(new Paragraph({ children: [new TextRun({ text: 'Proyecto: ', bold: true, font: FONT }), new TextRun({ text: I.proj || '—', font: FONT })] }));
     children.push(new Paragraph({ children: [new TextRun({ text: 'Elemento: ', bold: true, font: FONT }), new TextRun({ text: I.elem || '—', font: FONT })] }));
     children.push(new Paragraph({ children: [new TextRun({ text: 'Dirección: ', bold: true, font: FONT }), new TextRun({ text: I.dir === 'T' ? 'transversal' : 'longitudinal', font: FONT }), new TextRun({ text: '   ·   Fecha: ', bold: true, font: FONT }), new TextRun({ text: new Date().toLocaleDateString('es-ES'), font: FONT })] }));
-    children.push(new Paragraph({ spacing: { after: 240 }, children: [new TextRun({ text: 'Análisis cinemático no lineal de pilas de fábrica. Normas: UNE-EN 1998-1:2018 (corr. 2022) con Anexo Nacional (acción sísmica), EN 1998-3:2025 y Circolare 2019 n. 7 (Italia). Informe generado automáticamente por la app, sin intervención de IA.', font: FONT, italics: true, color: '5B646B', size: 20 })] }));
+    children.push(new Paragraph({ spacing: { after: 120 }, children: [new TextRun({ text: 'Análisis cinemático no lineal de pilas de fábrica.', font: FONT })] }));
+    children.push(new Paragraph({ spacing: { after: 40 }, children: [new TextRun({ text: 'Normas:', bold: true, font: FONT })] }));
+    for (const nm of ['UNE-EN 1998-1:2018 (corr. 2022) con Anexo Nacional (acción sísmica)', 'EN 1998-3:2025', 'Circolare 2019 n. 7 (Italia)']) children.push(new Paragraph({ spacing: { after: 40 }, children: [new TextRun({ text: nm, font: FONT })] }));
+    children.push(new Paragraph({ children: [new PageBreak()] }));
+    children.push(new TableOfContents('Índice', { hyperlink: true, headingStyleRange: '1-2' }));
+    children.push(new Paragraph({ children: [new PageBreak()] }));
     const bd = { style: BorderStyle.SINGLE, size: 4, color: 'DCDAD3' };
     const figs = []; // promesas en orden
+    let olInst = 0;   // cada lista numerada reinicia su cuenta
     for (const sec of document.querySelectorAll('#main > section')) {
       const walk = async el => {
         for (const n of el.children) {
           const tg = n.tagName, cl = n.classList;
-          if (tg === 'H2') children.push(new Paragraph({ heading: HeadingLevel.HEADING_1, pageBreakBefore: false, spacing: { before: 360, after: 120 }, children: runsOf(n, { b: true, color: '10283B', size: 30 }) }));
-          else if (tg === 'H3') children.push(new Paragraph({ heading: HeadingLevel.HEADING_2, spacing: { before: 200, after: 80 }, children: runsOf(n, { b: true, size: 24 }) }));
+          if (tg === 'H2') children.push(new Paragraph({ heading: HeadingLevel.HEADING_1, children: runsOf(n) }));
+          else if (tg === 'H3') children.push(new Paragraph({ heading: HeadingLevel.HEADING_2, children: runsOf(n) }));
           else if (cl.contains('cite')) children.push(P(n, { st: { color: '5B646B', size: 18, i: false } }));
           else if (cl.contains('eq')) children.push(new Paragraph({ children: runsOf(n, { math: true }), spacing: { before: 60, after: 120 }, shading: { type: ShadingType.CLEAR, fill: 'EEEDE7', color: 'auto' } }));
           else if (cl.contains('interp')) children.push(new Paragraph({ children: runsOf(n), spacing: { after: 160 }, shading: { type: ShadingType.CLEAR, fill: 'E4F0F9', color: 'auto' }, border: { left: { style: BorderStyle.SINGLE, size: 18, color: '1F7FBF', space: 6 } } }));
           else if (cl.contains('warn')) children.push(new Paragraph({ children: runsOf(n), spacing: { after: 160 }, shading: { type: ShadingType.CLEAR, fill: 'F6EEDF', color: 'auto' }, border: { left: { style: BorderStyle.SINGLE, size: 18, color: 'B27414', space: 6 } } }));
           else if (tg === 'P') children.push(P(n));
-          else if (tg === 'OL' || tg === 'UL') { let k = 1; for (const li of n.children) children.push(new Paragraph({ children: [new TextRun({ text: (tg === 'OL' ? `${k++}. ` : '• '), font: FONT }), ...runsOf(li)], indent: { left: 360 }, spacing: { after: 60 } })); }
+          else if (tg === 'OL' || tg === 'UL') { const inst = tg === 'OL' ? ++olInst : 0; for (const li of n.children) children.push(new Paragraph({ numbering: tg === 'OL' ? { reference: 'ines-numeros', level: 0, instance: inst } : { reference: 'ines-vinetas', level: 0 }, children: runsOf(li), spacing: { after: 60 } })); }
           else if (tg === 'DL') { const dts = n.querySelectorAll('dt'); dts.forEach(dt => children.push(new Paragraph({ children: [...runsOf(dt, { b: true, math: true }), new TextRun({ text: ': ', font: FONT }), ...runsOf(dt.nextElementSibling)], spacing: { after: 40 } }))); }
           else if (cl.contains('tw')) {
             const t = n.querySelector('table'); if (!t) continue;
@@ -643,10 +649,20 @@ async function exportDocx(btn) {
       say('Procesando ' + (sec.querySelector('h2')?.textContent || '') + '…');
       await walk(sec);
     }
-    const doc = new Document({ creator: 'Ines', title: 'Cabeceo de pilas de fábrica', styles: { default: { document: { run: { font: FONT, size: 21 } } } },
+    const doc = new Document({ creator: 'Ines', title: 'Cabeceo de pilas de fábrica', features: { updateFields: true },   // Word actualiza el índice al abrir
+      styles: { default: { document: { run: { font: FONT, size: 21 } } },
+        paragraphStyles: [
+          { id: 'Title', name: 'Title', basedOn: 'Normal', next: 'Normal', quickFormat: true, run: { font: FONT, bold: true, size: 44, color: '10283B' }, paragraph: { spacing: { before: 360, after: 160 } } },
+          { id: 'Heading1', name: 'Heading 1', basedOn: 'Normal', next: 'Normal', quickFormat: true, run: { font: FONT, bold: true, size: 30, color: '10283B' }, paragraph: { spacing: { before: 360, after: 120 }, outlineLevel: 0 } },
+          { id: 'Heading2', name: 'Heading 2', basedOn: 'Normal', next: 'Normal', quickFormat: true, run: { font: FONT, bold: true, size: 24, color: '1F7FBF' }, paragraph: { spacing: { before: 200, after: 80 }, outlineLevel: 1 } }
+        ] },
+      numbering: { config: [
+        { reference: 'ines-vinetas', levels: [{ level: 0, format: LevelFormat.BULLET, text: '•', alignment: AlignmentType.LEFT, style: { paragraph: { indent: { left: 420, hanging: 240 } } } }] },
+        { reference: 'ines-numeros', levels: [{ level: 0, format: LevelFormat.DECIMAL, text: '%1.', alignment: AlignmentType.LEFT, style: { paragraph: { indent: { left: 420, hanging: 240 } } } }] }
+      ] },
       sections: [{ properties: { page: { size: { width: 11906, height: 16838 }, margin: { top: 1134, bottom: 1134, left: 1134, right: 1134 } } },
         headers: { default: new Header({ children: [new Paragraph({ alignment: AlignmentType.RIGHT, children: [new TextRun({ text: (I.elem || 'Cabeceo de pilas de fábrica'), size: 16, color: '5B646B', font: FONT })] })] }) },
-        footers: { default: new Footer({ children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: 'Ines · página ', size: 16, color: '5B646B', font: FONT }), new TextRun({ children: [PageNumber.CURRENT], size: 16, color: '5B646B', font: FONT })] })] }) },
+        footers: { default: new Footer({ children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: 'Página ', size: 16, color: '5B646B', font: FONT }), new TextRun({ children: [PageNumber.CURRENT], size: 16, color: '5B646B', font: FONT })] })] }) },
         children }] });
     say('Generando el archivo…');
     const blob = await Packer.toBlob(doc);
