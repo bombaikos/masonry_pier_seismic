@@ -58,7 +58,7 @@ async function exportDocx(btn) {
     children.push(new Paragraph({ children: [new TextRun({ text: 'Proyecto: ', bold: true, font: FONT }), new TextRun({ text: I.proj || '—', font: FONT })] }));
     children.push(new Paragraph({ children: [new TextRun({ text: 'Elemento: ', bold: true, font: FONT }), new TextRun({ text: I.elem || '—', font: FONT })] }));
     children.push(new Paragraph({ children: [new TextRun({ text: 'Dirección: ', bold: true, font: FONT }), new TextRun({ text: I.tipo === 'puente' ? (I.dir === 'T' ? 'transversal' : 'longitudinal') : I.dir, font: FONT }), new TextRun({ text: '   ·   Fecha: ', bold: true, font: FONT }), new TextRun({ text: new Date().toLocaleDateString('es-ES'), font: FONT })] }));
-    children.push(new Paragraph({ spacing: { after: 240 }, children: [new TextRun({ text: 'Análisis estático no lineal (pushover) y método N2 según UNE-EN 1998-1:2018, anejo B, con Anexo Nacional; UNE-EN 1998-2:2018 y EN 1998-3:2025. Informe generado automáticamente por la app, sin intervención de IA.', font: FONT, italics: true, color: '5B646B', size: 20 })] }));
+    children.push(new Paragraph({ spacing: { after: 240 }, children: [new TextRun({ text: 'Análisis estático no lineal (pushover) y método N2 según UNE-EN 1998-1:2018, anejo B, con Anexo Nacional; UNE-EN 1998-2:2018 y UNE-EN 1998-3:2018 / EN 1998-3:2025. Informe generado automáticamente por la app, sin intervención de IA.', font: FONT, italics: true, color: '5B646B', size: 20 })] }));
     const bd = { style: BorderStyle.SINGLE, size: 4, color: 'DCDAD3' };
     const figs = []; // promesas en orden
     for (const sec of document.querySelectorAll('#main > section')) {
