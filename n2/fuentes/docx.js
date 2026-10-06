@@ -54,7 +54,7 @@ async function exportDocx(btn) {
     // portada
     const logoSrc = document.querySelector('header.top img')?.src;
     if (logoSrc) children.push(new Table({ width: { size: 9638, type: WidthType.DXA }, columnWidths: [9638], rows: [new TableRow({ children: [new TableCell({ width: { size: 9638, type: WidthType.DXA }, shading: { type: ShadingType.CLEAR, fill: '10283B', color: 'auto' },
-      margins: { top: 200, bottom: 200, left: 240, right: 240 }, children: [new Paragraph({ children: [new ImageRun({ type: 'png', data: dataUrlToBuf(logoSrc), transformation: { width: 150, height: 58 } })] })] })] })] }));
+      margins: { top: 200, bottom: 200, left: 240, right: 240 }, children: [new Paragraph({ style: 'TablaTexto', children: [new ImageRun({ type: 'png', data: dataUrlToBuf(logoSrc), transformation: { width: 150, height: 58 } })] })] })] })] }));
     const I = readInputs();
     children.push(new Paragraph({ heading: HeadingLevel.TITLE, children: [new TextRun('Método N2 · desplazamiento objetivo')] }));
     children.push(new Paragraph({ widowControl: true, spacing: { after: 80 }, children: [new TextRun({ text: 'Proyecto: ', bold: true, font: FONT }), new TextRun({ text: I.proj || '—', font: FONT })] }));
@@ -82,7 +82,7 @@ async function exportDocx(btn) {
           else if (tg === 'P') children.push(P(n));
           else if (tg === 'OL' || tg === 'UL') { const inst = tg === 'OL' ? ++olInst : 0; for (const li of n.children) children.push(new Paragraph({ numbering: tg === 'OL' ? { reference: 'ines-numeros', level: 0, instance: inst } : { reference: 'ines-vinetas', level: 0 }, alignment: AlignmentType.LEFT, widowControl: true, contextualSpacing: true, spacing: { after: 80 }, children: runsOf(li), spacing: { after: 60 } })); }
           else if (tg === 'DL') {
-            const cell = (kids, w, o = {}) => new TableCell({ width: { size: w, type: WidthType.DXA }, borders: { top: bd, bottom: bd, left: bd, right: bd }, shading: o.head ? { type: ShadingType.CLEAR, fill: 'EEEDE7', color: 'auto' } : undefined, margins: { top: 60, bottom: 60, left: 80, right: 80 }, children: [new Paragraph({ children: kids })] });
+            const cell = (kids, w, o = {}) => new TableCell({ width: { size: w, type: WidthType.DXA }, borders: { top: bd, bottom: bd, left: bd, right: bd }, shading: o.head ? { type: ShadingType.CLEAR, fill: 'EEEDE7', color: 'auto' } : undefined, margins: { top: 60, bottom: 60, left: 80, right: 80 }, children: [new Paragraph({ style: 'TablaTexto', children: kids })] });
             const dts = [...n.querySelectorAll('dt')], W1 = 2600, W2 = 9638 - W1;
             children.push(new Table({ width: { size: 9638, type: WidthType.DXA }, columnWidths: [W1, W2], rows: [
               new TableRow({ tableHeader: true, children: [cell([new TextRun({ text: 'Variable', bold: true, font: FONT, size: 18 })], W1, { head: true }), cell([new TextRun({ text: 'Significado', bold: true, font: FONT, size: 18 })], W2, { head: true })] }),
@@ -96,7 +96,7 @@ async function exportDocx(btn) {
             const sum = lens.reduce((a, b) => a + b, 0), cols = lens.map(l => Math.floor(W * l / sum));
             const rows = trs.map(r => new TableRow({ tableHeader: !!r.querySelector('th'), children: [...r.children].map((c, j) => new TableCell({ columnSpan: c.colSpan > 1 ? c.colSpan : undefined, width: { size: c.colSpan > 1 ? cols.slice(j, j + c.colSpan).reduce((a, b) => a + b, 0) : (cols[j] || 1000), type: WidthType.DXA }, borders: { top: bd, bottom: bd, left: bd, right: bd },
               shading: c.tagName === 'TH' ? { type: ShadingType.CLEAR, fill: 'EEEDE7', color: 'auto' } : (r.classList.contains('hl') ? { type: ShadingType.CLEAR, fill: 'E4F0F9', color: 'auto' } : undefined),
-              margins: { top: 60, bottom: 60, left: 80, right: 80 }, children: [new Paragraph({ alignment: (c.cellIndex === 0 || c.classList.contains('l')) ? AlignmentType.LEFT : AlignmentType.RIGHT, children: runsOf(c, { size: 18, b: c.tagName === 'TH' }) })] })) }));
+              margins: { top: 60, bottom: 60, left: 80, right: 80 }, children: [new Paragraph({ style: 'TablaTexto', alignment: (c.cellIndex === 0 || c.classList.contains('l')) ? AlignmentType.LEFT : AlignmentType.RIGHT, children: runsOf(c, { size: 18, b: c.tagName === 'TH' }) })] })) }));
             children.push(new Table({ width: { size: W, type: WidthType.DXA }, columnWidths: cols, rows }));
             children.push(new Paragraph({ children: [], spacing: { after: 80 } }));
           }
@@ -116,6 +116,7 @@ async function exportDocx(btn) {
       styles: { default: { document: { run: { font: FONT, size: 21 }, paragraph: { spacing: { line: 276, lineRule: LineRuleType.AUTO, after: 160 }, widowControl: true } } },
         paragraphStyles: [
           { id: 'Title', name: 'Title', basedOn: 'Normal', next: 'Normal', quickFormat: true, run: { font: FONT, bold: true, size: 44, color: '10283B' }, paragraph: { alignment: AlignmentType.LEFT, spacing: { before: 0, after: 200, line: 240, lineRule: LineRuleType.AUTO }, keepNext: true } },
+          { id: 'TablaTexto', name: 'Tabla texto', basedOn: 'Normal', quickFormat: true, paragraph: { spacing: { before: 0, after: 0, line: 240, lineRule: LineRuleType.AUTO }, contextualSpacing: false } },
           { id: 'Heading1', name: 'Heading 1', basedOn: 'Normal', next: 'Normal', quickFormat: true, run: { font: FONT, bold: true, size: 30, color: '10283B' }, paragraph: { alignment: AlignmentType.LEFT, spacing: { before: 420, after: 160, line: 240, lineRule: LineRuleType.AUTO }, outlineLevel: 0, keepNext: true, keepLines: true } },
           { id: 'Heading2', name: 'Heading 2', basedOn: 'Normal', next: 'Normal', quickFormat: true, run: { font: FONT, bold: true, size: 24, color: '1F7FBF' }, paragraph: { alignment: AlignmentType.LEFT, spacing: { before: 240, after: 120, line: 240, lineRule: LineRuleType.AUTO }, outlineLevel: 1, keepNext: true, keepLines: true } }
         ] },
