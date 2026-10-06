@@ -1135,7 +1135,8 @@ function render(R) {
   const y8 = Math.ceil(p4.a0s * 1.6 * 10) / 10;
   const sameD = Math.abs(p8.SLV.dr - p8.SLC.dr) < 1e-9;
   const yV = y8 * 0.30, yC = y8 * 0.16;   // alturas de las cotas de margen
-  const demPt = (k, color) => { let bT = p6.T0, bd = 1e9; for (let i = 1; i <= 600; i++) { const T = Tx * i / 600, dd = Math.abs(p7.SDeD(T, L7[k].ag, L7[k].xi) - p8[k].Dd); if (dd < bd) { bd = dd; bT = T; } } return { x: p8[k].dd, y: gS * p7.SeD(bT, L7[k].ag, L7[k].xi), color, r: 5.5 }; };
+  // El máximo de S_De se alcanza en una meseta de periodos [Tm, Tm2]; se dibuja el punto en el extremo Tm2 (el del periodo T_LS cuando la meseta llega hasta él), de modo que queda sobre la recta de ese periodo
+  const demPt = (k, color) => ({ x: p8[k].dd, y: gS * p7.SeD(p8[k].Tm2, L7[k].ag, L7[k].xi), color, r: 5.5 });
   const fig8b = chart({ id: 'c8b', x0: 0, x1: xb, y0: 0, y1: y8, xlabel: 'd*, S_De [m]', ylabel: 'a*, S_e [m/s²]',
     series: [{ pts: adrs(L7.SLV.ag, L7.SLV.xi, Tx), color: 'var(--coral)', w: 1.2 }, { pts: adrs(L7.SLC.ag, L7.SLC.xi, Tx), color: 'var(--violet)', w: 1.2 }, { pts: capBm, color: 'var(--accent)', w: 2.4 }],
     vlines: [{ x: p8.SLV.dd, y0: 0, y1: y8, color: 'var(--coral)', w: 1.6, dash: '5 3' }, { x: p8.SLC.dd, y0: 0, y1: y8, color: 'var(--violet)', w: 1.6, dash: '5 3' },
