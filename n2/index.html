@@ -449,7 +449,7 @@ async function exportDocx(btn) {
   try {
     say('Preparando el informe…'); btn.disabled = true;
     const D = await loadDocxLib();
-    const { Document, Packer, Paragraph, TextRun, HeadingLevel, Table, TableRow, TableCell, WidthType, ImageRun, AlignmentType, ShadingType, BorderStyle, Footer, Header, PageNumber, LevelFormat, TableOfContents, PageBreak } = D;
+    const { Document, Packer, Paragraph, TextRun, HeadingLevel, Table, TableRow, TableCell, WidthType, ImageRun, AlignmentType, ShadingType, BorderStyle, Footer, Header, PageNumber, LevelFormat, TableOfContents, PageBreak, LineRuleType } = D;
     const FONT = 'Calibri', MATH = 'Cambria';
     const runsOf = (node, st = {}) => {
       const out = [];
@@ -468,7 +468,8 @@ async function exportDocx(btn) {
       return out;
     };
     const hRuns = n => runsOf({ childNodes: [...n.childNodes].filter(c => !(c.classList && c.classList.contains('n'))) });   // el número lo pone Word
-    const P = (node, opt = {}) => new Paragraph({ children: runsOf(node, opt.st || {}), spacing: { after: 120 }, ...opt.p });
+    // Párrafo de cuerpo de texto: justificado, con separación controlada y sin viudas/huérfanas.
+    const P = (node, opt = {}) => new Paragraph({ children: runsOf(node, opt.st || {}), alignment: AlignmentType.JUSTIFIED, widowControl: true, spacing: { after: 160 }, ...opt.p });
     const children = [];
     // portada
     const logoSrc = document.querySelector('header.top img')?.src;
@@ -476,9 +477,9 @@ async function exportDocx(btn) {
       margins: { top: 200, bottom: 200, left: 240, right: 240 }, children: [new Paragraph({ children: [new ImageRun({ type: 'png', data: dataUrlToBuf(logoSrc), transformation: { width: 150, height: 58 } })] })] })] })] }));
     const I = readInputs();
     children.push(new Paragraph({ heading: HeadingLevel.TITLE, children: [new TextRun('Método N2 · desplazamiento objetivo')] }));
-    children.push(new Paragraph({ children: [new TextRun({ text: 'Proyecto: ', bold: true, font: FONT }), new TextRun({ text: I.proj || '—', font: FONT })] }));
-    children.push(new Paragraph({ children: [new TextRun({ text: 'Elemento: ', bold: true, font: FONT }), new TextRun({ text: I.elem || '—', font: FONT })] }));
-    children.push(new Paragraph({ children: [new TextRun({ text: 'Dirección: ', bold: true, font: FONT }), new TextRun({ text: I.tipo === 'puente' ? (I.dir === 'T' ? 'transversal' : 'longitudinal') : I.dir, font: FONT }), new TextRun({ text: '   ·   Fecha: ', bold: true, font: FONT }), new TextRun({ text: new Date().toLocaleDateString('es-ES'), font: FONT })] }));
+    children.push(new Paragraph({ widowControl: true, spacing: { after: 80 }, children: [new TextRun({ text: 'Proyecto: ', bold: true, font: FONT }), new TextRun({ text: I.proj || '—', font: FONT })] }));
+    children.push(new Paragraph({ widowControl: true, spacing: { after: 80 }, children: [new TextRun({ text: 'Elemento: ', bold: true, font: FONT }), new TextRun({ text: I.elem || '—', font: FONT })] }));
+    children.push(new Paragraph({ widowControl: true, spacing: { after: 80 }, children: [new TextRun({ text: 'Dirección: ', bold: true, font: FONT }), new TextRun({ text: I.tipo === 'puente' ? (I.dir === 'T' ? 'transversal' : 'longitudinal') : I.dir, font: FONT }), new TextRun({ text: '   ·   Fecha: ', bold: true, font: FONT }), new TextRun({ text: new Date().toLocaleDateString('es-ES'), font: FONT })] }));
     children.push(new Paragraph({ spacing: { after: 120 }, children: [new TextRun({ text: 'Análisis estático no lineal (pushover) y método N2.', font: FONT })] }));
     children.push(new Paragraph({ spacing: { after: 40 }, children: [new TextRun({ text: 'Normas:', bold: true, font: FONT })] }));
     for (const nm of ['UNE-EN 1998-1:2018 (corr. 2022) con Anexo Nacional (acción sísmica)', ...(I.tipo === 'puente' ? ['UNE-EN 1998-2:2018'] : []), ...(I.ed === '2018' ? ['UNE-EN 1998-3:2018'] : I.ed === '2025' ? ['EN 1998-3:2025'] : ['UNE-EN 1998-3:2018', 'EN 1998-3:2025'])]) children.push(new Paragraph({ spacing: { after: 40 }, children: [new TextRun({ text: nm, font: FONT })] }));
@@ -494,14 +495,14 @@ async function exportDocx(btn) {
           const tg = n.tagName, cl = n.classList;
           if (tg === 'H2') children.push(new Paragraph({ heading: HeadingLevel.HEADING_1, numbering: { reference: 'ines-titulos', level: 0 }, children: hRuns(n) }));
           else if (tg === 'H3') children.push(new Paragraph({ heading: HeadingLevel.HEADING_2, numbering: { reference: 'ines-titulos', level: 1 }, children: hRuns(n) }));
-          else if (cl.contains('cite')) children.push(P(n, { st: { color: '5B646B', size: 18, i: false } }));
-          else if (cl.contains('eq')) children.push(new Paragraph({ children: runsOf(n, { math: true }), spacing: { before: 60, after: 120 }, shading: { type: ShadingType.CLEAR, fill: 'EEEDE7', color: 'auto' } }));
-          else if (cl.contains('interp')) children.push(new Paragraph({ children: runsOf(n), spacing: { after: 160 }, shading: { type: ShadingType.CLEAR, fill: 'E4F0F9', color: 'auto' }, border: { left: { style: BorderStyle.SINGLE, size: 18, color: '1F7FBF', space: 6 } } }));
-          else if (cl.contains('warn')) children.push(new Paragraph({ children: runsOf(n), spacing: { after: 160 }, shading: { type: ShadingType.CLEAR, fill: 'F6EEDF', color: 'auto' }, border: { left: { style: BorderStyle.SINGLE, size: 18, color: 'B27414', space: 6 } } }));
+          else if (cl.contains('cite')) children.push(P(n, { st: { color: '5B646B', size: 18, i: false }, p: { alignment: AlignmentType.LEFT, spacing: { after: 120 } } }));
+          else if (cl.contains('eq')) children.push(new Paragraph({ children: runsOf(n, { math: true }), alignment: AlignmentType.LEFT, widowControl: true, spacing: { before: 60, after: 160 }, shading: { type: ShadingType.CLEAR, fill: 'EEEDE7', color: 'auto' } }));
+          else if (cl.contains('interp')) children.push(new Paragraph({ children: runsOf(n), alignment: AlignmentType.JUSTIFIED, widowControl: true, spacing: { after: 200 }, shading: { type: ShadingType.CLEAR, fill: 'E4F0F9', color: 'auto' }, border: { left: { style: BorderStyle.SINGLE, size: 18, color: '1F7FBF', space: 6 } } }));
+          else if (cl.contains('warn')) children.push(new Paragraph({ children: runsOf(n), alignment: AlignmentType.JUSTIFIED, widowControl: true, spacing: { after: 200 }, shading: { type: ShadingType.CLEAR, fill: 'F6EEDF', color: 'auto' }, border: { left: { style: BorderStyle.SINGLE, size: 18, color: 'B27414', space: 6 } } }));
           else if (tg === 'P') children.push(P(n));
-          else if (tg === 'OL' || tg === 'UL') { const inst = tg === 'OL' ? ++olInst : 0; for (const li of n.children) children.push(new Paragraph({ numbering: tg === 'OL' ? { reference: 'ines-numeros', level: 0, instance: inst } : { reference: 'ines-vinetas', level: 0 }, children: runsOf(li), spacing: { after: 60 } })); }
+          else if (tg === 'OL' || tg === 'UL') { const inst = tg === 'OL' ? ++olInst : 0; for (const li of n.children) children.push(new Paragraph({ numbering: tg === 'OL' ? { reference: 'ines-numeros', level: 0, instance: inst } : { reference: 'ines-vinetas', level: 0 }, alignment: AlignmentType.LEFT, widowControl: true, contextualSpacing: true, spacing: { after: 80 }, children: runsOf(li), spacing: { after: 60 } })); }
           else if (tg === 'DL') {
-            const cell = (kids, w, o = {}) => new TableCell({ width: { size: w, type: WidthType.DXA }, borders: { top: bd, bottom: bd, left: bd, right: bd }, shading: o.head ? { type: ShadingType.CLEAR, fill: 'EEEDE7', color: 'auto' } : undefined, margins: { top: 40, bottom: 40, left: 80, right: 80 }, children: [new Paragraph({ children: kids })] });
+            const cell = (kids, w, o = {}) => new TableCell({ width: { size: w, type: WidthType.DXA }, borders: { top: bd, bottom: bd, left: bd, right: bd }, shading: o.head ? { type: ShadingType.CLEAR, fill: 'EEEDE7', color: 'auto' } : undefined, margins: { top: 60, bottom: 60, left: 80, right: 80 }, children: [new Paragraph({ children: kids })] });
             const dts = [...n.querySelectorAll('dt')], W1 = 2600, W2 = 9638 - W1;
             children.push(new Table({ width: { size: 9638, type: WidthType.DXA }, columnWidths: [W1, W2], rows: [
               new TableRow({ tableHeader: true, children: [cell([new TextRun({ text: 'Variable', bold: true, font: FONT, size: 18 })], W1, { head: true }), cell([new TextRun({ text: 'Significado', bold: true, font: FONT, size: 18 })], W2, { head: true })] }),
@@ -515,15 +516,15 @@ async function exportDocx(btn) {
             const sum = lens.reduce((a, b) => a + b, 0), cols = lens.map(l => Math.floor(W * l / sum));
             const rows = trs.map(r => new TableRow({ tableHeader: !!r.querySelector('th'), children: [...r.children].map((c, j) => new TableCell({ columnSpan: c.colSpan > 1 ? c.colSpan : undefined, width: { size: c.colSpan > 1 ? cols.slice(j, j + c.colSpan).reduce((a, b) => a + b, 0) : (cols[j] || 1000), type: WidthType.DXA }, borders: { top: bd, bottom: bd, left: bd, right: bd },
               shading: c.tagName === 'TH' ? { type: ShadingType.CLEAR, fill: 'EEEDE7', color: 'auto' } : (r.classList.contains('hl') ? { type: ShadingType.CLEAR, fill: 'E4F0F9', color: 'auto' } : undefined),
-              margins: { top: 40, bottom: 40, left: 80, right: 80 }, children: [new Paragraph({ alignment: (c.cellIndex === 0 || c.classList.contains('l')) ? AlignmentType.LEFT : AlignmentType.RIGHT, children: runsOf(c, { size: 18, b: c.tagName === 'TH' }) })] })) }));
+              margins: { top: 60, bottom: 60, left: 80, right: 80 }, children: [new Paragraph({ alignment: (c.cellIndex === 0 || c.classList.contains('l')) ? AlignmentType.LEFT : AlignmentType.RIGHT, children: runsOf(c, { size: 18, b: c.tagName === 'TH' }) })] })) }));
             children.push(new Table({ width: { size: W, type: WidthType.DXA }, columnWidths: cols, rows }));
             children.push(new Paragraph({ children: [], spacing: { after: 80 } }));
           }
           else if (cl.contains('fig')) {
             const svg = n.querySelector('svg'), cv = n.querySelector('canvas'), cap = n.querySelector('.cap');
             const img = svg ? await svgToPng(svg) : cv ? await canvasToPng(cv) : null;
-            if (img) { let wpx = 600, hpx = Math.round(wpx * img.h / img.w); if (hpx > 380) { hpx = 380; wpx = Math.round(hpx * img.w / img.h); } children.push(new Paragraph({ alignment: AlignmentType.CENTER, keepNext: true, children: [new ImageRun({ type: 'png', data: img.buf, transformation: { width: wpx, height: hpx } })] })); }
-            if (cap) children.push(new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 160 }, children: runsOf(cap, { i: false, size: 18, color: '5B646B' }) }));
+            if (img) { let wpx = 600, hpx = Math.round(wpx * img.h / img.w); if (hpx > 380) { hpx = 380; wpx = Math.round(hpx * img.w / img.h); } children.push(new Paragraph({ alignment: AlignmentType.CENTER, keepNext: true, keepLines: true, spacing: { before: 120, after: 40 }, children: [new ImageRun({ type: 'png', data: img.buf, transformation: { width: wpx, height: hpx } })] })); }
+            if (cap) children.push(new Paragraph({ alignment: AlignmentType.CENTER, widowControl: true, spacing: { after: 200 }, children: runsOf(cap, { i: false, size: 18, color: '5B646B' }) }));
           }
           else if (cl.contains('grid2') || tg === 'DIV') await walk(n);
         }
@@ -532,11 +533,11 @@ async function exportDocx(btn) {
       await walk(sec);
     }
     const doc = new Document({ creator: 'Ines', title: 'Método N2', features: { updateFields: true },   // Word actualiza el índice al abrir
-      styles: { default: { document: { run: { font: FONT, size: 21 } } },
+      styles: { default: { document: { run: { font: FONT, size: 21 }, paragraph: { spacing: { line: 276, lineRule: LineRuleType.AUTO, after: 160 }, widowControl: true } } },
         paragraphStyles: [
-          { id: 'Title', name: 'Title', basedOn: 'Normal', next: 'Normal', quickFormat: true, run: { font: FONT, bold: true, size: 44, color: '10283B' }, paragraph: { spacing: { before: 360, after: 160 } } },
-          { id: 'Heading1', name: 'Heading 1', basedOn: 'Normal', next: 'Normal', quickFormat: true, run: { font: FONT, bold: true, size: 30, color: '10283B' }, paragraph: { spacing: { before: 360, after: 120 }, outlineLevel: 0 } },
-          { id: 'Heading2', name: 'Heading 2', basedOn: 'Normal', next: 'Normal', quickFormat: true, run: { font: FONT, bold: true, size: 24, color: '1F7FBF' }, paragraph: { spacing: { before: 200, after: 80 }, outlineLevel: 1 } }
+          { id: 'Title', name: 'Title', basedOn: 'Normal', next: 'Normal', quickFormat: true, run: { font: FONT, bold: true, size: 44, color: '10283B' }, paragraph: { alignment: AlignmentType.LEFT, spacing: { before: 0, after: 200, line: 240, lineRule: LineRuleType.AUTO }, keepNext: true } },
+          { id: 'Heading1', name: 'Heading 1', basedOn: 'Normal', next: 'Normal', quickFormat: true, run: { font: FONT, bold: true, size: 30, color: '10283B' }, paragraph: { alignment: AlignmentType.LEFT, spacing: { before: 420, after: 160, line: 240, lineRule: LineRuleType.AUTO }, outlineLevel: 0, keepNext: true, keepLines: true } },
+          { id: 'Heading2', name: 'Heading 2', basedOn: 'Normal', next: 'Normal', quickFormat: true, run: { font: FONT, bold: true, size: 24, color: '1F7FBF' }, paragraph: { alignment: AlignmentType.LEFT, spacing: { before: 240, after: 120, line: 240, lineRule: LineRuleType.AUTO }, outlineLevel: 1, keepNext: true, keepLines: true } }
         ] },
       numbering: { config: [
         { reference: 'ines-titulos', levels: [
@@ -546,8 +547,8 @@ async function exportDocx(btn) {
         { reference: 'ines-numeros', levels: [{ level: 0, format: LevelFormat.DECIMAL, text: '%1.', alignment: AlignmentType.LEFT, style: { paragraph: { indent: { left: 420, hanging: 240 } } } }] }
       ] },
       sections: [{ properties: { page: { size: { width: 11906, height: 16838 }, margin: { top: 1134, bottom: 1134, left: 1134, right: 1134 } } },
-        headers: { default: new Header({ children: [new Paragraph({ alignment: AlignmentType.RIGHT, children: [new TextRun({ text: (I.elem || 'Método N2'), size: 16, color: '5B646B', font: FONT })] })] }) },
-        footers: { default: new Footer({ children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: 'Página ', size: 16, color: '5B646B', font: FONT }), new TextRun({ children: [PageNumber.CURRENT], size: 16, color: '5B646B', font: FONT })] })] }) },
+        headers: { default: new Header({ children: [new Paragraph({ alignment: AlignmentType.RIGHT, spacing: { after: 0 }, children: [new TextRun({ text: (I.elem || 'Método N2'), size: 16, color: '5B646B', font: FONT })] })] }) },
+        footers: { default: new Footer({ children: [new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 0 }, children: [new TextRun({ text: 'Página ', size: 16, color: '5B646B', font: FONT }), new TextRun({ children: [PageNumber.CURRENT], size: 16, color: '5B646B', font: FONT })] })] }) },
         children }] });
     say('Generando el archivo…');
     const blob = await Packer.toBlob(doc);
