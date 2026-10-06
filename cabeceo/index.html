@@ -334,8 +334,9 @@ function compute(inp, grid) {
   }
   function Se(T, ag, xi) { if (T <= 1e-9) return ag * G * Sof(ag); return SDe(T, ag, xi) * (2 * Math.PI / T) ** 2; }
   const fTR = TR => Math.pow(TR / 475, 1 / 3);   // a_g(T_R) = γI·a_gR·(T_R/475)^(1/3): mismas T_R que la página N2 (DL 225, SD 475, NC 2475)
+  const TRdl = inp.TRdl > 0 ? inp.TRdl : 225;
   const lev = {
-    SLD: { ag: fTR(225) * gI * agR, xi: 5, why: `γI·agR·(225/475)^(1/3) = ${gI}·${agR.toFixed(3)}·${fTR(225).toFixed(3)}`, ref: 'UNE-EN 1998-3, 2.1 y AN (T_R = 225 años); UNE-EN 1998-1, 2.1(4) nota (k = 3)' },
+    SLD: { ag: fTR(TRdl) * gI * agR, xi: 5, why: `γI·agR·(${TRdl}/475)^(1/3) = ${gI}·${agR.toFixed(3)}·${fTR(TRdl).toFixed(3)}`, ref: `T_R = ${TRdl} años a elección del usuario (UNE-EN 1998-3, 2.1 recomienda 225); UNE-EN 1998-1, 2.1(4) nota (k = 3)` },
     SLV: { ag: gI * agR, xi: inp.xiSLV, why: `γI·agR = ${gI}·${agR.toFixed(3)}`, ref: 'UNE-EN 1998-1, 3.2.1(3)' },
     SLC: { ag: fTR(2475) * gI * agR, xi: inp.xiSLC, why: `γI·agR·(2475/475)^(1/3) = ${gI}·${agR.toFixed(3)}·${fTR(2475).toFixed(3)}`, ref: 'UNE-EN 1998-3, 2.1 y AN (T_R = 2475 años); UNE-EN 1998-1, 2.1(4) nota (k = 3)' }
   };
@@ -356,7 +357,7 @@ function compute(inp, grid) {
     elev = { z: zc, xi1, T1: R.p4b.T1, T1e, g1, psi, kz, aC, bC, aZ, amp, SeZraw, SeZ, SDeZ };
     SeD = SeZ; SDeD = SDeZ;
   }
-  R.p7 = { agR, K, near, C, soil, TB, TC, TD, TE, TF, gI, lev, Sof, eta, SDe, Se, elev, SeD, SDeD };
+  R.p7 = { TRdl, agR, K, near, C, soil, TB, TC, TD, TE, TF, gI, lev, Sof, eta, SDe, Se, elev, SeD, SDeD };
 
   // ---- Paso 8: verificación
   const D = lev.SLD;
@@ -713,7 +714,7 @@ const FIELDS = [
     ['impClass', 'Clase de importancia', 'select', 'II', [['I', 'I · moderada'], ['II', 'II · normal'], ['III', 'III · mayor'], ['IV', 'IV · especial']]],
     ['avRatio', 'Componente vertical: a<sub>vg</sub>/a<sub>g</sub>', 'num', 0.7, '—'], ['cV', 'Fracción de la vertical simultánea al pico horizontal', 'num', 0.3, '—'],
     ['xiSLV', 'Amortiguamiento ξ<sub>SD</sub> (Circolare C8.7.1.2.1.8; EN 1998-3: 8 a 15 %)', 'num', 8, '%'], ['xiSLC', 'Amortiguamiento ξ<sub>NC</sub> (Circolare C8.7.1.2.1.8)', 'num', 10, '%'],
-    ['nSlices', 'Nº de secciones para discretizar la pila', 'num', 10, '—']]],
+    ['TRdl', 'Periodo de retorno del DL, T<sub>R</sub> (UNE-EN 1998-3, 2.1: 225 años recomendado)', 'num', 100, 'años'], ['nSlices', 'Nº de secciones para discretizar la pila', 'num', 10, '—']]],
   ['Mecanismo en altura (solo si z > 0)', [
     ['xi1', 'Amortiguamiento de la pila como estructura principal ξ<sub>1</sub>', 'num', 5, '%'], ['T1fac', 'Factor de alargamiento de T<sub>1</sub> por fisuración de la pila bajo la junta (1 = elástica)', 'num', 1.0, '—']]]
 ];
@@ -744,7 +745,7 @@ function readInputs() {
   return { proj: g('proj').trim(), elem: g('elem').trim(), dir: g('dir'), deckFixed: g('deckFixed') === '1', dClim: n('dClim'), H: n('H'), cabT: n('cabT'), cabL: n('cabL'), taludT: n('taludT'), taludL: n('taludL'), zJoint: g('zJoint').trim(),
     gamma: n('gamma'), fShell: n('fShell'), tShell: n('tShell'), fCore: n('fCore'), E: n('E'), Gratio: n('Gratio'), KL: parseInt(g('KL')), gSd: n('gSd'),
     qDeck: n('qDeck'), lDeck: n('lDeck'), hDeck: n('hDeck'), siteMode: g('siteMode'), lat: n('lat'), lon: n('lon'), agR: n('agR'), K: n('K'), vs30: n('vs30'),
-    impClass: g('impClass'), xiSLV: n('xiSLV'), xiSLC: n('xiSLC'), mu: n('mu'), avRatio: n('avRatio'), cV: n('cV'), nSlices: Math.max(2, Math.round(n('nSlices'))), xi1: n('xi1'), T1fac: n('T1fac') };
+    impClass: g('impClass'), xiSLV: n('xiSLV'), xiSLC: n('xiSLC'), TRdl: n('TRdl'), mu: n('mu'), avRatio: n('avRatio'), cV: n('cV'), nSlices: Math.max(2, Math.round(n('nSlices'))), xi1: n('xi1'), T1fac: n('T1fac') };
 }
 
 // ---------- secciones
@@ -1094,7 +1095,7 @@ function render(R) {
   <p>La demanda sísmica son los <b>espectros de respuesta elásticos en el emplazamiento</b> definidos por la UNE-EN 1998-1:2018 (Eurocódigo 8, parte 1), apartado 3.2.2.2 (espectro de aceleración, ecs. 3.2–3.6) y 3.2.2.2(3.7) con el anejo A (espectro de desplazamientos), con los parámetros de su <b>Anexo Nacional español</b> (UNE-EN 1998-1:2018, julio de 2018, versión corregida de febrero de 2022): aceleración de referencia a<sub>gR</sub> y coeficiente K de la malla AN.5, y forma del espectro de la tabla AN.2. <b>No se utiliza la NCSE-02.</b></p>
   <p>Cada estado límite se comprueba con un sismo de distinto <b>periodo de retorno</b> y con un <b>amortiguamiento</b> distinto:</p>
   <div class="tw"><table><thead><tr><th class="l">Estado límite</th><th class="l">Probabilidad de superación</th><th>Periodo de retorno</th><th class="l">a<sub>g</sub> =</th><th>ξ</th></tr></thead><tbody>
-  <tr><td class="l"><b>SLD</b> · daño</td><td class="l">20 % en 50 años</td><td>225 años</td><td class="l">γ<sub>I</sub>·a<sub>gR</sub>·(225/475)<sup>1/3</sup> (UNE-EN 1998-3, 2.1 y AN; UNE-EN 1998-1, 2.1(4) nota, k = 3)</td><td>${L7.SLD.xi} %</td></tr>
+  <tr><td class="l"><b>SLD</b> · daño</td><td class="l">${f(100 * (1 - Math.exp(-50 / R.p7.TRdl)), 0)} % en 50 años</td><td>${R.p7.TRdl} años</td><td class="l">γ<sub>I</sub>·a<sub>gR</sub>·(${R.p7.TRdl}/475)<sup>1/3</sup> (T<sub>R</sub> elegido por el usuario; UNE-EN 1998-3, 2.1 recomienda 225; UNE-EN 1998-1, 2.1(4) nota, k = 3)</td><td>${L7.SLD.xi} %</td></tr>
   <tr><td class="l"><b>SLV</b> · salvaguarda de la vida</td><td class="l">10 % en 50 años</td><td>475 años</td><td class="l">γ<sub>I</sub>·a<sub>gR</sub> (3.2.1(3); 2.1(1)P nota 1)</td><td>${L7.SLV.xi} %</td></tr>
   <tr><td class="l"><b>SLC</b> · prevención del colapso</td><td class="l">2 % en 50 años</td><td>2475 años</td><td class="l">γ<sub>I</sub>·a<sub>gR</sub>·(2475/475)<sup>1/3</sup> (UNE-EN 1998-3, 2.1 y AN; UNE-EN 1998-1, 2.1(4) nota, k = 3)</td><td>${L7.SLC.xi} %</td></tr></tbody></table></div>
   ${fig(specSchema(), 'Esquema del espectro elástico (UNE-EN 1998-1, 3.2.2.2 y anejo A). T_B: inicio de la meseta de aceleración constante. T_C: fin de la meseta; desde ahí S_e ∝ 1/T (velocidad espectral constante). T_D: inicio del desplazamiento espectral constante (S_e ∝ 1/T²). T_E y T_F (anejo A): transición del desplazamiento espectral hacia el desplazamiento del terreno d_g. En los espectros del emplazamiento, las líneas verticales discontinuas marcan los periodos de la pila (T₀, T_SLV, T_SLC).')}
@@ -1235,7 +1236,7 @@ function render(R) {
   <tr><td class="l">5</td><td class="l m">d<sub>SLV</sub> = mín(0.4·d₀*; d<sub>C,lím</sub>/Γ) · d<sub>SLC</sub> = mín(0.6·d₀*; d<sub>C,lím</sub>/Γ)</td><td class="l">EN 1998-3, 11.4.2(5); límite del usuario</td></tr>
   <tr><td class="l">6</td><td class="l m">T<sub>sec</sub> = 2π·√(d/a*) · T<sub>SLV</sub> = 1.6π·√(d<sub>SLV</sub>/a*(d<sub>SLV</sub>)) · T<sub>SLC</sub> = 1.6π·√(d<sub>SLC</sub>/a*(d<sub>SLC</sub>))</td><td class="l">EN 1998-3, (11.40)–(11.41)</td></tr>
   <tr><td class="l">7</td><td class="l m">a<sub>gR</sub> = Σ(a<sub>gR,j</sub>/d<sub>j</sub>) / Σ(1/d<sub>j</sub>) (4 puntos) · a<sub>g</sub> = γ<sub>I</sub>·a<sub>gR</sub></td><td class="l">AN.2 (3.2.1(2)), AN.5; EN 1998-1, 3.2.1(3)</td></tr>
-  <tr><td class="l">7</td><td class="l m">a<sub>g</sub>(T<sub>R</sub>) = γ<sub>I</sub>·a<sub>gR</sub>·(T<sub>R</sub>/475)<sup>1/3</sup> · T<sub>R</sub> = 225, 475, 2475 años (DL, SD, NC)</td><td class="l">EN 1998-1, 2.1(4) nota (k = 3); EN 1998-3, 2.1 y AN</td></tr>
+  <tr><td class="l">7</td><td class="l m">a<sub>g</sub>(T<sub>R</sub>) = γ<sub>I</sub>·a<sub>gR</sub>·(T<sub>R</sub>/475)<sup>1/3</sup> · T<sub>R</sub> = DL elegido (por defecto 100), 475, 2475 años (DL, SD, NC)</td><td class="l">EN 1998-1, 2.1(4) nota (k = 3); EN 1998-3, 2.1 y AN</td></tr>
   <tr><td class="l">7</td><td class="l m">C = (800/v<sub>s,30</sub>)<sup>0.465</sup> · S(a<sub>g</sub>) (tabla AN.2) · T<sub>C</sub> = K·C/4 (A: K/4; D: K/2) · T<sub>B</sub> = T<sub>C</sub>/5 · T<sub>D</sub> = 2.0 s</td><td class="l">AN.2, tabla AN.2</td></tr>
   <tr><td class="l">7</td><td class="l m">η = √(10/(5 + ξ)) ≥ 0.55 · S<sub>e</sub>(T): 0–T<sub>B</sub>: a<sub>g</sub>S[1 + T/T<sub>B</sub>·(2.5η − 1)]; T<sub>B</sub>–T<sub>C</sub>: 2.5a<sub>g</sub>Sη; T<sub>C</sub>–T<sub>D</sub>: 2.5a<sub>g</sub>Sη·T<sub>C</sub>/T; T<sub>D</sub>–4 s: 2.5a<sub>g</sub>Sη·T<sub>C</sub>T<sub>D</sub>/T²</td><td class="l">EN 1998-1, 3.2.2.2, ecs. (3.2)–(3.6)</td></tr>
   <tr><td class="l">7</td><td class="l m">S<sub>De</sub>(T) = S<sub>e</sub>(T)·(T/2π)² · T<sub>E</sub>–T<sub>F</sub>: S<sub>De</sub> = 0.025a<sub>g</sub>ST<sub>C</sub>T<sub>D</sub>[2.5η + (T − T<sub>E</sub>)/(T<sub>F</sub> − T<sub>E</sub>)·(1 − 2.5η)] · T &gt; T<sub>F</sub>: S<sub>De</sub> = d<sub>g</sub> = 0.025a<sub>g</sub>ST<sub>C</sub>T<sub>D</sub></td><td class="l">EN 1998-1, ecs. (3.7), (3.12); anejo A, (A.1)–(A.2)</td></tr>
