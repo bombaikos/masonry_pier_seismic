@@ -45,6 +45,10 @@ aside h2:first-child{margin-top:0}
 .fld{display:grid;grid-template-columns:minmax(0,1fr) 92px;gap:6px;align-items:center;margin:4px 0;font-size:.86rem}
 .fld label{color:var(--ink)}
 .fld .u{color:var(--muted);font-size:.78rem}
+.tip{position:relative;display:inline-block;margin-left:4px;color:var(--accent);cursor:help;font-size:.8rem;outline:none}
+.tip .tipbox{display:none;position:fixed;z-index:20;width:270px;padding:8px 10px;background:var(--paper);color:var(--ink);border:1px solid var(--line, #dcdad3);border-radius:6px;box-shadow:0 4px 14px rgba(0,0,0,.18);font-size:.78rem;line-height:1.4;text-align:left;white-space:normal;box-sizing:border-box}
+.tip:hover .tipbox,.tip:focus .tipbox,.tip:focus-within .tipbox{display:block}
+.tip table{border-collapse:collapse;width:100%;margin-top:4px}.tip td{padding:1px 4px;border-top:1px solid var(--line, #dcdad3);text-align:left;vertical-align:top;white-space:normal}
 input,select{font:inherit;font-size:.86rem;width:100%;padding:4px 6px;border:1px solid var(--line);border-radius:6px;background:var(--paper);color:var(--ink);font-family:var(--f-mono)}
 input:focus,select:focus{outline:2px solid var(--accent);outline-offset:0}
 .hint{font-size:.76rem;color:var(--muted);margin:2px 0 6px}
@@ -690,6 +694,7 @@ async function exportDocx(btn) {
 }
 
 // ---------- formulario
+const TIPS = { vs30: `<b>Tipos de terreno</b> (UNE-EN 1998-1, tabla 3.1 y AN.1)<table><tr><td><b>Tipo</b></td><td style="white-space:nowrap"><b>v<sub>s,30</sub> [m/s]</b></td><td><b>Perfil</b></td></tr><tr><td><b>A</b></td><td style="white-space:nowrap">&gt; 800</td><td>roca o suelo cementado</td></tr><tr><td><b>B</b></td><td style="white-space:nowrap">360 – 800</td><td>suelos granulares densos o cohesivos duros</td></tr><tr><td><b>C</b></td><td style="white-space:nowrap">180 – 360</td><td>suelos de compacidad media o consistencia firme</td></tr><tr><td><b>D</b></td><td style="white-space:nowrap">&lt; 180</td><td>suelos sueltos o blandos</td></tr></table>` };
 const FIELDS = [
   ['Identificación', [
     ['proj', 'Proyecto', 'txt', 'Evaluación sísmica de pilas de fábrica en viaductos ferroviarios', 'Nombre del proyecto'], ['elem', 'Elemento calculado', 'txt', 'Viaducto de Anchurón. Pila de 40 m de altura', 'p. ej. Pila 3']]],
@@ -714,10 +719,16 @@ const FIELDS = [
     ['impClass', 'Clase de importancia', 'select', 'II', [['I', 'I · moderada'], ['II', 'II · normal'], ['III', 'III · mayor'], ['IV', 'IV · especial']]],
     ['avRatio', 'Componente vertical: a<sub>vg</sub>/a<sub>g</sub>', 'num', 0.7, '—'], ['cV', 'Fracción de la vertical simultánea al pico horizontal', 'num', 0.3, '—'],
     ['xiSLV', 'Amortiguamiento ξ<sub>SD</sub> (Circolare C8.7.1.2.1.8; EN 1998-3: 8 a 15 %)', 'num', 8, '%'], ['xiSLC', 'Amortiguamiento ξ<sub>NC</sub> (Circolare C8.7.1.2.1.8)', 'num', 10, '%'],
-    ['TRdl', 'Periodo de retorno del DL, T<sub>R</sub> (UNE-EN 1998-3, 2.1: 225 años recomendado)', 'num', 100, 'años'], ['nSlices', 'Nº de secciones para discretizar la pila', 'num', 10, '—']]],
+    ['TRdl', 'Periodo de retorno del DL, T<sub>R</sub>', 'num', 100, 'años'], ['nSlices', 'Nº de secciones para discretizar la pila', 'num', 10, '—']]],
   ['Mecanismo en altura (solo si z > 0)', [
     ['xi1', 'Amortiguamiento de la pila como estructura principal ξ<sub>1</sub>', 'num', 5, '%'], ['T1fac', 'Factor de alargamiento de T<sub>1</sub> por fisuración de la pila bajo la junta (1 = elástica)', 'num', 1.0, '—']]]
 ];
+function placeTip(e) {
+  const t = e.target.closest && e.target.closest('.tip'); if (!t) return;
+  const b = t.querySelector('.tipbox'), r = t.getBoundingClientRect(), w = Math.min(310, innerWidth - 16);
+  b.style.width = w + 'px'; b.style.left = Math.max(8, Math.min(r.left, innerWidth - w - 8)) + 'px'; b.style.top = (r.bottom + 6) + 'px';
+}
+document.addEventListener('mouseover', placeTip); document.addEventListener('focusin', placeTip);
 function buildForm() {
   let h = '';
   FIELDS.forEach(([title, fl], gi) => {
@@ -728,7 +739,7 @@ function buildForm() {
       else if (type === 'txt') ctl = `<input id="${id}" type="text" value="${def}" placeholder="${extra}" style="font-family:var(--f-ui)">`;
       else ctl = `<input id="${id}" type="${type === 'num' ? 'number' : 'text'}" step="any" value="${def}">`;
       const unit = type === 'num' || type === 'text' ? ` <span class="u">[${extra}]</span>` : '';
-      h += type === 'txt' ? `<div class="fld" style="grid-template-columns:1fr"><label for="${id}">${lab}</label>${ctl}</div>` : `<div class="fld"><label for="${id}">${lab}${unit}</label>${ctl}</div>`;
+      h += type === 'txt' ? `<div class="fld" style="grid-template-columns:1fr"><label for="${id}">${lab}</label>${ctl}</div>` : `<div class="fld"><label for="${id}">${lab}${unit}${TIPS[id] ? `<span class="tip" tabindex="0" aria-label="Ayuda">ⓘ<span class="tipbox">${TIPS[id]}</span></span>` : ''}</label>${ctl}</div>`;
     }
     if (gi === 1) h += '</div><p class="hint">El límite d<sub>C,lím</sub> es el desplazamiento de cabeza que el usuario no admite (p. ej. pérdida de apoyo del tablero).</p>';
   });
