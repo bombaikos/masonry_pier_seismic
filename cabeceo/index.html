@@ -1115,33 +1115,37 @@ function render(R) {
 
   // Paso 8
   const agD = L7.SLD.ag;
-  const adrs = (ag, xi, Tm) => { const pts = []; for (let i = 1; i <= 300; i++) { const T = Tm * i / 300; pts.push([p7.SDeD(T, ag, xi), p7.SeD(T, ag, xi)]); } return pts; };
-  const dyMM = p4b.dy, xa = Math.max(3 * dyMM, 2.2 * p7.SDeD(p6.T0, agD, 5), 0.03);
+  const gS = R.safety.gSd, gR = R.safety.gRd, gRD = R.safety.gRdDL;   // gráficos con valores minorados: demanda × γSd, capacidad ÷ γRd
+  const adrs = (ag, xi, Tm) => { const pts = []; for (let i = 1; i <= 300; i++) { const T = Tm * i / 300; pts.push([gS * p7.SDeD(T, ag, xi), gS * p7.SeD(T, ag, xi)]); } return pts; };
+  const dyMM = p4b.dy, xa = Math.max(3 * dyMM, 2.2 * gS * p7.SDeD(p6.T0, agD, 5), 0.03);
   const capMM = [[0, 0], [dyMM, p4b.ay]].concat(p4.pts.filter(p => p.d > dyMM && p.d < xa * 1.1).map(p => [p.d, p.a]));
   const extra = p3.state(p3.th0 * 0.02); capMM.push([xa * 1.1, p4.a0s * (1 - xa * 1.1 / p4.d0s)]);
-  const fig8a = chart({ id: 'c8a', x0: 0, x1: xa, y0: 0, y1: Math.ceil(Math.max(p4.a0s, p8.SLD.demRaw) * 1.3), xlabel: 'd*, S_De [m]', ylabel: 'a*, S_e [m/s²]',
-    series: [{ pts: adrs(agD, 5, 1.5), color: 'var(--sky)' }, { pts: capMM, color: 'var(--accent)' }, { pts: [[0, 0], [xa, (2 * Math.PI / p6.T0) ** 2 * xa]], color: 'var(--muted)', dash: '2 3', w: 1 }],
-    points: [{ x: p7.SDeD(p6.T0, agD, 5), y: p8.SLD.demRaw, color: 'var(--sky)', label: `demanda S_e${sZ}(T₀) = ${f(p8.SLD.demRaw, 2)} m/s²`, dx: 10, dy: 24 }, { x: dyMM, y: p4b.ay, color: 'var(--accent)', label: `capacidad (despegue) a_y* = ${f(p4b.ay, 2)} m/s²`, dx: 10, dy: -10 }],
-    hlines: [{ x0: p7.SDeD(p6.T0, agD, 5), x1: Math.max(dyMM, p7.SDeD(p6.T0, agD, 5)) + xa * 0.06, y: p8.SLD.demRaw, color: 'var(--muted)' }, { x0: dyMM, x1: Math.max(dyMM, p7.SDeD(p6.T0, agD, 5)) + xa * 0.06, y: p4b.ay, color: 'var(--muted)' }],
-    arrows: [{ x0: Math.max(dyMM, p7.SDeD(p6.T0, agD, 5)) + xa * 0.05, y0: p8.SLD.demRaw, x1: Math.max(dyMM, p7.SDeD(p6.T0, agD, 5)) + xa * 0.05, y1: p4b.ay, both: true, color: 'var(--ink)', w: 1 }],
-    texts: [{ x: Math.max(dyMM, p7.SDeD(p6.T0, agD, 5)) + xa * 0.07, y: (p8.SLD.demRaw + p4b.ay) / 2, t: `margen con γ = (a_y*/γRd)/(γSd·S_e(T₀)) = ${f(p8.SLD.cap / p8.SLD.dem, 2)}`, color: 'var(--ink)' }], legend: [{ t: 'demanda SLD (ξ = 5 %)', color: 'var(--sky)' }, { t: 'capacidad', color: 'var(--accent)' }, { t: `recta del periodo T₀ = ${f(p6.T0, 3)} s`, color: 'var(--muted)', dash: '2 3' }] });
-  const xb = Math.max(1.25 * Math.max(p5.SLV.d, p5.SLC.d), 1.6 * p8.SLC.Dd);
-  const capB = [[0, 0], [p4b.dy, p4b.ay]].concat(p4.pts.filter(p => p.d > p4b.dy && p.d < xb * 1.1).map(p => [p.d, p.a]));
-  capB.push([xb * 1.1, p4.a0s * (1 - xb * 1.1 / p4.d0s)]);
+  const capMMm = capMM.map(([d, a]) => [d, a / gRD]);
+  const fig8a = chart({ id: 'c8a', x0: 0, x1: xa, y0: 0, y1: Math.ceil(Math.max(p4.a0s / gRD, p8.SLD.dem) * 1.3 * 10) / 10, xlabel: 'd*, S_De [m]', ylabel: 'a*, S_e [m/s²]',
+    series: [{ pts: adrs(agD, 5, 1.5), color: 'var(--sky)' }, { pts: capMMm, color: 'var(--accent)' }, { pts: [[0, 0], [xa, (2 * Math.PI / p6.T0) ** 2 * xa]], color: 'var(--muted)', dash: '2 3', w: 1 }],
+    points: [{ x: gS * p7.SDeD(p6.T0, agD, 5), y: p8.SLD.dem, color: 'var(--sky)', label: `demanda γSd·S_e${sZ}(T₀) = ${f(p8.SLD.dem, 2)} m/s²`, dx: 10, dy: 24 }, { x: dyMM, y: p8.SLD.cap, color: 'var(--accent)', label: `capacidad minorada a_y*/γRd = ${f(p8.SLD.cap, 2)} m/s²`, dx: 10, dy: -10 }],
+    hlines: [{ x0: gS * p7.SDeD(p6.T0, agD, 5), x1: Math.max(dyMM, gS * p7.SDeD(p6.T0, agD, 5)) + xa * 0.06, y: p8.SLD.dem, color: 'var(--muted)' }, { x0: dyMM, x1: Math.max(dyMM, gS * p7.SDeD(p6.T0, agD, 5)) + xa * 0.06, y: p8.SLD.cap, color: 'var(--muted)' }],
+    arrows: [{ x0: Math.max(dyMM, gS * p7.SDeD(p6.T0, agD, 5)) + xa * 0.05, y0: p8.SLD.dem, x1: Math.max(dyMM, gS * p7.SDeD(p6.T0, agD, 5)) + xa * 0.05, y1: p8.SLD.cap, both: true, color: 'var(--ink)', w: 1 }],
+    texts: [{ x: Math.max(dyMM, gS * p7.SDeD(p6.T0, agD, 5)) + xa * 0.07, y: (p8.SLD.dem + p8.SLD.cap) / 2, t: `margen con γ = (a_y*/γRd)/(γSd·S_e(T₀)) = ${f(p8.SLD.cap / p8.SLD.dem, 2)}`, color: 'var(--ink)' }], legend: [{ t: 'demanda SLD × γSd (ξ = 5 %)', color: 'var(--sky)' }, { t: 'capacidad ÷ γRd', color: 'var(--accent)' }, { t: `recta del periodo T₀ = ${f(p6.T0, 3)} s`, color: 'var(--muted)', dash: '2 3' }] });
+  const xb = Math.max(1.25 * Math.max(p8.SLV.dr, p8.SLC.dr), 1.6 * Math.max(p8.SLV.dd, p8.SLC.dd));
+  const xbN = xb * 1.1 * gR;   // límite del eje en valores nominales de capacidad
+  const capB = [[0, 0], [p4b.dy, p4b.ay]].concat(p4.pts.filter(p => p.d > p4b.dy && p.d < xbN).map(p => [p.d, p.a]));
+  capB.push([xbN, p4.a0s * (1 - xbN / p4.d0s)]);
+  const capBm = capB.map(([d, a]) => [d / gR, a]);   // capacidad con los desplazamientos ÷ γRd
   const y8 = Math.ceil(p4.a0s * 1.6 * 10) / 10;
-  const sameD = Math.abs(p5.SLV.d - p5.SLC.d) < 1e-9;
+  const sameD = Math.abs(p8.SLV.dr - p8.SLC.dr) < 1e-9;
   const yV = y8 * 0.30, yC = y8 * 0.16;   // alturas de las cotas de margen
-  const demPt = (k, color) => { let bT = p6.T0, bd = 1e9; for (let i = 1; i <= 600; i++) { const T = Tx * i / 600, dd = Math.abs(p7.SDeD(T, L7[k].ag, L7[k].xi) - p8[k].Dd); if (dd < bd) { bd = dd; bT = T; } } return { x: p8[k].Dd, y: p7.SeD(bT, L7[k].ag, L7[k].xi), color, r: 5.5 }; };
+  const demPt = (k, color) => { let bT = p6.T0, bd = 1e9; for (let i = 1; i <= 600; i++) { const T = Tx * i / 600, dd = Math.abs(p7.SDeD(T, L7[k].ag, L7[k].xi) - p8[k].Dd); if (dd < bd) { bd = dd; bT = T; } } return { x: p8[k].dd, y: gS * p7.SeD(bT, L7[k].ag, L7[k].xi), color, r: 5.5 }; };
   const fig8b = chart({ id: 'c8b', x0: 0, x1: xb, y0: 0, y1: y8, xlabel: 'd*, S_De [m]', ylabel: 'a*, S_e [m/s²]',
-    series: [{ pts: adrs(L7.SLV.ag, L7.SLV.xi, Tx), color: 'var(--coral)', w: 1.2 }, { pts: adrs(L7.SLC.ag, L7.SLC.xi, Tx), color: 'var(--violet)', w: 1.2 }, { pts: capB, color: 'var(--accent)', w: 2.4 }],
-    vlines: [{ x: p8.SLV.Dd, y0: 0, y1: y8, color: 'var(--coral)', w: 1.6, dash: '5 3' }, { x: p8.SLC.Dd, y0: 0, y1: y8, color: 'var(--violet)', w: 1.6, dash: '5 3' },
-      { x: p5.SLV.d, y0: 0, y1: p5.SLV.a, color: 'var(--accent)', w: 1.2, dash: '2 2' }].concat(sameD ? [] : [{ x: p5.SLC.d, y0: 0, y1: p5.SLC.a, color: 'var(--accent)', w: 1.2, dash: '2 2' }]),
-    points: [{ x: p5.SLV.d, y: p5.SLV.a, color: 'var(--accent)', label: sameD ? `capacidad (d_SLV = d_SLC = ${f(p5.SLV.d, 3)} m)` : `capacidad (d_SLV = ${f(p5.SLV.d, 3)} m)`, anchor: 'end', dx: -8, dy: -20 }].concat(sameD ? [] : [{ x: p5.SLC.d, y: p5.SLC.a, color: 'var(--accent)', label: `capacidad (d_SLC = ${f(p5.SLC.d, 3)} m)`, anchor: 'end', dx: -8, dy: -12 }]).concat([demPt('SLV', 'var(--coral)'), demPt('SLC', 'var(--violet)')]),
-    arrows: [{ x0: p8.SLV.Dd, y0: yV, x1: p5.SLV.d, y1: yV, both: true, color: 'var(--coral)', w: 1.2 }, { x0: p8.SLC.Dd, y0: yC, x1: p5.SLC.d, y1: yC, both: true, color: 'var(--violet)', w: 1.2 }],
-    texts: [{ x: (p8.SLV.Dd + p5.SLV.d) / 2, y: yV + y8 * 0.025, t: `SLV: Δ_d = ${f(p8.SLV.Dd, 3)} m → d_SLV = ${f(p5.SLV.d, 3)} m · margen ${f(p8.SLV.ratio, 1)}`, anchor: 'middle', color: 'var(--coral)' },
-      { x: (p8.SLC.Dd + p5.SLC.d) / 2, y: yC + y8 * 0.025, t: `SLC: Δ_d = ${f(p8.SLC.Dd, 3)} m → d_SLC = ${f(p5.SLC.d, 3)} m · margen ${f(p8.SLC.ratio, 1)}`, anchor: 'middle', color: 'var(--violet)' },
+    series: [{ pts: adrs(L7.SLV.ag, L7.SLV.xi, Tx), color: 'var(--coral)', w: 1.2 }, { pts: adrs(L7.SLC.ag, L7.SLC.xi, Tx), color: 'var(--violet)', w: 1.2 }, { pts: capBm, color: 'var(--accent)', w: 2.4 }],
+    vlines: [{ x: p8.SLV.dd, y0: 0, y1: y8, color: 'var(--coral)', w: 1.6, dash: '5 3' }, { x: p8.SLC.dd, y0: 0, y1: y8, color: 'var(--violet)', w: 1.6, dash: '5 3' },
+      { x: p8.SLV.dr, y0: 0, y1: p5.SLV.a, color: 'var(--accent)', w: 1.2, dash: '2 2' }].concat(sameD ? [] : [{ x: p8.SLC.dr, y0: 0, y1: p5.SLC.a, color: 'var(--accent)', w: 1.2, dash: '2 2' }]),
+    points: [{ x: p8.SLV.dr, y: p5.SLV.a, color: 'var(--accent)', label: sameD ? `capacidad (d_SLV/γRd = d_SLC/γRd = ${f(p8.SLV.dr, 3)} m)` : `capacidad (d_SLV/γRd = ${f(p8.SLV.dr, 3)} m)`, anchor: 'end', dx: -8, dy: -20 }].concat(sameD ? [] : [{ x: p8.SLC.dr, y: p5.SLC.a, color: 'var(--accent)', label: `capacidad (d_SLC/γRd = ${f(p8.SLC.dr, 3)} m)`, anchor: 'end', dx: -8, dy: -12 }]).concat([demPt('SLV', 'var(--coral)'), demPt('SLC', 'var(--violet)')]),
+    arrows: [{ x0: p8.SLV.dd, y0: yV, x1: p8.SLV.dr, y1: yV, both: true, color: 'var(--coral)', w: 1.2 }, { x0: p8.SLC.dd, y0: yC, x1: p8.SLC.dr, y1: yC, both: true, color: 'var(--violet)', w: 1.2 }],
+    texts: [{ x: (p8.SLV.dd + p8.SLV.dr) / 2, y: yV + y8 * 0.025, t: `SLV: γSd·Δ_d = ${f(p8.SLV.dd, 3)} m → d_SLV/γRd = ${f(p8.SLV.dr, 3)} m · margen ${f(p8.SLV.ratio, 1)}`, anchor: 'middle', color: 'var(--coral)' },
+      { x: (p8.SLC.dd + p8.SLC.dr) / 2, y: yC + y8 * 0.025, t: `SLC: γSd·Δ_d = ${f(p8.SLC.dd, 3)} m → d_SLC/γRd = ${f(p8.SLC.dr, 3)} m · margen ${f(p8.SLC.ratio, 1)}`, anchor: 'middle', color: 'var(--violet)' },
       ],
-    legend: [{ t: 'capacidad', color: 'var(--accent)' }, { t: `demanda esp. SLV (ξ = ${L7.SLV.xi} %)`, color: 'var(--coral)' }, { t: `demanda esp. SLC (ξ = ${L7.SLC.xi} %)`, color: 'var(--violet)' }, { t: 'Δ_d SLV (paso 7)', color: 'var(--coral)', dash: '5 3' }, { t: 'Δ_d SLC (paso 7)', color: 'var(--violet)', dash: '5 3' }] });
+    legend: [{ t: 'capacidad (d ÷ γRd)', color: 'var(--accent)' }, { t: `demanda esp. SLV × γSd (ξ = ${L7.SLV.xi} %)`, color: 'var(--coral)' }, { t: `demanda esp. SLC × γSd (ξ = ${L7.SLC.xi} %)`, color: 'var(--violet)' }, { t: 'γSd·Δ_d SLV (paso 7)', color: 'var(--coral)', dash: '5 3' }, { t: 'γSd·Δ_d SLC (paso 7)', color: 'var(--violet)', dash: '5 3' }] });
   const pill = ok => `<span class="pill ${ok ? 'ok' : 'no'}">${ok ? 'cumple' : 'no cumple'}</span>`;
   h += sec('8', '8', 'Comprobaciones', `EN 1998-3:2025: (11.51)–(11.52) (DL) y (11.42)–(11.45) (SD y NC), γSd 4.2.2(5), γRd tablas 11.10, 11.11 y 11.13 · máximo de S_De en [T0, T_LS]: Circolare [C8.7.1.12]${EL ? ' · espectro en la cota de la junta, Circolare C7.2.3' : ''}`, `
   <div class="tw"><table><thead><tr><th class="l">Estado límite</th><th class="l">Comprobación</th><th>Demanda</th><th>Capacidad</th><th>Margen</th><th>a<sub>g</sub> de capacidad</th><th>a<sub>g</sub> del sitio</th><th>Índice</th><th></th></tr></thead><tbody>
@@ -1149,7 +1153,8 @@ function render(R) {
   <tr><td class="l">${lsShort('SLV')}</td><td class="l">${v('γ', 'Sd')}·Δ<sub>d</sub> ≤ ${v('d', 'SLV')}/${v('γ', 'Rd')}</td><td>${f(p8.SLV.dd, 3)} m</td><td>${f(p8.SLV.dr, 3)} m</td><td>${f(p8.SLV.ratio, 2)}</td><td>${f(p8.SLV.agc, 3)} g</td><td>${f(L7.SLV.ag, 3)} g</td><td>${f(p8.SLV.idx, 2)}</td><td>${pill(p8.SLV.ok)}</td></tr>
   <tr><td class="l">${lsShort('SLC')}</td><td class="l">${v('γ', 'Sd')}·Δ<sub>d</sub> ≤ ${v('d', 'SLC')}/${v('γ', 'Rd')}</td><td>${f(p8.SLC.dd, 3)} m</td><td>${f(p8.SLC.dr, 3)} m</td><td>${f(p8.SLC.ratio, 2)}</td><td>${f(p8.SLC.agc, 3)} g</td><td>${f(L7.SLC.ag, 3)} g</td><td>${f(p8.SLC.idx, 2)}</td><td>${pill(p8.SLC.ok)}</td></tr>
   <tr><td class="l"><b>Deslizamiento</b> · junta de cálculo</td><td class="l">${v('F', 'H')}/${v('F', 'V')} ≤ μ</td><td>${f(R.slide.ratio, 3)}</td><td>${f(R.slide.mu, 2)}</td><td>${f(R.slide.mu / R.slide.ratio, 2)}</td><td>—</td><td>—</td><td>—</td><td>${pill(R.slide.ok)}</td></tr><tr class="req"><td class="l" colspan="9">Se exige que la junta no deslice antes de cabecear.</td></tr></tbody></table></div>
-  ${fig(fig8a, '(a) SLD · despegue de la pila. La aceleración de demanda es la intersección del espectro S_e con la recta del periodo T₀. Para que se cumpla el estado límite, la capacidad a_y* debe ser mayor o igual que esa demanda.')}${fig(fig8b, '(b) SLV y SLC · cabeceo. No se busca la intersección de capacidad y demanda: se comparan desplazamientos. Δ_d (paso 7) debe ser menor o igual que el umbral d_LS de la curva de capacidad (paso 5).')}
+  <div class="interp">Los gráficos de este apartado representan <b>valores minorados</b>: la demanda se multiplica por ${v('γ', 'Sd')} = ${f(R.safety.gSd, 2)} y la capacidad se divide por ${v('γ', 'Rd')} (${f(R.safety.gRdDL, 2)} en SLD; ${f(R.safety.gRd, 2)} en SLV y SLC). Así, la comprobación visual (demanda a la izquierda de la capacidad, o por debajo en SLD) coincide con la numérica de la tabla anterior.</div>
+  ${fig(fig8a, '(a) SLD · despegue de la pila. La aceleración de demanda es la intersección del espectro S_e con la recta del periodo T₀. Para que se cumpla el estado límite, la capacidad minorada a_y*/γRd debe ser mayor o igual que la demanda γSd·S_e (valores minorados).')}${fig(fig8b, '(b) SLV y SLC · cabeceo. No se busca la intersección de capacidad y demanda: se comparan desplazamientos. γSd·Δ_d (paso 7) debe ser menor o igual que el umbral minorado d_LS/γRd de la curva de capacidad (paso 5), representada con sus desplazamientos divididos por γRd (valores minorados).')}
   <div class="interp">SLD: ${p8.SLD.ok ? `la pila no despega con el sismo frecuente; el despegue empezaría con a_g = ${f(p8.SLD.agc, 3)} g.` : `la pila despega con el sismo frecuente (a_g de activación ${f(p8.SLD.agc, 3)} g).`} SLV: el oscilador equivalente se mueve ${f(p8.SLV.Dd, 3)} m (≈ ${f(p8.SLV.Dd * p4.Gam, 3)} m en cabeza); con los coeficientes parciales, demanda γSd·Δ_d = ${f(p8.SLV.dd, 3)} m frente a capacidad d/γRd = ${f(p8.SLV.dr, 3)} m: margen ${f(p8.SLV.ratio, 1)}.</div>
   <div class="warn">No cubierto: interacción con el tablero y las pilas vecinas, y la otra dirección.</div>`);
 
