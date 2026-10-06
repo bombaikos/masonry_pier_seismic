@@ -45,6 +45,10 @@ aside h2:first-child{margin-top:0}
 .fld{display:grid;grid-template-columns:minmax(0,1fr) 92px;gap:6px;align-items:center;margin:4px 0;font-size:.86rem}
 .fld label{color:var(--ink)}
 .fld .u{color:var(--muted);font-size:.78rem}
+.tip{position:relative;display:inline-block;margin-left:4px;color:var(--accent);cursor:help;font-size:.8rem;outline:none}
+.tip .tipbox{display:none;position:fixed;z-index:20;width:270px;padding:8px 10px;background:var(--paper);color:var(--ink);border:1px solid var(--line, #dcdad3);border-radius:6px;box-shadow:0 4px 14px rgba(0,0,0,.18);font-size:.78rem;line-height:1.4;text-align:left;white-space:normal;box-sizing:border-box}
+.tip:hover .tipbox,.tip:focus .tipbox,.tip:focus-within .tipbox{display:block}
+.tip table{border-collapse:collapse;width:100%;margin-top:4px}.tip td{padding:1px 4px;border-top:1px solid var(--line, #dcdad3);text-align:left;vertical-align:top;white-space:normal}
 input,select{font:inherit;font-size:.86rem;width:100%;padding:4px 6px;border:1px solid var(--line);border-radius:6px;background:var(--paper);color:var(--ink);font-family:var(--f-mono)}
 input:focus,select:focus{outline:2px solid var(--accent);outline-offset:0}
 .hint{font-size:.76rem;color:var(--muted);margin:2px 0 6px}
@@ -334,8 +338,9 @@ function compute(inp, grid) {
   }
   function Se(T, ag, xi) { if (T <= 1e-9) return ag * G * Sof(ag); return SDe(T, ag, xi) * (2 * Math.PI / T) ** 2; }
   const fTR = TR => Math.pow(TR / 475, 1 / 3);   // a_g(T_R) = γI·a_gR·(T_R/475)^(1/3): mismas T_R que la página N2 (DL 225, SD 475, NC 2475)
+  const TRdl = inp.TRdl > 0 ? inp.TRdl : 225;
   const lev = {
-    SLD: { ag: fTR(225) * gI * agR, xi: 5, why: `γI·agR·(225/475)^(1/3) = ${gI}·${agR.toFixed(3)}·${fTR(225).toFixed(3)}`, ref: 'UNE-EN 1998-3, 2.1 y AN (T_R = 225 años); UNE-EN 1998-1, 2.1(4) nota (k = 3)' },
+    SLD: { ag: fTR(TRdl) * gI * agR, xi: 5, why: `γI·agR·(${TRdl}/475)^(1/3) = ${gI}·${agR.toFixed(3)}·${fTR(TRdl).toFixed(3)}`, ref: `T_R = ${TRdl} años a elección del usuario (UNE-EN 1998-3, 2.1 recomienda 225); UNE-EN 1998-1, 2.1(4) nota (k = 3)` },
     SLV: { ag: gI * agR, xi: inp.xiSLV, why: `γI·agR = ${gI}·${agR.toFixed(3)}`, ref: 'UNE-EN 1998-1, 3.2.1(3)' },
     SLC: { ag: fTR(2475) * gI * agR, xi: inp.xiSLC, why: `γI·agR·(2475/475)^(1/3) = ${gI}·${agR.toFixed(3)}·${fTR(2475).toFixed(3)}`, ref: 'UNE-EN 1998-3, 2.1 y AN (T_R = 2475 años); UNE-EN 1998-1, 2.1(4) nota (k = 3)' }
   };
@@ -356,7 +361,7 @@ function compute(inp, grid) {
     elev = { z: zc, xi1, T1: R.p4b.T1, T1e, g1, psi, kz, aC, bC, aZ, amp, SeZraw, SeZ, SDeZ };
     SeD = SeZ; SDeD = SDeZ;
   }
-  R.p7 = { agR, K, near, C, soil, TB, TC, TD, TE, TF, gI, lev, Sof, eta, SDe, Se, elev, SeD, SDeD };
+  R.p7 = { TRdl, agR, K, near, C, soil, TB, TC, TD, TE, TF, gI, lev, Sof, eta, SDe, Se, elev, SeD, SDeD };
 
   // ---- Paso 8: verificación
   const D = lev.SLD;
@@ -690,6 +695,7 @@ async function exportDocx(btn) {
 }
 
 // ---------- formulario
+const TIPS = { vs30: `<b>Tipos de terreno</b> (UNE-EN 1998-1, tabla 3.1 y AN.1)<table><tr><td><b>Tipo</b></td><td style="white-space:nowrap"><b>v<sub>s,30</sub> [m/s]</b></td><td><b>Perfil</b></td></tr><tr><td><b>A</b></td><td style="white-space:nowrap">&gt; 800</td><td>roca o suelo cementado</td></tr><tr><td><b>B</b></td><td style="white-space:nowrap">360 – 800</td><td>suelos granulares densos o cohesivos duros</td></tr><tr><td><b>C</b></td><td style="white-space:nowrap">180 – 360</td><td>suelos de compacidad media o consistencia firme</td></tr><tr><td><b>D</b></td><td style="white-space:nowrap">&lt; 180</td><td>suelos sueltos o blandos</td></tr></table>` };
 const FIELDS = [
   ['Identificación', [
     ['proj', 'Proyecto', 'txt', 'Evaluación sísmica de pilas de fábrica en viaductos ferroviarios', 'Nombre del proyecto'], ['elem', 'Elemento calculado', 'txt', 'Viaducto de Anchurón. Pila de 40 m de altura', 'p. ej. Pila 3']]],
@@ -714,10 +720,16 @@ const FIELDS = [
     ['impClass', 'Clase de importancia', 'select', 'II', [['I', 'I · moderada'], ['II', 'II · normal'], ['III', 'III · mayor'], ['IV', 'IV · especial']]],
     ['avRatio', 'Componente vertical: a<sub>vg</sub>/a<sub>g</sub>', 'num', 0.7, '—'], ['cV', 'Fracción de la vertical simultánea al pico horizontal', 'num', 0.3, '—'],
     ['xiSLV', 'Amortiguamiento ξ<sub>SD</sub> (Circolare C8.7.1.2.1.8; EN 1998-3: 8 a 15 %)', 'num', 8, '%'], ['xiSLC', 'Amortiguamiento ξ<sub>NC</sub> (Circolare C8.7.1.2.1.8)', 'num', 10, '%'],
-    ['nSlices', 'Nº de secciones para discretizar la pila', 'num', 10, '—']]],
+    ['TRdl', 'Periodo de retorno del DL, T<sub>R</sub>', 'num', 100, 'años'], ['nSlices', 'Nº de secciones para discretizar la pila', 'num', 10, '—']]],
   ['Mecanismo en altura (solo si z > 0)', [
     ['xi1', 'Amortiguamiento de la pila como estructura principal ξ<sub>1</sub>', 'num', 5, '%'], ['T1fac', 'Factor de alargamiento de T<sub>1</sub> por fisuración de la pila bajo la junta (1 = elástica)', 'num', 1.0, '—']]]
 ];
+function placeTip(e) {
+  const t = e.target.closest && e.target.closest('.tip'); if (!t) return;
+  const b = t.querySelector('.tipbox'), r = t.getBoundingClientRect(), w = Math.min(310, innerWidth - 16);
+  b.style.width = w + 'px'; b.style.left = Math.max(8, Math.min(r.left, innerWidth - w - 8)) + 'px'; b.style.top = (r.bottom + 6) + 'px';
+}
+document.addEventListener('mouseover', placeTip); document.addEventListener('focusin', placeTip);
 function buildForm() {
   let h = '';
   FIELDS.forEach(([title, fl], gi) => {
@@ -728,7 +740,7 @@ function buildForm() {
       else if (type === 'txt') ctl = `<input id="${id}" type="text" value="${def}" placeholder="${extra}" style="font-family:var(--f-ui)">`;
       else ctl = `<input id="${id}" type="${type === 'num' ? 'number' : 'text'}" step="any" value="${def}">`;
       const unit = type === 'num' || type === 'text' ? ` <span class="u">[${extra}]</span>` : '';
-      h += type === 'txt' ? `<div class="fld" style="grid-template-columns:1fr"><label for="${id}">${lab}</label>${ctl}</div>` : `<div class="fld"><label for="${id}">${lab}${unit}</label>${ctl}</div>`;
+      h += type === 'txt' ? `<div class="fld" style="grid-template-columns:1fr"><label for="${id}">${lab}</label>${ctl}</div>` : `<div class="fld"><label for="${id}">${lab}${unit}${TIPS[id] ? `<span class="tip" tabindex="0" aria-label="Ayuda">ⓘ<span class="tipbox">${TIPS[id]}</span></span>` : ''}</label>${ctl}</div>`;
     }
     if (gi === 1) h += '</div><p class="hint">El límite d<sub>C,lím</sub> es el desplazamiento de cabeza que el usuario no admite (p. ej. pérdida de apoyo del tablero).</p>';
   });
@@ -745,7 +757,7 @@ function readInputs() {
   return { proj: g('proj').trim(), elem: g('elem').trim(), dir: g('dir'), deckFixed: g('deckFixed') === '1', dClim: n('dClim'), H: n('H'), cabT: n('cabT'), cabL: n('cabL'), taludT: n('taludT'), taludL: n('taludL'), zJoint: g('zJoint').trim(),
     gamma: n('gamma'), fShell: n('fShell'), tShell: n('tShell'), fCore: n('fCore'), E: n('E'), Gratio: n('Gratio'), KL: parseInt(g('KL')), gSd: n('gSd'),
     qDeck: n('qDeck'), lDeck: n('lDeck'), hDeck: n('hDeck'), siteMode: g('siteMode'), lat: n('lat'), lon: n('lon'), agR: n('agR'), K: n('K'), vs30: n('vs30'),
-    impClass: g('impClass'), xiSLV: n('xiSLV'), xiSLC: n('xiSLC'), mu: n('mu'), avRatio: n('avRatio'), cV: n('cV'), nSlices: Math.max(2, Math.round(n('nSlices'))), xi1: n('xi1'), T1fac: n('T1fac') };
+    impClass: g('impClass'), xiSLV: n('xiSLV'), xiSLC: n('xiSLC'), TRdl: n('TRdl'), mu: n('mu'), avRatio: n('avRatio'), cV: n('cV'), nSlices: Math.max(2, Math.round(n('nSlices'))), xi1: n('xi1'), T1fac: n('T1fac') };
 }
 
 // ---------- secciones
@@ -924,9 +936,9 @@ function render(R) {
   h += sec('2', '2', 'Multiplicador de activación λ₀(z) y junta crítica', 'EN 1998-3:2025, 11.3.3.1(3) y 11.3.3.2, fórmula (11.3) · rótula retrasada por compresión limitada: 11.3.3.1(3) nota 2 iv, con el modelo de la Circolare C8.7.1.2.1 (punto d) como criterio complementario', `
   <p>λ es el multiplicador de las cargas horizontales: cada masa recibe λ·W en su c.d.g., como una aceleración horizontal uniforme λ·g aplicada de forma estática. λ₀ es el valor que abre la junta (α₀ en EN 1998-3 y en la Circolare). La junta gira sobre el centro de un bloque de compresiones con ancho finito, no sobre la arista con ancho cero:</p>
   <div class="eq">${v('c')} = ${v('N')}/(${v('f')}·${v('L')}) · ${v('u')} = ${v('c')}/2 · λ₀(${v('z')}) = ${v('f', 'v')}·(${v('W', 'sup')} + ${v('P')})·[${v('B')}(${v('z')})/2 − ${v('u')}] / [${v('W', 'sup')}·${v('h', 'G')} + ${v('P', 'h')}·(${v('H')} − ${v('z')} + ${v('h', 't')})]</div>
-  <p>Si la zona comprimida ${v('c')} supera el espesor de la fábrica exterior ${v('t', 'ext')}, el exceso trabaja con la resistencia del núcleo. Junta de cálculo (${I.zJoint === '' ? 'crítica' : 'elegida'}) z = ${f(p2.zc, 2)} m:</p>
-  <div class="eq">${v('N')} = ${f(p2.J.N, 2)} MN · ${v('L')} = ${f(g.L(p2.zc), 2)} m · ${v('c')} = <span class="res">${f(p2.J.c, 3)} m</span>${p2.J.inShell ? '' : ' (entra en el núcleo)'} · ${v('u')} = <span class="res">${f(p2.J.u, 3)} m</span> · brazo = ${f(g.B(p2.zc) / 2, 3)} − ${f(p2.J.u, 3)} = ${f(p2.J.arm, 3)} m · λ₀ = <span class="res">${f(p2.J.lam0, 4)}</span></div>
-  <p>Las fuerzas horizontales son proporcionales a los pesos (aceleración uniforme) aquí y en la curva de capacidad del paso 3. Lo que crece con la altura es el brazo de cada fuerza respecto a la junta y el desplazamiento del giro rígido: esa forma triangular entra en el paso 4 (Φ, Γ, e*). La amplificación de la aceleración del suelo con la altura entra en la demanda (paso 7b), si la junta está por encima de la base.</p>
+  <p>Si la zona comprimida ${v('c')} supera el espesor de la fábrica exterior ${v('t', 'ext')}, el exceso trabaja con la resistencia del núcleo. Junta de cálculo (${I.zJoint === '' ? 'crítica' : 'elegida'}) z = ${f(p2.zc, 2)} m. El peso sobre la junta, ${v('W', 'sup')} + ${v('P')}, se multiplica por ${v('f', 'v')} (reducción por la componente vertical, paso 1): por eso ${v('N')} es algo menor que el peso total de la tabla del paso 1:</p>
+  <div class="eq">${v('N')} = ${v('f', 'v')}·(${v('W', 'sup')} + ${v('P')}) = ${f(R.vert.fv, 3)}·${f(p2.J.N / R.vert.fv, 2)} = ${f(p2.J.N, 2)} MN · ${v('L')} = ${f(g.L(p2.zc), 2)} m · ${v('c')} = <span class="res">${f(p2.J.c, 3)} m</span>${p2.J.inShell ? '' : ' (entra en el núcleo)'} · ${v('u')} = <span class="res">${f(p2.J.u, 3)} m</span> · brazo = ${f(g.B(p2.zc) / 2, 3)} − ${f(p2.J.u, 3)} = ${f(p2.J.arm, 3)} m · λ₀ = <span class="res">${f(p2.J.lam0, 4)}</span></div>
+  <p>Las fuerzas horizontales son proporcionales a los pesos (aceleración uniforme). La amplificación de la aceleración del suelo con la altura entra en la demanda (paso 7b), si la junta está por encima de la base.</p>
   ${fig(elev, 'Alzado y curva λ₀(z) a la misma escala vertical. Juntas candidatas a críticas: λ₀ ≤ 1.05·λ₀,mín.')}
   <div class="tw"><table><thead><tr><th>z [m]</th><th>N [MN]</th><th>B/2 [m]</th><th>c [m]</th><th>u [m]</th><th>λ₀ compresión ∞</th><th>λ₀</th></tr></thead><tbody>
   ${p2.table.map(c => `<tr${Math.abs(c.z - p2.min.z) < 1e-6 ? ' class="hl"' : ''}><td>${f(c.z, 1)}</td><td>${f(c.N, 2)}</td><td>${f(g.B(c.z) / 2, 2)}</td><td>${f(c.c, 3)}</td><td>${f(c.u, 3)}</td><td>${f(c.lam0inf, 4)}</td><td>${f(c.lam0, 4)}</td></tr>`).join('')}</tbody></table></div>
@@ -1092,23 +1104,19 @@ function render(R) {
       { x: p7.SDeD(p6.SLC.T, L7.SLC.ag, L7.SLC.xi), y: p7.SeD(p6.SLC.T, L7.SLC.ag, L7.SLC.xi), color: 'var(--violet)' }],
     legend: ['SLD', 'SLV', 'SLC'].map(k => ({ t: `${k}: ξ = ${L7[k].xi} %`, color: colsL[k] })).concat([{ t: `recta del periodo T₀ = ${f(p6.T0, 3)} s`, color: 'var(--ink)', dash: '3 3' }, ...(Math.abs(p6.SLV.T - p6.SLC.T) < 1e-9 ? [{ t: `recta T_SLV = T_SLC = ${f(p6.SLV.T, 2)} s`, color: 'var(--coral)', dash: '3 3' }] : [{ t: `recta del periodo T_SLV = ${f(p6.SLV.T, 2)} s`, color: 'var(--coral)', dash: '3 3' }, { t: `recta del periodo T_SLC = ${f(p6.SLC.T, 2)} s`, color: 'var(--violet)', dash: '3 3' }])]) });
   h += sec('7', '7', 'Demanda sísmica', 'UNE-EN 1998-1:2018: 3.2.1(3), 3.2.2.2 (ecs. 3.2–3.7), 2.1(4), anejo A · Anexo Nacional: AN.2 (tabla AN.2), AN.5', `
-  <p>La demanda sísmica son los <b>espectros de respuesta elásticos en el emplazamiento</b> definidos por la UNE-EN 1998-1:2018 (Eurocódigo 8, parte 1), apartado 3.2.2.2 (espectro de aceleración, ecs. 3.2–3.6) y 3.2.2.2(3.7) con el anejo A (espectro de desplazamientos), con los parámetros de su <b>Anexo Nacional español</b> (UNE-EN 1998-1:2018, julio de 2018, versión corregida de febrero de 2022): aceleración de referencia a<sub>gR</sub> y coeficiente K de la malla AN.5, y forma del espectro de la tabla AN.2. <b>No se utiliza la NCSE-02.</b></p>
+  <p>La demanda sísmica son los <b>espectros de respuesta elásticos en el emplazamiento</b> definidos en Eurocódigo 8-1 con los parámetros de su anexo nacional español. <b>No se utiliza la NCSE-02.</b></p>
   <p>Cada estado límite se comprueba con un sismo de distinto <b>periodo de retorno</b> y con un <b>amortiguamiento</b> distinto:</p>
-  <div class="tw"><table><thead><tr><th class="l">Estado límite</th><th class="l">Probabilidad de superación</th><th>Periodo de retorno</th><th class="l">a<sub>g</sub> =</th><th>ξ</th></tr></thead><tbody>
-  <tr><td class="l"><b>SLD</b> · daño</td><td class="l">20 % en 50 años</td><td>225 años</td><td class="l">γ<sub>I</sub>·a<sub>gR</sub>·(225/475)<sup>1/3</sup> (UNE-EN 1998-3, 2.1 y AN; UNE-EN 1998-1, 2.1(4) nota, k = 3)</td><td>${L7.SLD.xi} %</td></tr>
-  <tr><td class="l"><b>SLV</b> · salvaguarda de la vida</td><td class="l">10 % en 50 años</td><td>475 años</td><td class="l">γ<sub>I</sub>·a<sub>gR</sub> (3.2.1(3); 2.1(1)P nota 1)</td><td>${L7.SLV.xi} %</td></tr>
-  <tr><td class="l"><b>SLC</b> · prevención del colapso</td><td class="l">2 % en 50 años</td><td>2475 años</td><td class="l">γ<sub>I</sub>·a<sub>gR</sub>·(2475/475)<sup>1/3</sup> (UNE-EN 1998-3, 2.1 y AN; UNE-EN 1998-1, 2.1(4) nota, k = 3)</td><td>${L7.SLC.xi} %</td></tr></tbody></table></div>
+  <div class="tw"><table><thead><tr><th class="l">Estado límite</th><th>Periodo de retorno</th><th class="l">a<sub>g</sub> [g]</th><th>ξ [%]</th><th>η</th></tr></thead><tbody>
+  ${[['SLD', R.p7.TRdl], ['SLV', 475], ['SLC', 2475]].map(([k, TR]) => `<tr><td class="l"><b>${k}</b> · ${LS[k].name}</td><td>${TR} años</td><td class="l"><span class="res">${f(L7[k].ag, 4)}</span> = ${L7[k].why}</td><td>${L7[k].xi}</td><td>${f(L7[k].eta, 3)}</td></tr>`).join('')}</tbody></table></div>
   ${fig(specSchema(), 'Esquema del espectro elástico (UNE-EN 1998-1, 3.2.2.2 y anejo A). T_B: inicio de la meseta de aceleración constante. T_C: fin de la meseta; desde ahí S_e ∝ 1/T (velocidad espectral constante). T_D: inicio del desplazamiento espectral constante (S_e ∝ 1/T²). T_E y T_F (anejo A): transición del desplazamiento espectral hacia el desplazamiento del terreno d_g. En los espectros del emplazamiento, las líneas verticales discontinuas marcan los periodos de la pila (T₀, T_SLV, T_SLC).')}
   <div class="tw"><table><thead><tr><th class="l">Parámetro</th><th class="l">Expresión</th><th>Valor</th></tr></thead><tbody>
   <tr><td class="l">Coeficiente del terreno</td><td class="l">${v('C')} = (800/${v('v', 's,30')})<sup>0.465</sup> = (800/${f(I.vs30, 0)})<sup>0.465</sup></td><td><span class="res">${f(p7.C, 3)}</span></td></tr>
   <tr><td class="l">Tipo de terreno</td><td class="l">según ${v('v', 's,30')} = ${f(I.vs30, 0)} m/s (tabla 3.1 y AN.1)</td><td><span class="res">${p7.soil}</span></td></tr>
-  <tr><td class="l">Factor de suelo</td><td class="l">${v('S')}(${v('a', 'g')}) según la tabla AN.2; un valor por estado límite (tabla siguiente)</td><td>—</td></tr>
+  <tr><td class="l">Factor de amplificación del suelo (DL, SD, NC)</td><td class="l">${v('S')}(${v('a', 'g')}) según la tabla AN.2</td><td><span class="res">${f(L7.SLD.S, 3)} · ${f(L7.SLV.S, 3)} · ${f(L7.SLC.S, 3)}</span></td></tr>
   <tr><td class="l">Fin de la meseta</td><td class="l">${v('T', 'C')} = ${p7.soil === 'A' ? `${v('K')}/4 = ${f(p7.K, 2)}/4` : p7.soil === 'D' ? `${v('K')}/2 = ${f(p7.K, 2)}/2` : `${v('K')}·${v('C')}/4 = ${f(p7.K, 2)}·${f(p7.C, 3)}/4`}</td><td><span class="res">${f(p7.TC, 3)} s</span></td></tr>
   <tr><td class="l">Inicio de la meseta</td><td class="l">${v('T', 'B')} = ${v('T', 'C')}/5</td><td><span class="res">${f(p7.TB, 3)} s</span></td></tr>
   <tr><td class="l">Inicio del desplazamiento constante</td><td class="l">${v('T', 'D')}</td><td><span class="res">${f(p7.TD, 1)} s</span></td></tr>
   <tr><td class="l">Esquinas del anejo A</td><td class="l">${v('T', 'E')} · ${v('T', 'F')} (terreno ${p7.soil})</td><td><span class="res">${f(p7.TE, 1)} · ${f(p7.TF, 1)} s</span></td></tr></tbody></table></div>
-  <div class="tw"><table><thead><tr><th class="l">Estado límite</th><th>a<sub>g</sub> [g]</th><th class="l">Justificación</th><th>S</th><th>ξ [%]</th><th>η</th></tr></thead><tbody>
-  ${['SLD', 'SLV', 'SLC'].map(k => `<tr><td class="l"><b>${k}</b> · ${LS[k].name}</td><td>${f(L7[k].ag, 4)}</td><td class="l">${L7[k].why}<br><span style="color:var(--muted)">${L7[k].ref}</span></td><td>${f(L7[k].S, 3)}</td><td>${L7[k].xi}</td><td>${f(L7[k].eta, 3)}</td></tr><tr class="req"><td class="l" colspan="6">${LS[k].def} Se exige ${LS[k].req}.</td></tr>`).join('')}</tbody></table></div>
   ${Math.max(L7.SLV.ag, L7.SLC.ag) > 0.4 ? `<div class="warn">⚠ a<sub>g</sub> &gt; 0.4 g (${['SLD', 'SLV', 'SLC'].filter(k => L7[k].ag > 0.4).join(', ')}): el Anexo Nacional toma S = 1, y el espectro de norma no representa los pulsos de largo periodo de los registros cercanos a falla. El daño de la junta por los impactos no se considera.</div>` : ''}
   ${fig(figSe, `Espectro elástico de aceleración${EL ? ` en la cota de la junta (z = ${f(EL.z, 1)} m, ver 7b)` : ' del terreno'}. Se usa en el SLD: S_e${sZ}(T₀) frente a a_y*.`)}${fig(figSd, `Espectro de desplazamientos S_De${sZ} = S_e${sZ}·(T/2π)²${EL ? ' en la cota de la junta' : ''}. Se usa en el SLV y el SLC. Δ_d es el mayor desplazamiento espectral entre T₀ y T_LS: el periodo del cabeceo crece con la amplitud y recorre todo ese intervalo durante el sismo (Circolare C8.7.1.2.1.8). La línea gruesa marca dónde se alcanza ese máximo.`)}${fig(figAD, `Los tres espectros en ejes S_e–S_De (aceleración frente a desplazamiento). Cada periodo es una recta desde el origen; los puntos marcan la lectura de cada estado límite: SLD en T₀, SLV en T_SLV y SLC en T_SLC.`)}
   <div class="interp">${v('T', '0')} = ${f(p6.T0, 2)} s ${EL ? '' : (p6.T0 >= p7.TB && p6.T0 <= p7.TC ? 'cae en la meseta de aceleración: el peor sitio para un elemento rígido' : 'queda fuera de la meseta de aceleración') + '. '}${EL ? '' : ''}En el SLV la aceleración espectral${EL ? ' en la cota de la junta' : ''} en ${v('T', '0')} con ξ = ${L7.SLV.xi} % es ${f(p7.SeD(p6.T0, L7.SLV.ag, L7.SLV.xi), 2)} m/s² ${p7.SeD(p6.T0, L7.SLV.ag, L7.SLV.xi) > p4b.ay ? '> a_y*: con el sismo de proyecto la pila despega y cabecea' : '≤ a_y*: la pila no llega a despegar ni con el sismo de proyecto'}.</div>`);
@@ -1155,8 +1163,8 @@ function render(R) {
   <tr><td class="l">${lsShort('SLV')}</td><td class="l">${v('γ', 'Sd')}·Δ<sub>d</sub> ≤ ${v('d', 'SLV')}/${v('γ', 'Rd')}</td><td>${f(p8.SLV.dd, 3)} m</td><td>${f(p8.SLV.dr, 3)} m</td><td>${f(p8.SLV.ratio, 2)}</td><td>${f(p8.SLV.agc, 3)} g</td><td>${f(L7.SLV.ag, 3)} g</td><td>${f(p8.SLV.idx, 2)}</td><td>${pill(p8.SLV.ok)}</td></tr>
   <tr><td class="l">${lsShort('SLC')}</td><td class="l">${v('γ', 'Sd')}·Δ<sub>d</sub> ≤ ${v('d', 'SLC')}/${v('γ', 'Rd')}</td><td>${f(p8.SLC.dd, 3)} m</td><td>${f(p8.SLC.dr, 3)} m</td><td>${f(p8.SLC.ratio, 2)}</td><td>${f(p8.SLC.agc, 3)} g</td><td>${f(L7.SLC.ag, 3)} g</td><td>${f(p8.SLC.idx, 2)}</td><td>${pill(p8.SLC.ok)}</td></tr>
   <tr><td class="l"><b>Deslizamiento</b> · junta de cálculo</td><td class="l">${v('F', 'H')}/${v('F', 'V')} ≤ μ</td><td>${f(R.slide.ratio, 3)}</td><td>${f(R.slide.mu, 2)}</td><td>${f(R.slide.mu / R.slide.ratio, 2)}</td><td>—</td><td>—</td><td>—</td><td>${pill(R.slide.ok)}</td></tr><tr class="req"><td class="l" colspan="9">Se exige que la junta no deslice antes de cabecear.</td></tr></tbody></table></div>
-  <div class="interp">Los gráficos de este apartado representan <b>valores minorados</b>: la demanda se multiplica por ${v('γ', 'Sd')} = ${f(R.safety.gSd, 2)} y la capacidad se divide por ${v('γ', 'Rd')} (${f(R.safety.gRdDL, 2)} en SLD; ${f(R.safety.gRd, 2)} en SLV y SLC). Así, la comprobación visual (demanda a la izquierda de la capacidad, o por debajo en SLD) coincide con la numérica de la tabla anterior.</div>
-  ${fig(fig8a, '(a) SLD · despegue de la pila. La aceleración de demanda es la intersección del espectro S_e con la recta del periodo T₀. Para que se cumpla el estado límite, la capacidad minorada a_y*/γRd debe ser mayor o igual que la demanda γSd·S_e (valores minorados).')}${fig(fig8b, '(b) SLV y SLC · cabeceo. No se busca la intersección de capacidad y demanda: se comparan desplazamientos. γSd·Δ_d (paso 7) debe ser menor o igual que el umbral minorado d_LS/γRd de la curva de capacidad (paso 5), representada con sus desplazamientos divididos por γRd (valores minorados).')}
+  <div class="interp">Los gráficos de este apartado representan <b>valores minorados</b>: la demanda se multiplica por ${v('γ', 'Sd')} = ${f(R.safety.gSd, 2)} y la capacidad se divide por ${v('γ', 'Rd')} (${f(R.safety.gRdDL, 2)} en SLD; ${f(R.safety.gRd, 2)} en SLV y SLC).</div>
+  ${fig(fig8a, '(a) SLD · despegue de la pila. La aceleración de demanda es la intersección del espectro S_e con la recta del periodo T₀. Para que se cumpla el estado límite, la capacidad minorada a_y*/γRd debe ser mayor o igual que la demanda γSd·S_e (valores minorados).')}${fig(fig8b, '(b) SLV y SLC · cabeceo. La demanda γSd·Δ_d debe ser menor o igual que el umbral minorado d_LS/γRd de la curva de capacidad.')}
   <div class="interp">SLD: ${p8.SLD.ok ? `la pila no despega con el sismo frecuente; el despegue empezaría con a_g = ${f(p8.SLD.agc, 3)} g.` : `la pila despega con el sismo frecuente (a_g de activación ${f(p8.SLD.agc, 3)} g).`} SLV: el oscilador equivalente se mueve ${f(p8.SLV.Dd, 3)} m (≈ ${f(p8.SLV.Dd * p4.Gam, 3)} m en cabeza); con los coeficientes parciales, demanda γSd·Δ_d = ${f(p8.SLV.dd, 3)} m frente a capacidad d/γRd = ${f(p8.SLV.dr, 3)} m: margen ${f(p8.SLV.ratio, 1)}.</div>
   <div class="warn">No cubierto: interacción con el tablero y las pilas vecinas, y la otra dirección.</div>`);
 
@@ -1236,7 +1244,7 @@ function render(R) {
   <tr><td class="l">5</td><td class="l m">d<sub>SLV</sub> = mín(0.4·d₀*; d<sub>C,lím</sub>/Γ) · d<sub>SLC</sub> = mín(0.6·d₀*; d<sub>C,lím</sub>/Γ)</td><td class="l">EN 1998-3, 11.4.2(5); límite del usuario</td></tr>
   <tr><td class="l">6</td><td class="l m">T<sub>sec</sub> = 2π·√(d/a*) · T<sub>SLV</sub> = 1.6π·√(d<sub>SLV</sub>/a*(d<sub>SLV</sub>)) · T<sub>SLC</sub> = 1.6π·√(d<sub>SLC</sub>/a*(d<sub>SLC</sub>))</td><td class="l">EN 1998-3, (11.40)–(11.41)</td></tr>
   <tr><td class="l">7</td><td class="l m">a<sub>gR</sub> = Σ(a<sub>gR,j</sub>/d<sub>j</sub>) / Σ(1/d<sub>j</sub>) (4 puntos) · a<sub>g</sub> = γ<sub>I</sub>·a<sub>gR</sub></td><td class="l">AN.2 (3.2.1(2)), AN.5; EN 1998-1, 3.2.1(3)</td></tr>
-  <tr><td class="l">7</td><td class="l m">a<sub>g</sub>(T<sub>R</sub>) = γ<sub>I</sub>·a<sub>gR</sub>·(T<sub>R</sub>/475)<sup>1/3</sup> · T<sub>R</sub> = 225, 475, 2475 años (DL, SD, NC)</td><td class="l">EN 1998-1, 2.1(4) nota (k = 3); EN 1998-3, 2.1 y AN</td></tr>
+  <tr><td class="l">7</td><td class="l m">a<sub>g</sub>(T<sub>R</sub>) = γ<sub>I</sub>·a<sub>gR</sub>·(T<sub>R</sub>/475)<sup>1/3</sup> · T<sub>R</sub> = DL elegido (por defecto 100), 475, 2475 años (DL, SD, NC)</td><td class="l">EN 1998-1, 2.1(4) nota (k = 3); EN 1998-3, 2.1 y AN</td></tr>
   <tr><td class="l">7</td><td class="l m">C = (800/v<sub>s,30</sub>)<sup>0.465</sup> · S(a<sub>g</sub>) (tabla AN.2) · T<sub>C</sub> = K·C/4 (A: K/4; D: K/2) · T<sub>B</sub> = T<sub>C</sub>/5 · T<sub>D</sub> = 2.0 s</td><td class="l">AN.2, tabla AN.2</td></tr>
   <tr><td class="l">7</td><td class="l m">η = √(10/(5 + ξ)) ≥ 0.55 · S<sub>e</sub>(T): 0–T<sub>B</sub>: a<sub>g</sub>S[1 + T/T<sub>B</sub>·(2.5η − 1)]; T<sub>B</sub>–T<sub>C</sub>: 2.5a<sub>g</sub>Sη; T<sub>C</sub>–T<sub>D</sub>: 2.5a<sub>g</sub>Sη·T<sub>C</sub>/T; T<sub>D</sub>–4 s: 2.5a<sub>g</sub>Sη·T<sub>C</sub>T<sub>D</sub>/T²</td><td class="l">EN 1998-1, 3.2.2.2, ecs. (3.2)–(3.6)</td></tr>
   <tr><td class="l">7</td><td class="l m">S<sub>De</sub>(T) = S<sub>e</sub>(T)·(T/2π)² · T<sub>E</sub>–T<sub>F</sub>: S<sub>De</sub> = 0.025a<sub>g</sub>ST<sub>C</sub>T<sub>D</sub>[2.5η + (T − T<sub>E</sub>)/(T<sub>F</sub> − T<sub>E</sub>)·(1 − 2.5η)] · T &gt; T<sub>F</sub>: S<sub>De</sub> = d<sub>g</sub> = 0.025a<sub>g</sub>ST<sub>C</sub>T<sub>D</sub></td><td class="l">EN 1998-1, ecs. (3.7), (3.12); anejo A, (A.1)–(A.2)</td></tr>
