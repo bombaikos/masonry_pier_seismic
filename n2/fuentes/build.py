@@ -16,7 +16,7 @@ iGrid=find(lambda l:l.startswith('const GRID'),'const GRID')
 head='\n'.join(L[:iStyle+1])  # doctype .. </style>
 head=head.replace('<title>Cabeceo de pilas de fábrica</title>','<title>Método N2</title>')
 extra='''
-textarea{font-family:var(--f-mono);font-size:.8rem;width:100%;padding:5px 6px;border:1px solid var(--line);border-radius:6px;background:var(--paper);color:var(--ink);resize:vertical;line-height:1.35;white-space:pre;overflow-x:auto}
+textarea{font-family:var(--f-mono);font-size:.8rem;width:100%;padding:5px 6px;border:1px solid var(--campo-borde);border-radius:var(--r-campo);background:var(--campo);color:var(--tinta);resize:vertical;line-height:1.35;white-space:pre;overflow-x:auto}
 textarea:focus{outline:2px solid var(--accent);outline-offset:0}
 input[type=file]{font-family:var(--f-ui);font-size:.78rem;padding:2px;border:none}
 button.ghost{background:transparent;color:var(--accent)}

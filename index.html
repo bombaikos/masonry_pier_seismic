@@ -1,27 +1,50 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Análisis sísmico de pilas</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=STIX+Two+Text:ital@0;1&display=swap">
 <style>
-/* Marca Ines: azul #2b91cf sobre banda marino. Layout: panel de datos fijo a la izquierda + memoria de cálculo por pasos a la derecha; una columna en móvil */
-:root{
-  --bg:#f5f4f0; --paper:#ffffff; --ink:#1d2327; --muted:#5b646b; --line:#dcdad3; --soft:#eeede7;
-  --accent:#1f7fbf; --accent-soft:#e4f0f9; --brand:#2b91cf; --band:#10283b; --coral:#c4552c; --amber:#b27414; --violet:#6b62c9; --sky:#2a9d6f; --ok:#2e7d32; --bad:#b3261e;
-  --pier:#d6d3c9; --pier-line:#6d6a62;
-  --f-ui:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
-  --f-math:"STIX Two Text","Cambria Math","Times New Roman",serif;
-  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+/* Tokens de la guía de diseño (bombaikos/guia-de-diseno). Marca Ines: banda marino. Layout: panel de datos fijo a la izquierda + memoria de cálculo por pasos a la derecha; una columna en móvil */
+:root {
+  --suelo: oklch(96.4% 0.005 240); --hoja: oklch(99.6% 0.002 240); --hundido: oklch(95.2% 0.006 240);
+  --campo: oklch(100% 0 0); --campo-borde: oklch(78% 0.05 252);
+  --nota: oklch(94.8% 0.014 78); --nota-borde: oklch(85.5% 0.024 75);
+  --tinta: oklch(24% 0.02 248); --tinta-2: oklch(44% 0.02 248); --tinta-3: oklch(57% 0.016 248);
+  --linea: oklch(90% 0.008 240); --linea-fuerte: oklch(80% 0.012 240);
+  --acento: oklch(47% 0.13 252); --acento-suave: oklch(93.5% 0.03 252);
+  --serie-v: oklch(52% 0.11 125);
+  --hormigon: oklch(90% 0.006 85); --hormigon-borde: oklch(60% 0.01 85);
+  --acero: oklch(30% 0.012 250);
+  --ok: oklch(46% 0.11 152); --ok-fondo: oklch(95% 0.035 152);
+  --no: oklch(50% 0.17 27); --no-fondo: oklch(95.5% 0.03 27);
+  --atencion: oklch(50% 0.1 70); --atencion-fondo: oklch(96% 0.04 85);
+  --sombra: 0 1px 2px oklch(30% 0.02 250 / .06), 0 4px 16px oklch(30% 0.02 250 / .05);
+  --f: system-ui, 'Segoe UI Variable Text', 'Segoe UI', -apple-system, Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --t-xs: 11px; --t-s: 12px; --t-m: 14px; --t-xxl: 28px;
+  --e2: 8px; --e3: 12px; --e4: 16px; --e5: 24px;
+  --r-panel: 10px; --r-campo: 6px; --r-chip: 4px;
+  --alto-campo: 24px; --hueco-campos: 4px;
+  --banda: #10283b; --banda-tinta: #ffffff; --banda-tinta-2: #b9cfe0; --banda-linea: rgb(255 255 255 / .22);
 }
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --bg:#15181a; --paper:#1d2124; --ink:#e6e8e8; --muted:#9aa3a8; --line:#343a3e; --soft:#262b2e;
-  --accent:#5cb3ea; --accent-soft:#13293a; --brand:#2b91cf; --band:#0c1e2c; --coral:#ee8a62; --amber:#e3a94a; --violet:#a39cf0; --sky:#5fd1a0; --ok:#6ccf73; --bad:#f28b82;
-  --pier:#4a4943; --pier-line:#a6a398; color-scheme:dark}}
-:root[data-theme="dark"]{
-  --bg:#15181a; --paper:#1d2124; --ink:#e6e8e8; --muted:#9aa3a8; --line:#343a3e; --soft:#262b2e;
-  --accent:#5cb3ea; --accent-soft:#13293a; --brand:#2b91cf; --band:#0c1e2c; --coral:#ee8a62; --amber:#e3a94a; --violet:#a39cf0; --sky:#5fd1a0; --ok:#6ccf73; --bad:#f28b82;
-  --pier:#4a4943; --pier-line:#a6a398; color-scheme:dark}
+@media screen and (prefers-color-scheme: dark) {
+  :root {
+    --suelo: oklch(17% 0.012 245); --hoja: oklch(21% 0.014 245); --hundido: oklch(18.5% 0.012 245); --campo: oklch(15.5% 0.02 250); --campo-borde: oklch(46% 0.06 252); --nota: oklch(25.5% 0.014 72); --nota-borde: oklch(36% 0.022 70);
+    --tinta: oklch(93% 0.008 240); --tinta-2: oklch(78% 0.012 240); --tinta-3: oklch(66% 0.014 240);
+    --linea: oklch(29% 0.014 245); --linea-fuerte: oklch(38% 0.016 245);
+    --acento: oklch(74% 0.11 250); --acento-suave: oklch(30% 0.05 252); --serie-v: oklch(76% 0.11 125);
+    --hormigon: oklch(33% 0.008 85); --hormigon-borde: oklch(58% 0.01 85); --acero: oklch(88% 0.008 250);
+    --ok: oklch(76% 0.13 152); --ok-fondo: oklch(29% 0.05 152); --no: oklch(74% 0.14 27); --no-fondo: oklch(30% 0.06 27);
+    --atencion: oklch(80% 0.11 80); --atencion-fondo: oklch(30% 0.05 80); --sombra: 0 1px 2px oklch(0% 0 0 / .3);
+    --banda: #0c1e2c; color-scheme: dark;
+  }
+}
+:root{
+  /* nombres antiguos de la app → tokens de la guía; colores propios de las figuras */
+  --bg:var(--suelo); --paper:var(--hoja); --ink:var(--tinta); --muted:var(--tinta-2); --line:var(--linea); --soft:var(--hundido);
+  --accent-soft:var(--acento-suave); --brand:var(--acento); --band:var(--banda); --bad:var(--no); --amber:var(--atencion);
+  --coral:#c4552c; --violet:#6b62c9; --sky:#2a9d6f; --pier:#d6d3c9; --pier-line:#6d6a62;
+  --f-ui:var(--f); --f-math:"STIX Two Text","Cambria Math","Times New Roman",serif; --f-mono:var(--f);
+}
+@media (prefers-color-scheme:dark){:root{--coral:#ee8a62; --violet:#a39cf0; --sky:#5fd1a0; --pier:#4a4943; --pier-line:#a6a398}}
 *{box-sizing:border-box}
-body{background:var(--bg);color:var(--ink);font-family:var(--f-ui);font-size:15px;line-height:1.55;margin:0;padding-inline:16px;padding-block:20px 60px}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-ui);font-size:var(--t-m);line-height:1.55;font-variant-numeric:tabular-nums;margin:0;padding-inline:16px;padding-block:20px 60px}
 header.top{max-width:1000px;margin:0 auto 24px;display:flex;align-items:center;gap:18px;background:var(--band);color:#fff;border-radius:12px;padding:16px 22px}
 header.top img{height:44px;width:auto;flex:none}
 header.top h1{font-size:1.6rem;line-height:1.2;margin:0}
