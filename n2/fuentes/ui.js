@@ -814,3 +814,9 @@ function run() {
   try { const R = computeN2(readInputs(), GRID); render(R); }
   catch (e) { document.getElementById('main').innerHTML = `<section><h2>Revisa los datos</h2><p>No se ha podido calcular con los datos actuales: ${hT(esc(e.message))}</p></section>`; console.error(e); }
 }
+
+// pantalla completa (botón a la derecha de la barra superior)
+(function(){const b=document.getElementById('btnFs');if(!b)return;const d=document.documentElement,on=()=>!!document.fullscreenElement;
+  if(!d.requestFullscreen){b.setAttribute('aria-disabled','true');b.title='Tu navegador no permite la pantalla completa';return}
+  b.addEventListener('click',()=>{try{on()?document.exitFullscreen():d.requestFullscreen()}catch(e){}});
+  document.addEventListener('fullscreenchange',()=>{const f=on();b.setAttribute('aria-pressed',f);b.setAttribute('aria-label',f?'Salir de pantalla completa':'Pantalla completa');b.title=b.getAttribute('aria-label')+' (F11)'});})();

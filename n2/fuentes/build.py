@@ -39,8 +39,6 @@ button.sm{min-height:22px;font-size:var(--t-xs);padding:0 var(--e2)}
 head=head.replace('</style>', extra, 1) if head.rstrip().endswith('</style>') else head
 assert head.count('</style>')==1
 hdr=L[iHdr]+'\n</header>'
-hdr=re.sub(r'<p class="sub">.*?</p>','<p class="sub">Método N2 · desplazamiento objetivo a partir de una curva pushover · UNE-EN 1998-1:2018, anejo B, con Anexo Nacional · UNE-EN 1998-2 · UNE-EN 1998-3 · unidades SI: m, kN, t, s</p>',hdr)
-assert 'Método N2 · desplazamiento' in hdr
 grid=L[iGrid]
 body='''
 <div class="wrap"><aside id="form" aria-label="Datos"></aside><main id="main"></main></div>
