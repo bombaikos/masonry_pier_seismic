@@ -16,7 +16,7 @@ iGrid=find(lambda l:l.startswith('const GRID'),'const GRID')
 head='\n'.join(L[:iStyle+1])  # doctype .. </style>
 head=head.replace('<title>Cabeceo de pilas de fábrica</title>','<title>Método N2</title>')
 extra='''
-textarea{font-family:var(--f-mono);font-size:.8rem;width:100%;padding:5px 6px;border:1px solid var(--line);border-radius:6px;background:var(--paper);color:var(--ink);resize:vertical;line-height:1.35;white-space:pre;overflow-x:auto}
+textarea{font-family:var(--f-mono);font-size:.8rem;width:100%;padding:5px 6px;border:1px solid var(--campo-borde);border-radius:var(--r-campo);background:var(--campo);color:var(--tinta);resize:vertical;line-height:1.35;white-space:pre;overflow-x:auto}
 textarea:focus{outline:2px solid var(--accent);outline-offset:0}
 input[type=file]{font-family:var(--f-ui);font-size:.78rem;padding:2px;border:none}
 button.ghost{background:transparent;color:var(--accent)}
@@ -25,13 +25,20 @@ section li{margin:3px 0}
 .tw{max-height:none}
 span.pill{white-space:nowrap}
 .fld:has(select){grid-template-columns:minmax(0,1fr) 150px}
-@media print{button,input[type=file]{display:none}}
+.gt-bar{display:flex;gap:var(--e2);justify-content:flex-end;margin-bottom:var(--hueco-campos)}
+button.sm{min-height:22px;font-size:var(--t-xs);padding:0 var(--e2)}
+.gt{max-height:260px;overflow:auto;border:1px solid var(--line);border-radius:var(--r-campo);margin:0}
+.gt table{min-width:0;width:100%;border-collapse:collapse}
+.gt th{position:sticky;top:0;text-align:left;padding:4px var(--e2)}
+.gt td{padding:0;border-bottom:1px solid var(--line);border-left:1px solid var(--line)}
+.gt td:first-child{border-left:none}
+.gt td input{border:none;border-radius:0;background:var(--campo);height:var(--alto-campo);text-align:right}
+.gt td input:focus{outline:2px solid var(--acento);outline-offset:-2px}
+@media print{button,input[type=file],.gt-bar{display:none}}
 </style>'''
 head=head.replace('</style>', extra, 1) if head.rstrip().endswith('</style>') else head
 assert head.count('</style>')==1
 hdr=L[iHdr]+'\n</header>'
-hdr=re.sub(r'<p class="sub">.*?</p>','<p class="sub">Método N2 · desplazamiento objetivo a partir de una curva pushover · UNE-EN 1998-1:2018, anejo B, con Anexo Nacional · UNE-EN 1998-2 · UNE-EN 1998-3 · unidades SI: m, kN, t, s</p>',hdr)
-assert 'Método N2 · desplazamiento' in hdr
 grid=L[iGrid]
 body='''
 <div class="wrap"><aside id="form" aria-label="Datos"></aside><main id="main"></main></div>

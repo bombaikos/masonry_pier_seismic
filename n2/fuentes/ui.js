@@ -186,13 +186,13 @@ const FIELDS = [
     ['mat', 'Elementos que resisten el sismo', 'select', 'fabrica', [['ha', 'Hormigón armado'], ['acero', 'Acero o mixtos'], ['fabrica', 'Fábrica'], ['otro', 'Otro']]],
     ['pat', 'Patrón de cargas del pushover', 'select', 'modal', [['modal', 'Modal (forma del primer modo)'], ['uniforme', 'Uniforme (aceleración uniforme)']]]]],
   ['Curva pushover', [
-    ['curve', 'Pares d<sub>C</sub> y F<sub>b</sub>, uno por línea (pegados de una hoja de cálculo o de un CSV)', 'area', '', 8],
+    ['curve', 'Pares d<sub>C</sub> y F<sub>b</sub> (pégalos desde una hoja de cálculo)', 'area', '', 8],
     ['dUnit', 'Unidad de d<sub>C</sub>', 'select', 'm', [['m', 'm'], ['cm', 'cm'], ['mm', 'mm']]],
     ['fUnit', 'Unidad de F<sub>b</sub>', 'select', 'kN', [['kN', 'kN'], ['MN', 'MN']]]]],
   ['Sistema equivalente', [
     ['sdofMode', 'Origen de m* y Γ', 'select', 'tabla', [['tabla', 'Tabla de masas y forma Φ'], ['directo', 'Datos del programa (SAP2000…)']]],
     ['mstar', 'Masa del sistema equivalente m*', 'num', '', 't'], ['GamIn', 'Factor de transformación Γ', 'num', '', '—'], ['Mtot', 'Masa total M (opcional, para e*)', 'num', '', 't'],
-    ['mass', 'Una masa por línea: nombre; m<sub>i</sub> [t]; Φ<sub>i</sub>', 'area', '', 6],
+    ['mass', 'Masas y forma modal (pégalas desde una hoja de cálculo)', 'area', '', 6],
     ['ctrlRow', 'Fila del punto de control (0 = la de Φ máximo)', 'num', 1, '—']]],
   ['Emplazamiento y acción', [
     ['siteMode', 'Peligrosidad', 'select', 'coords', [['coords', 'Por coordenadas (AN.5)'], ['manual', 'a_gR y K a mano']]],
@@ -231,27 +231,91 @@ function buildForm() {
       let ctl;
       if (type === 'select') ctl = `<select id="${id}">${extra.map(([vv, t]) => `<option value="${vv}"${vv === def ? ' selected' : ''}>${hT(t)}</option>`).join('')}</select>`;
       else if (type === 'txt') ctl = `<input id="${id}" type="text" value="${def}" placeholder="${extra}" style="font-family:var(--f-ui)">`;
-      else if (type === 'area') ctl = `<textarea id="${id}" rows="${extra}" spellcheck="false"></textarea>`;
+      else if (type === 'area') ctl = `<textarea id="${id}" rows="${extra}" spellcheck="false" hidden></textarea><div class="gt-w" data-for="${id}"></div>`;
       else ctl = `<input id="${id}" type="number" step="any" value="${def}">`;
       const unit = type === 'num' ? ` <span class="u">[${hT(extra)}]</span>` : '';
       h += (type === 'txt' || type === 'area') ? `<div class="fld" style="grid-template-columns:1fr"><label for="${id}">${lab}</label>${ctl}</div>` : `<div class="fld"><label for="${id}">${lab}${unit}</label>${ctl}</div>`;
       if (id === 'curve') h += `<div class="fld" style="grid-template-columns:1fr"><label for="csvFile" class="hint" style="margin:0">o sube un archivo CSV / TXT</label><input id="csvFile" type="file" accept=".csv,.txt,.tsv,text/csv,text/plain"></div>`;
     }
     if (gi === 1) h += '</div><p class="hint">El N2 supone que la respuesta en la dirección calculada se parece a la de un sistema de un grado de libertad (EN 1998-2, 4.2.5, nota 2).</p>';
-    if (title === 'Curva pushover') h += '<p class="hint">Separadores: tabulador, punto y coma o espacios. Se admite la coma decimal si las columnas van separadas por tabulador o punto y coma. Las líneas de cabecera se ignoran.</p>';
+    if (title === 'Curva pushover') h += '<p class="hint">Las líneas de cabecera se ignoran.</p>';
     if (title === 'Sistema equivalente') h += '<p class="hint">Con los datos del programa no hace falta la tabla de masas: m* y Γ deben corresponder a la misma forma y punto de control que la curva. Con la tabla, Φ<sub>i</sub> es la forma del patrón de cargas (normalmente el primer modo). La app la normaliza a Φ = 1 en el punto de control. En puentes, patrón uniforme: Φ = 1 en el tablero y z/z<sub>P</sub> en las pilas (EN 1998-2, H.2).</p>';
   });
   h += `<h2>Informe</h2><div style="display:flex;gap:6px;flex-wrap:wrap"><button id="btnDocx" type="button">Descargar informe Word</button><button id="btnPrint" type="button" class="ghost">Imprimir / PDF</button><button id="btnCsv" type="button" class="ghost">CSV de las curvas</button></div><p class="hint" id="repStatus">El informe recoge todos los pasos, tablas y figuras con los datos actuales.</p>`;
   h += `<nav class="steps">${[['0', 'Paso 0'], ['1', 'Paso 1'], ['2', 'Paso 2'], ['3', 'Paso 3'], ['4', 'Paso 4'], ['E', 'Espectro'], ['5', 'Paso 5'], ['6', 'Paso 6'], ['7', 'Paso 7'], ['8', 'Paso 8'], ['C', 'Conclusiones'], ['A', 'Anejo']].map(([k, t]) => `<a href="#p${k}">${t}</a>`).join('')}</nav>`;
   document.getElementById('form').innerHTML = h;
+  initGrids();
   document.querySelectorAll('#form input,#form select,#form textarea').forEach(el => el.addEventListener('input', syncVis));
   document.querySelectorAll('#form input:not([type=file]),#form select:not(#exSel),#form textarea').forEach(el => el.addEventListener('input', run));
   document.getElementById('tipo').addEventListener('input', () => { const t = document.getElementById('tipo').value; setOptions('dir', DIRS[t]); setOptions('impClass', CLASSES[t]); run(); });
   document.getElementById('btnEx').addEventListener('click', () => loadExample(document.getElementById('exSel').value));
-  document.getElementById('csvFile').addEventListener('change', e => { const fl = e.target.files[0]; if (!fl) return; const rd = new FileReader(); rd.onload = () => { document.getElementById('curve').value = rd.result; run(); }; rd.readAsText(fl); });
+  document.getElementById('csvFile').addEventListener('change', e => { const fl = e.target.files[0]; if (!fl) return; const rd = new FileReader(); rd.onload = () => { document.getElementById('curve').value = rd.result; refreshGrids(); run(); }; rd.readAsText(fl); });
   document.getElementById('btnDocx').addEventListener('click', e => exportDocx(e.currentTarget));
   document.getElementById('btnPrint').addEventListener('click', () => { try { window.print(); } catch (e) {} });
   document.getElementById('btnCsv').addEventListener('click', exportCsv);
+}
+
+// ---- entradas numéricas en tabla-rejilla (guía de diseño §3.1): el textarea oculto es el modelo (lo lee el motor); la tabla lo escribe y lo lee
+const GRIDS = {
+  curve: { cols: () => [['d<sub>C</sub> [' + hT(document.getElementById('dUnit').value) + ']', 'Desplazamiento del punto de control'], ['F<sub>b</sub> [' + hT(document.getElementById('fUnit').value) + ']', 'Cortante en la base']], min: 12 },
+  mass: { cols: () => [['Nombre', 'Etiqueta de la masa (opcional)'], ['m<sub>i</sub> [t]', 'Masa'], ['Φ<sub>i</sub> [-]', 'Forma modal en el punto de masa']], min: 6 }
+};
+function gridRead(id) {
+  return String(document.getElementById(id).value || '').split(/\r?\n/).filter(l => l.trim() !== '').map(l => {
+    let c = l.split(/\t|;/).map(x => x.trim());
+    if (c.length === 1) c = l.trim().split(/\s+/);
+    return c;
+  });
+}
+function gridDraw(id) {
+  const w = document.querySelector(`.gt-w[data-for="${id}"]`), cfg = GRIDS[id], cols = cfg.cols(), rows = gridRead(id);
+  while (rows.length < cfg.min) rows.push([]);
+  if (rows[rows.length - 1].some(x => x !== '')) rows.push([]);
+  const ncol = cols.length;
+  w.innerHTML = `<div class="gt-bar"><button type="button" class="ghost sm" data-act="copy" title="Copia la tabla al portapapeles (se pega en Excel)">Copiar tabla</button><button type="button" class="ghost sm" data-act="clear" title="Vacía la tabla">Vaciar</button></div>
+  <div class="tw gt"><table><thead><tr>${cols.map(([t, tip]) => `<th title="${tip}">${t}</th>`).join('')}</tr></thead><tbody>${rows.map((r, i) => `<tr>${cols.map((c, j) => `<td><input data-r="${i}" data-c="${j}" value="${(r[j] || '').replace(/"/g, '&quot;')}" inputmode="${id === 'mass' && j === 0 ? 'text' : 'decimal'}" autocomplete="off" spellcheck="false"></td>`).join('')}</tr>`).join('')}</tbody></table></div>
+  <p class="hint">Pega desde Excel en cualquier celda (se acepta la coma decimal).</p>`;
+}
+function gridWrite(id) {
+  const w = document.querySelector(`.gt-w[data-for="${id}"]`), ncol = GRIDS[id].cols().length, rows = [];
+  w.querySelectorAll('tbody tr').forEach(tr => { const c = [...tr.querySelectorAll('input')].map(i => i.value.trim()); if (c.some(x => x !== '')) rows.push(c.join('\t')); });
+  const ta = document.getElementById(id); ta.value = rows.join('\n'); ta.dispatchEvent(new Event('input', { bubbles: true }));
+}
+function refreshGrids() { Object.keys(GRIDS).forEach(gridDraw); }
+function initGrids() {
+  Object.keys(GRIDS).forEach(id => {
+    const w = document.querySelector(`.gt-w[data-for="${id}"]`);
+    gridDraw(id);
+    w.addEventListener('input', e => { if (e.target.matches('td input')) { gridWrite(id); const last = w.querySelector('tbody tr:last-child input'); if (e.target.closest('tr') === last.closest('tr') && e.target.value) { const a = e.target.dataset.c, r = +e.target.dataset.r; gridDraw(id); const nx = w.querySelector(`input[data-r="${r}"][data-c="${a}"]`); if (nx) { nx.focus(); const l = nx.value.length; nx.setSelectionRange(l, l); } } } });
+    w.addEventListener('focusin', e => { if (e.target.matches('td input')) e.target.select(); });
+    w.addEventListener('keydown', e => {
+      if (!e.target.matches('td input')) return;
+      const r = +e.target.dataset.r, c = +e.target.dataset.c, ncol = GRIDS[id].cols().length;
+      const go = (rr, cc) => { const n = w.querySelector(`input[data-r="${rr}"][data-c="${cc}"]`); if (n) { e.preventDefault(); n.focus(); } };
+      if (e.key === 'Enter' || e.key === 'ArrowDown') go(r + 1, c); else if (e.key === 'ArrowUp') go(r - 1, c);
+    });
+    w.addEventListener('paste', e => {
+      if (!e.target.matches('td input')) return;
+      const txt = (e.clipboardData || window.clipboardData).getData('text');
+      if (!/[\t\n]/.test(txt.trim())) return;               // una sola celda: pegado normal
+      e.preventDefault();
+      const r0 = +e.target.dataset.r, c0 = +e.target.dataset.c, ncol = GRIDS[id].cols().length;
+      const rows = gridRead(id); while (rows.length < r0) rows.push([]);
+      txt.replace(/\r/g, '').replace(/\n+$/, '').split('\n').forEach((line, i) => {
+        const cells = line.split('\t'); const row = rows[r0 + i] || (rows[r0 + i] = []);
+        for (let j = 0; j < ncol; j++) if (!row[j]) row[j] = '';
+        cells.forEach((v, j) => { if (c0 + j < ncol) row[c0 + j] = v.trim().replace(/,/g, id === 'mass' && c0 + j === 0 ? ',' : '.'); });
+      });
+      document.getElementById(id).value = rows.map(r => r.join('\t')).join('\n');
+      gridDraw(id); document.getElementById(id).dispatchEvent(new Event('input', { bubbles: true }));
+    });
+    w.addEventListener('click', e => {
+      const b = e.target.closest('button'); if (!b) return;
+      if (b.dataset.act === 'copy') { const t = gridRead(id).map(r => r.join('\t')).join('\n'); try { navigator.clipboard.writeText(t); } catch (x) {} }
+      if (b.dataset.act === 'clear') { document.getElementById(id).value = ''; gridDraw(id); document.getElementById(id).dispatchEvent(new Event('input', { bubbles: true })); }
+    });
+  });
+  ['dUnit', 'fUnit'].forEach(k => document.getElementById(k).addEventListener('input', () => gridDraw('curve')));
 }
 function syncVis() {
   const g = id => document.getElementById(id).value, show = (id, on) => { const el = document.getElementById(id); if (el) el.closest('.fld').style.display = on ? '' : 'none'; };
@@ -269,7 +333,7 @@ function loadExample(k) {
   for (const [id, val] of Object.entries({ proj: e.proj, elem: e.elem, dir: e.dir, mat: e.mat, pat: e.pat, curve: e.curve, dUnit: e.dUnit, fUnit: e.fUnit, mass: e.mass, ctrlRow: e.ctrlRow,
     siteMode: e.siteMode, lat: e.lat, lon: e.lon, vs30: e.vs30, impClass: e.impClass, gIman: '', xi: 5, agR: 0.04, K: 1.0, dmCrit: 'max', dmMan: '', duCrit: 'drop', duPct: 80, duMan: '', iterate: '1', tol: 5,
     sdofMode: 'tabla', mstar: '', GamIn: '', Mtot: '', metodo: 'n2', ed: 'ambas', KL: '1', gSd: '1' })) set(id, val);
-  syncVis();
+  refreshGrids(); syncVis();
   document.getElementById('exSel').value = k;
   run();
 }
@@ -750,3 +814,9 @@ function run() {
   try { const R = computeN2(readInputs(), GRID); render(R); }
   catch (e) { document.getElementById('main').innerHTML = `<section><h2>Revisa los datos</h2><p>No se ha podido calcular con los datos actuales: ${hT(esc(e.message))}</p></section>`; console.error(e); }
 }
+
+// pantalla completa (botón a la derecha de la barra superior)
+(function(){const b=document.getElementById('btnFs');if(!b)return;const d=document.documentElement,on=()=>!!document.fullscreenElement;
+  if(!d.requestFullscreen){b.setAttribute('aria-disabled','true');b.title='Tu navegador no permite la pantalla completa';return}
+  b.addEventListener('click',()=>{try{on()?document.exitFullscreen():d.requestFullscreen()}catch(e){}});
+  document.addEventListener('fullscreenchange',()=>{const f=on();b.setAttribute('aria-pressed',f);b.setAttribute('aria-label',f?'Salir de pantalla completa':'Pantalla completa');b.title=b.getAttribute('aria-label')+' (F11)'});})();
