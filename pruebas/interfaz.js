@@ -36,6 +36,20 @@ const APPS = [
     const nr = await p.$$eval('.tabs button', x => x.length);
     for (let i = 0; i < nr; i++) { await p.click(`.tabs button[data-i="${i}"]`); const n = await p.$$eval('.panel-res.activo > *', x => x.length); if (!n) ok(false, 'pestaña de resultados ' + i + ' vacía'); }
     ok(nr >= 6, `${nr} pestañas de resultados`);
+    // gráficas: ninguna línea o relleno invisible (p. ej. por una variable CSS sin definir), en claro y oscuro
+    for (const esq of ['light', 'dark']) {
+      await p.emulateMedia({ colorScheme: esq });
+      let svgs = 0; const malas = [];
+      for (let i = 0; i < nr; i++) {
+        await p.click(`.tabs button[data-i="${i}"]`);
+        const r = await p.evaluate(() => { let t = 0; const o = []; document.querySelectorAll('.panel-res.activo svg').forEach(s => { if (!s.getBoundingClientRect().width) return; t++; s.querySelectorAll('path,line,polyline,rect,circle,polygon').forEach(e => { const c = getComputedStyle(e); if (c.stroke === 'none' && (c.fill === 'none' || c.fill === 'rgba(0, 0, 0, 0)') && !e.closest('defs,marker,clipPath')) o.push((e.closest('section') || {}).id + ' ' + (e.getAttribute('style') || '').slice(0, 50)); }); }); return [t, o]; });
+        svgs += r[0]; malas.push(...r[1]);
+      }
+      ok(svgs >= 10 && malas.length === 0, `${svgs} gráficas con todas sus líneas visibles (${esq}) ${malas.slice(0, 3).join(' | ')}`);
+      const sinDef = await p.evaluate(() => { const r = getComputedStyle(document.documentElement), usados = new Set(); document.documentElement.outerHTML.replace(/var\(\s*(--[a-z0-9-]+)\s*\)/g, (m, v) => usados.add(v)); return [...usados].filter(v => !r.getPropertyValue(v).trim()); });
+      ok(sinDef.length === 0, `todas las variables CSS usadas están definidas (${esq}) ${sinDef.join(',')}`);
+    }
+    await p.emulateMedia({ colorScheme: 'light' }); await p.click('.tabs button[data-i="0"]');
     // veredicto
     ok((await p.$$('.veredicto .sello')).length === A.sellos, `veredicto con ${A.sellos} sellos`);
     // la pestaña activa sobrevive a un cambio de dato
