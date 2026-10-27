@@ -1,0 +1,39 @@
+/* ---- barra superior (como VLASTA) ---- */
+.barra{flex:none;position:relative;min-height:52px;display:grid;grid-template-columns:minmax(max-content,1fr) minmax(0,auto) minmax(max-content,1fr);align-items:center;gap:4px 16px;padding:4px 12px;background:var(--banda);color:var(--banda-tinta)}
+.barra-izq{display:flex;align-items:center;gap:4px 16px;min-width:0}
+.marca{display:flex;align-items:center;flex:none}.marca .logo{height:30px;width:auto;display:block}
+.sep-marca{width:1px;align-self:stretch;margin:2px 2px;background:var(--banda-linea)}
+.nombre{display:flex;flex-direction:column;line-height:1;min-width:0}
+.nombre .vl{font:300 20px/1 var(--f);letter-spacing:.3em;margin-right:-.3em;color:var(--banda-tinta);text-transform:uppercase}
+.nombre .lema{margin-top:4px;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--banda-tinta-2);white-space:nowrap}
+.fila-vl{display:flex;align-items:baseline;gap:10px}
+.ver{display:flex;flex-direction:column;align-items:stretch}
+.ver-fecha{font:500 8px/1 var(--f);letter-spacing:.04em;color:var(--banda-tinta-2);text-align:center;white-space:nowrap;width:0;min-width:100%;margin-top:-1px}
+.version{font:700 10.5px/1 var(--f);letter-spacing:.14em;text-transform:uppercase;color:#ff9a2e;border:1px solid #ff9a2e;border-radius:3px;padding:2px 5px 1px;transform:translateY(-3px)}
+.menus{display:flex;align-items:center;gap:2px;margin-left:6px}
+.menu-sup{position:relative}
+.menu-boton{background:none;border:0;color:var(--banda-tinta-2);padding:5px 10px;min-height:28px;border-radius:var(--r-chip);font-size:13px;cursor:pointer}
+.menu-boton:hover,.menu-boton[aria-expanded="true"]{background:rgb(255 255 255/.12);color:var(--banda-tinta)}
+.vl-menu{position:absolute;z-index:40;min-width:260px;padding:4px;border:1px solid var(--linea-fuerte);border-radius:var(--r-campo);background:var(--hoja);color:var(--tinta);box-shadow:0 6px 20px oklch(30% 0.02 250/.14);display:grid;gap:1px}
+.vl-menu[hidden]{display:none}
+.vl-menu.menu-lista{left:0;top:calc(100% + 3px)}
+.vl-menu button{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center;width:100%;min-height:28px;padding:0 8px;border:0;border-radius:var(--r-chip);background:none;color:inherit;font:inherit;font-size:13px;text-align:left;cursor:pointer}
+.vl-menu button:hover,.vl-menu button:focus-visible,.menu-sub:hover>.con-sub{background:var(--acento-suave);outline:none}
+.vl-menu kbd{font:inherit;font-size:var(--t-xs);color:var(--tinta-3)}
+.vl-menu small{display:block;grid-column:1/-1;font-size:var(--t-xs);color:var(--tinta-3);margin-top:-2px;padding-bottom:3px}
+.vl-menu .sep-menu{height:1px;margin:3px 6px;background:var(--linea)}
+.menu-sub{position:relative}
+.vl-menu.submenu{display:none;left:calc(100% - 2px);top:-5px;min-width:320px}
+.menu-sub:hover>.submenu,.menu-sub:focus-within>.submenu,.menu-sub.abierto>.submenu{display:grid}
+.vl-menu.submenu button{grid-template-columns:1fr;gap:0;padding:4px 8px}
+.titulo-proy{display:flex;flex-direction:column;align-items:center;line-height:1.2;min-width:0;max-width:100%;overflow:hidden;padding:3px 12px;border:0;border-radius:var(--r-campo);background:none;color:var(--banda-tinta);cursor:pointer}
+.titulo-proy:hover{background:rgb(255 255 255/.08)}
+.titulo-proy .etq{font-size:var(--t-xs);color:var(--banda-tinta-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.titulo-proy .proy{font-size:var(--t-m);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.banderas{justify-self:end;display:flex;align-items:center;gap:6px}
+.pantalla-completa{padding:3px;border:0;border-radius:var(--r-chip);background:none;color:var(--banda-tinta-2);cursor:pointer;line-height:0}
+.pantalla-completa:hover,.pantalla-completa:focus-visible{color:var(--banda-tinta)}
+.pantalla-completa svg{width:20px;height:20px;display:block}
+.solo-imp{display:none}
+@media (max-width:1000px){.barra{grid-template-columns:1fr auto}.titulo-proy{grid-column:1/-1;order:5}}
+@media (pointer:coarse){.menu-boton{min-height:38px;padding:6px 14px}.vl-menu button{min-height:38px}.pantalla-completa{padding:6px}}

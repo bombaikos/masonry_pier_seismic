@@ -253,6 +253,7 @@ function buildForm() {
   document.getElementById('btnDocx').addEventListener('click', e => exportDocx(e.currentTarget));
   document.getElementById('btnPrint').addEventListener('click', () => { try { window.print(); } catch (e) {} });
   document.getElementById('btnCsv').addEventListener('click', exportCsv);
+  Shell.organizarDatos();
 }
 
 // ---- entradas numéricas en tabla-rejilla (guía de diseño §3.1): el textarea oculto es el modelo (lo lee el motor); la tabla lo escribe y lo lee
@@ -318,14 +319,18 @@ function initGrids() {
   ['dUnit', 'fUnit'].forEach(k => document.getElementById(k).addEventListener('input', () => gridDraw('curve')));
 }
 function syncVis() {
-  const g = id => document.getElementById(id).value, show = (id, on) => { const el = document.getElementById(id); if (el) el.closest('.fld').style.display = on ? '' : 'none'; };
+  const g = id => document.getElementById(id).value;
+  // lo no aplicable no desaparece: queda en gris y dice qué falta (guía de diseño, principio «Nada aparece ni desaparece»)
+  const show = (id, on, why) => { const el = document.getElementById(id); if (!el) return; const f = el.closest('.campo,.fld'); if (!f) return; f.classList.toggle('off', !on); f.title = on ? '' : why;
+    if (el.tagName !== 'TEXTAREA') el.disabled = !on; };
   const dir = g('sdofMode') === 'directo', man = g('siteMode') === 'manual';
-  ['mstar', 'GamIn', 'Mtot'].forEach(id => show(id, dir)); ['mass', 'ctrlRow'].forEach(id => show(id, !dir));
-  ['agR', 'K'].forEach(id => show(id, man)); ['lat', 'lon'].forEach(id => show(id, !man));
-  show('gIman', g('tipo') === 'puente' && g('impClass') === 'I');
-  show('KL', g('ed') !== '2018'); show('gSd', g('ed') !== '2018');
-  show('dmMan', g('dmCrit') === 'manual'); show('duMan', g('duCrit') === 'manual'); show('duPct', g('duCrit') === 'drop');
-  show('tol', g('iterate') === '1');
+  const dp = 'Disponible con «Datos del programa»', tb = 'Disponible con «Tabla de masas y forma Φ»';
+  ['mstar', 'GamIn', 'Mtot'].forEach(id => show(id, dir, dp)); ['mass', 'ctrlRow'].forEach(id => show(id, !dir, tb));
+  ['agR', 'K'].forEach(id => show(id, man, 'Disponible con «A mano»')); ['lat', 'lon'].forEach(id => show(id, !man, 'Disponible con «Coordenadas»'));
+  show('gIman', g('tipo') === 'puente' && g('impClass') === 'I', 'Solo para puentes de clase de importancia I');
+  show('KL', g('ed') !== '2018', 'La edición 2018 no lleva coeficientes parciales'); show('gSd', g('ed') !== '2018', 'La edición 2018 no lleva coeficientes parciales');
+  show('dmMan', g('dmCrit') === 'manual', 'Disponible con el criterio «Manual»'); show('duMan', g('duCrit') === 'manual', 'Disponible con el criterio «Manual»'); show('duPct', g('duCrit') === 'drop', 'Disponible con el criterio «Caída»');
+  show('tol', g('iterate') === '1', 'Disponible si la iteración está activada');
 }
 function loadExample(k) {
   const e = EXAMPLES[k], set = (id, val) => { const el = document.getElementById(id); if (el) el.value = val; };
@@ -811,12 +816,29 @@ function exportCsv() {
 }
 
 function run() {
-  try { const R = computeN2(readInputs(), GRID); render(R); }
+  try { const R = computeN2(readInputs(), GRID); render(R); Shell.despuesDeRender(R); }
   catch (e) { document.getElementById('main').innerHTML = `<section><h2>Revisa los datos</h2><p>No se ha podido calcular con los datos actuales: ${hT(esc(e.message))}</p></section>`; console.error(e); }
 }
 
-// pantalla completa (botón a la derecha de la barra superior)
-(function(){const b=document.getElementById('btnFs');if(!b)return;const d=document.documentElement,on=()=>!!document.fullscreenElement;
-  if(!d.requestFullscreen){b.setAttribute('aria-disabled','true');b.title='Tu navegador no permite la pantalla completa';return}
-  b.addEventListener('click',()=>{try{on()?document.exitFullscreen():d.requestFullscreen()}catch(e){}});
-  document.addEventListener('fullscreenchange',()=>{const f=on();b.setAttribute('aria-pressed',f);b.setAttribute('aria-label',f?'Salir de pantalla completa':'Pantalla completa');b.title=b.getAttribute('aria-label')+' (F11)'});})();
+// ---------- armazón de interfaz (compartido/shell.js)
+const CFG = {
+  id: 'n2', formato: 'n2-web', nombre: 'N2', lema: 'Desplazamiento objetivo', inicio: '../index.html',
+  tabsDatos: [['General', ['Identificación', 'Preguntas iniciales']], ['Curva', ['Curva pushover']], ['Masas', ['Sistema equivalente']], ['Acción', ['Emplazamiento y acción', 'Seguridad (EN 1998-3)']], ['Cálculo', ['Opciones de cálculo']]],
+  corto: { tipo: { puente: 'Puente', edificio: 'Edificio' }, pat: { modal: 'Modal', uniforme: 'Uniforme' }, sdofMode: { tabla: 'Tabla de masas', directo: 'Datos del programa' }, siteMode: { coords: 'Coordenadas', manual: 'A mano' },
+    ed: { ambas: 'Ambas', '2018': '2018', '2025': '2025' }, metodo: { n2: 'N2', igual: 'Igual despl.' }, dmCrit: { max: 'Máximo', last: 'Último', manual: 'Manual' }, duCrit: { drop: 'Caída', last: 'Último', manual: 'Manual' }, iterate: { '1': 'Sí', '0': 'No' }, showB: { '0': 'No', '1': 'Sí' } },
+  sinSeg: ['mat', 'impClass'],
+  ejemplos: Object.entries(EXAMPLES).map(([k, e]) => [k, e.label, e.elem]),
+  ejemplo: k => { document.getElementById('exSel').value = k; loadExample(k); },
+  importar: { txt: 'Importar curva… [CSV]', tit: 'Carga los pares d_C y F_b de un archivo de texto', accion: () => document.getElementById('csvFile').click() },
+  csv: 'Exportar curvas [CSV]',
+  tabsRes: [['Resumen', ['C']], ['Bases y curva', ['0', '1', '2']], ['Bilineal', ['3', '4']], ['Espectro', ['E']], ['Desplazamiento objetivo', ['5', '6', '7']], ['Estados límite', ['8']], ['Anejo', ['A']]],
+  resumenFig: '3',
+  veredicto: R => { const rs = R.p7 && R.p7.res; if (!rs || !R.p8) return null; const SF = R.safety, du = R.p2.du, k = rs.dt / du;
+    return { rotulo: 'd<sub>t</sub> / d<sub>u</sub> · sismo de 475 años', cifra: f(k, 2), unidad: '[-]', frac: k, ok: rs.okU, limite: 'límite 1',
+      nota: `d<sub>t</sub> = ${fd(rs.dt)} m · d<sub>u</sub> = ${fd(du)} m`, aria: 'desplazamiento objetivo frente a desplazamiento último',
+      sellos: R.p8.map(x => ({ k: x.k, ok: (SF.ed !== '2025' ? x.ok18 : true) && (SF.ed !== '2018' ? x.ok25 : true), tit: `d_t = ${fd(x.dt)} m frente a d_LS = ${fd(x.cap)} m` })) }; },
+  antesDeAplicar: d => { const t = d.tipo; if (!t || !DIRS[t]) return; document.getElementById('tipo').value = t; setOptions('dir', DIRS[t]); setOptions('impClass', CLASSES[t]); },
+  refrescar: () => { refreshGrids(); syncVis(); run(); },
+  ayuda: '<h4>Flujo</h4><p>Rellena General, Curva, Masas, Acción y Cálculo (en la curva y en las masas puedes pegar desde una hoja de cálculo). Los resultados se actualizan solos al cambiar un dato; no hay botón Calcular.</p><h4>Resultados</h4><p>La tarjeta superior da d<sub>t</sub>/d<sub>u</sub> con el sismo de 475 años y los sellos DL, SD y NC. Las pestañas recorren los pasos del método N2 con sus fórmulas y valores sustituidos.</p><h4>Archivo</h4><p>Guardar descarga los datos en un .json; Abrir (o arrastrar el archivo) los recupera. Ejemplos carga un caso sintético. Importar curva lee un CSV o TXT. El informe Word y la impresión llevan la memoria completa.</p><h4>Teclado</h4><p>Ctrl+O abrir · Ctrl+S guardar · Ctrl+P imprimir · F1 ayuda · Enter pasa al campo siguiente.</p>',
+  acerca: '<p>Método N2 (UNE-EN 1998-1, anejo B, con Anexo Nacional) aplicado a una curva pushover calculada fuera de la app; límites de estado según UNE-EN 1998-3:2018 y EN 1998-3:2025.</p><p>Prototipo de cálculo. Todos los resultados, textos e interpretaciones se generan con reglas programadas, sin intervención de IA; revisa las hipótesis de cada paso antes de usarlos.</p>'
+};

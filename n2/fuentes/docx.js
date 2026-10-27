@@ -52,7 +52,7 @@ async function exportDocx(btn) {
     const P = (node, opt = {}) => new Paragraph({ children: runsOf(node, opt.st || {}), alignment: AlignmentType.JUSTIFIED, widowControl: true, spacing: { after: 160 }, ...opt.p });
     const children = [];
     // portada
-    const logoSrc = document.querySelector('header.top img')?.src;
+    const logoSrc = document.querySelector('.barra .logo')?.src;
     if (logoSrc) children.push(new Table({ width: { size: 9638, type: WidthType.DXA }, columnWidths: [9638], rows: [new TableRow({ children: [new TableCell({ width: { size: 9638, type: WidthType.DXA }, shading: { type: ShadingType.CLEAR, fill: '10283B', color: 'auto' },
       margins: { top: 200, bottom: 200, left: 240, right: 240 }, children: [new Paragraph({ style: 'TablaTexto', children: [new ImageRun({ type: 'png', data: dataUrlToBuf(logoSrc), transformation: { width: 150, height: 58 } })] })] })] })] }));
     const I = readInputs();
@@ -69,7 +69,7 @@ async function exportDocx(btn) {
     const bd = { style: BorderStyle.SINGLE, size: 4, color: 'DCDAD3' };
     const figs = []; // promesas en orden
     let olInst = 0;   // cada lista numerada reinicia su cuenta
-    for (const sec of document.querySelectorAll('#main > section')) {
+    for (const sec of Shell.secciones()) {
       const walk = async el => {
         for (const n of el.children) {
           const tg = n.tagName, cl = n.classList;
